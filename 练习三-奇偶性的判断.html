@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>奥数 · 举一反三 — 奇偶性的判断（练习三）</title>
+<style>
+  :root{
+    --paper:#FFF6E6;
+    --card:#FFFFFF;
+    --ink:#2B2B33;
+    --mut:#8B8274;
+    --line:#EFE4CE;
+    --sun:#FFC53D;
+    --sun-soft:#FFF4D0;
+    --brand:#3553D6;
+    --brand-deep:#1F2E74;
+    --green:#1FA37F;
+    --blue:#3A8FE0;
+    --orange:#F06B3C;
+    --red:#D6452A;
+    --amber:#E09A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(31,46,116,.07) 1px,transparent 1.3px);
+    background-size:22px 22px;
+    line-height:1.75;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  button{font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none}
+  textarea{font-family:inherit}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--brand-deep);
+    color:#fff;
+    padding:22px 0 66px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topline{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+  .flag{display:inline-flex;align-items:center;gap:8px}
+  .flag::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .hero-in{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+    padding:34px 0 16px;
+  }
+  h1{
+    font-size:clamp(42px,7vw,66px);font-weight:900;letter-spacing:.02em;line-height:1.08;
+    margin:0;
+  }
+  .zh-yellow{color:var(--sun)}
+  .hero-sub{
+    margin-top:14px;font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);
+    line-height:1.9;max-width:600px;
+  }
+  .hero-sub b{color:var(--sun);font-weight:700}
+  .hero-art{text-align:center}
+  .hero-art svg{width:min(300px,52vw);height:auto;display:block;margin:0 auto}
+  .road-strip{
+    position:absolute;left:0;right:0;bottom:0;height:34px;
+    background:rgba(11,18,58,.42);
+  }
+  .road-strip::before{
+    content:"";position:absolute;left:0;right:0;top:15px;height:4px;
+    background:repeating-linear-gradient(to right,rgba(255,197,61,.95) 0 26px,transparent 26px 52px);
+  }
+  .cone{position:absolute;bottom:-6px;color:var(--sun)}
+  .cone.c1{left:10%}
+  .cone.c2{left:88%}
+
+  /* ============ WELCOME / PROGRESS ============ */
+  .welcome{
+    background:#fff;border:1px solid #F3EAD8;border-radius:20px;
+    box-shadow:0 12px 30px rgba(31,46,116,.12);
+    margin-top:-34px;padding:18px 22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .greet{font-size:13px;color:var(--mut)}
+  .greet b{color:var(--brand-deep);font-size:16px}
+  .name-in{
+    border:1.5px dashed #D9CBA9;border-radius:10px;padding:4px 10px;font-size:15px;
+    width:170px;background:#FFFDF6;outline:none;color:var(--ink);
+  }
+  .name-in:focus{border-color:var(--brand)}
+  .wel-right{min-width:250px}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+  .pmeta .star-count{color:#D98E04;font-weight:700}
+  .pbar{height:12px;background:#EFE8D8;border-radius:999px;overflow:hidden}
+  .pbar-fill{height:100%;width:0;background:var(--brand);border-radius:999px;transition:width .5s ease}
+  .win-banner{
+    margin-top:18px;display:none;align-items:center;gap:12px;
+    background:#FFF2CB;border:1.5px solid #F2D68A;color:#6B4B00;
+    border-radius:16px;padding:14px 18px;font-size:16px;font-weight:700;
+  }
+  .win-banner.show{display:flex;animation:pop .4s ease}
+  .win-banner svg{flex:none}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* ============ SECTIONS ============ */
+  .sec{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .sec-no{
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;
+    background:var(--brand-deep);border-radius:8px;padding:3px 9px;
+    align-self:center;
+  }
+  .sec-head h2{font-size:clamp(22px,3.4vw,28px);font-weight:900}
+  .sec-head .sec-sub{color:var(--mut);font-size:14px}
+  .rule{height:1px;background:var(--line);margin:12px 0 20px}
+
+  /* ============ LESSON ============ */
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .lcard{
+    background:#fff;border:1px solid #F1E6D0;border-radius:18px;padding:20px 20px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .lcard h4{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .ic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .ic.ic-b{background:#E9EEFF;color:var(--brand)}
+  .ic.ic-g{background:#E1F6EF;color:var(--green)}
+  .ic.ic-o{background:#FFEBDD;color:var(--orange)}
+  .lcard p{font-size:14.5px;color:#4A4439}
+  .lcard p b{color:var(--ink)}
+  .tri{margin:8px auto 2px;text-align:center}
+  .pill{
+    display:inline-block;border-radius:12px;padding:5px 18px;margin:3px;
+    font-weight:800;font-size:16px;color:#fff;
+  }
+  .pill.top{background:var(--brand)}
+  .pill.l{background:var(--green)}
+  .pill.r{background:var(--orange)}
+  .tri .op{font-size:20px;font-weight:900;color:var(--mut);padding:0 6px}
+  .tri-cap{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .u-list,.n-list{list-style:none;font-size:14px;color:#4A4439}
+  .u-list li,.n-list li{padding:5px 0;border-bottom:1px dashed #F0E5D0}
+  .u-list li:last-child,.n-list li:last-child{border-bottom:none}
+  .u-chip{
+    display:inline-block;background:#F1F5FF;color:var(--brand);
+    border-radius:8px;padding:1px 8px;font-weight:700;font-size:13.5px;margin:1px 0;
+  }
+  .n-list b{color:var(--orange)}
+
+  /* ============ PRACTICE LEVEL ============ */
+  .lvl{margin-top:36px}
+  .lvl-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .lvl-name{font-size:20px;font-weight:900;margin-right:2px}
+  .lv-chip{
+    font-size:12px;font-weight:800;color:#fff;border-radius:999px;
+    padding:2px 11px;letter-spacing:.05em;
+  }
+  .lv-chip.l1{background:var(--green)}
+  .lv-chip.l2{background:var(--blue)}
+  .lv-chip.l3{background:var(--orange)}
+  .lvl-count{margin-left:auto;font-size:13px;color:var(--mut);font-weight:700}
+  .lvl-intro{font-size:14px;color:var(--mut);margin:4px 0 2px 2px}
+
+  /* ============ QUESTION CARD ============ */
+  .card{
+    background:#fff;border:1px solid #F1E6D0;border-top:6px solid #ddd;
+    border-radius:18px;padding:20px 22px 22px;margin-top:18px;
+    box-shadow:0 6px 18px rgba(31,46,116,.05);
+    transition:box-shadow .2s ease;
+  }
+  .card.lv1{border-top-color:var(--green)}
+  .card.lv2{border-top-color:var(--blue)}
+  .card.lv3{border-top-color:var(--orange)}
+  .card.done{background:#FDFFFC}
+  .card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .q-no{
+    font-size:15px;font-weight:900;color:var(--brand-deep);
+    background:#EEF1FF;border-radius:10px;padding:3px 12px;
+  }
+  .stars{color:var(--sun);font-size:17px;letter-spacing:2px}
+  .stars i{color:#E9DCBC;font-style:normal}
+  .spacer{flex:1}
+  .lvl-tag{font-size:12px;color:var(--mut);font-weight:700}
+  .done-chip{
+    border:1.5px solid #E2D9C4;background:#FFFDF7;color:#A89B82;
+    border-radius:999px;padding:4px 13px;font-size:13px;font-weight:800;
+  }
+  .done-chip:hover{border-color:#BFD9CB;color:var(--green)}
+  .card.done .done-chip{background:#E2F6EC;border-color:#B7E3CF;color:#0F8A5F}
+  .q-text{
+    background:#FBF5E6;border:1px solid #F1E7CE;border-radius:14px;
+    padding:15px 17px;margin-top:14px;font-size:16.5px;line-height:1.95;
+  }
+  .q-text b{font-weight:800;color:var(--brand-deep);border-bottom:2px solid var(--sun)}
+  .think{margin-top:12px}
+  .think label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:5px}
+  .think textarea{
+    width:100%;min-height:62px;resize:vertical;border:1.5px dashed #DFD3B8;
+    border-radius:12px;background:#FFFEF9;padding:9px 12px;font-size:15px;line-height:1.7;
+    color:var(--ink);outline:none;
+  }
+  .think textarea:focus{border-color:var(--brand)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:800;
+    border:1px solid transparent;transition:transform .08s ease,background .2s ease,color .2s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-hint{background:#FFF3D2;color:#8A5E00;border-color:#F0DDA2}
+  .btn-hint:hover{background:#FFE9A8}
+  .btn-hint.open{background:#FFD979}
+  .btn-sol{background:var(--brand);color:#fff}
+  .btn-sol:hover{background:#2A44C0}
+  .btn-sol.open{background:#E7ECFF;color:var(--brand);border-color:#C9D6FF}
+
+  .hint-box{display:none;margin-top:14px;background:#FFF9E6;border:1px solid #F2E2AC;
+    border-left:5px solid #EDB800;border-radius:12px;padding:12px 16px}
+  .hint-box.on{display:block;animation:fadein .25s ease}
+  .hint-box .h-tag{font-weight:900;color:#9A6E00;font-size:13.5px;margin-bottom:4px}
+  .hint1{font-size:15.5px}
+  .hint2{display:none;margin-top:10px;font-size:15px;color:#7A5A00;
+    border-top:1px dashed #EBD48F;padding-top:10px}
+  .hint2.show{display:block}
+  .morehint{
+    display:none;margin-top:10px;background:#fff;border:1px solid #E3CF8B;
+    color:#8A5E00;border-radius:999px;font-size:13px;font-weight:800;padding:4px 14px;
+  }
+  .hint-box.on .morehint{display:inline-block}
+  .morehint:hover{background:#FFEDBE}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  .sol{display:none;margin-top:16px}
+  .sol.on{display:block;animation:fadein .3s ease}
+  .sol-head{
+    display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;
+    color:var(--brand-deep);margin-bottom:12px;
+  }
+  .sol-head::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .step{
+    background:#F8FAFF;border:1px solid #E7ECFB;border-radius:14px;
+    padding:12px 16px 12px 50px;position:relative;margin-bottom:10px;
+  }
+  .step-no{
+    position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-t{font-weight:900;font-size:15px}
+  .step-d{font-size:14.5px;margin-top:3px;color:#3E3A32}
+  .eq{
+    margin:7px 0 2px;padding:7px 12px;background:#FFF3D2;border-left:4px solid var(--sun);
+    border-radius:8px;font-weight:800;font-size:16px;
+  }
+  .eq.small{font-weight:700;font-size:15px}
+  .fig{
+    background:#F7F2E6;border:1px dashed #E0D3B4;border-radius:14px;
+    padding:14px 16px;margin:14px 0 6px;
+  }
+  .fig-cap{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .rowcap{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-size:13px;color:#6B6355;margin:2px 0 6px;flex-wrap:wrap;
+  }
+  .rowcap em{font-style:normal;font-weight:800;color:var(--brand);background:#E7EDFF;
+    border-radius:999px;padding:1px 10px}
+  .rowcap sub{font-size:12px;color:var(--mut)}
+  .row{display:flex;gap:6px;margin-bottom:6px}
+  .seg{
+    flex:1;min-width:0;text-align:center;border-radius:10px;
+    padding:8px 2px 6px;font-weight:800;font-size:15px;line-height:1.25;
+  }
+  .seg i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.72;line-height:1.3;margin-top:3px}
+  .c-blue{background:#E9EFFF;color:#2B56C8}
+  .c-orange{background:#FFF0E2;color:#C55E18}
+  .c-gold{background:#FFF3CC;color:#B07C00}
+  .seg.stop{background:#ECEAE3;color:#8A8578}
+  .seg.late{outline:2px dashed var(--red);background:#FFE3D8;color:#C03A12}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+    font-weight:800;margin:10px 0 2px;
+  }
+  .fchip{background:#E9EFFF;color:#2B56C8;border-radius:10px;padding:6px 12px;font-size:14px}
+  .fchip.b{background:#FFF0E2;color:#C55E18}
+  .farrow{color:var(--mut);font-size:15px}
+  .fnote{font-size:12.5px;color:var(--mut);text-align:center;margin-top:4px}
+
+  .mapwrap{width:100%;margin:6px 0 2px}
+  .mapwrap svg{width:100%;height:auto;display:block}
+  .mapnote{font-size:12.5px;color:var(--mut);margin-top:4px;text-align:center}
+
+  .ans{
+    margin-top:14px;background:#F1F6FF;border:1.5px dashed var(--brand);
+    border-radius:14px;padding:13px 16px;
+  }
+  .ans-label{
+    display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    border-radius:999px;padding:1px 12px;margin-bottom:6px;letter-spacing:.1em;
+  }
+  .ans p{font-size:16px;font-weight:700}
+  .ans .ans-num{color:var(--brand);font-weight:900}
+  .check{margin-top:8px;font-size:13.5px;color:#5F584A;border-top:1px dashed #C9D7F5;padding-top:8px}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4F0;border:1px solid #FFDCD0;
+    border-radius:12px;padding:10px 14px;color:#7A4534}
+  .note-tag{font-weight:900;color:var(--orange);margin-right:6px}
+
+  .reset-wrap{text-align:center;margin:34px 0 6px}
+  .btn-reset{
+    background:transparent;border:1px dashed #C9BC9C;color:var(--mut);
+    border-radius:999px;padding:7px 18px;font-size:13px;
+  }
+  .btn-reset:hover{color:var(--red);border-color:var(--red);background:#FFF6F3}
+  footer{
+    text-align:center;color:#B3A98F;font-size:12px;line-height:2;
+    padding:30px 18px 40px;
+  }
+  footer .heart{color:var(--orange);font-weight:900}
+
+  @media (max-width:760px){
+    .hero-in{grid-template-columns:1fr;padding-top:22px}
+    .hero-art{display:none}
+    .welcome{flex-direction:column;align-items:flex-start}
+    .wel-right{width:100%}
+    .step{padding-left:44px}
+    .step-no{left:10px}
+    .q-no{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="flag">奥数 · 举一反三</span>
+      <span>奇偶性的判断 · 练习三 · <span id="dateChip"></span></span>
+    </div>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1>奇偶性的<span class="zh-yellow">判断</span></h1>
+        <p class="hero-sub">
+          面向算式和数列，只要盯住 <b>奇偶</b> 两件事：<br>
+          加减数奇数个数，乘法见偶必偶，<br>
+          看个位、找循环，奇偶秘密一圈一个准。
+        </p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 260 210" role="img" aria-label="奇偶配对装饰图">
+          <circle cx="130" cy="96" r="92" fill="#FFC53D"/>
+          <circle cx="96" cy="80" r="15" fill="#1F2E74"/>
+          <circle cx="164" cy="80" r="15" fill="#1F2E74"/>
+          <circle cx="130" cy="152" r="15" fill="#D6452A" stroke="#fff" stroke-width="4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="road-strip">
+    <svg class="cone c1" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+    <svg class="cone c2" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="welcome">
+    <div class="wel-left">
+      <div class="greet" id="greetLine">小朋友，今天来闯奇偶性的判断题！</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="name-in" id="nameIn" maxlength="12" placeholder="写下你的名字（可选）" />
+        <span style="font-size:13px;color:var(--mut)">我的小练功房</span>
+      </div>
+    </div>
+    <div class="wel-right">
+      <div class="pmeta">
+        <span>通关进度 <b id="doneText">0 / 12</b></span>
+        <span class="star-count" id="starText">★ 0 / 25</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
+    </div>
+  </section>
+
+  <div class="win-banner" id="winBanner">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B47A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.4-6.3 4.4L8 13.8l-6-4.6h7.6z"/></svg>
+    <span>全部通关！你已经能一眼看穿算式的奇偶性啦，快把这个好消息告诉爸爸妈妈吧～</span>
+  </div>
+
+  <!-- ========== 知识点 ========== -->
+  <section class="sec" id="lesson">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>奇偶性小课堂</h2>
+      <span class="sec-sub">做题之前，先分清是“合走”还是“补差距”</span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="lesson-grid">
+      <div class="lcard">
+        <h4><span class="ic ic-b" style="font-size:19px;font-weight:900">+ −</span>加减：数一数“奇数”</h4>
+        <p>
+          加、减的结果奇偶，看参与的数里<b>有几个奇数</b>：
+        </p>
+        <ul class="u-list">
+          <li><b>奇＋奇＝偶</b>　·　<b>偶＋偶＝偶</b>　·　<b>奇＋偶＝奇</b></li>
+          <li>相减也一样：同奇偶 → 偶；一奇一偶 → 奇</li>
+          <li>连续多个数相加：奇数有<b>奇数个</b> → 和是奇；有<b>偶数个</b> → 和是偶</li>
+        </ul>
+        <p>
+          例：265（奇）＋ 47□ 想得奇数，47□ 就得是<b>偶数</b>。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-g" style="font-size:19px;font-weight:900">×</span>乘法：见偶必偶</h4>
+        <p>
+          乘法只要有一个因数是偶数，积就是<b>偶数</b>；<br>
+          想得到奇数，<b>每个因数都必须是奇数</b>。
+        </p>
+        <ul class="u-list">
+          <li>奇 × 奇 ＝ 奇</li>
+          <li>奇 × 偶 ＝ 偶　·　偶 × 偶 ＝ 偶</li>
+        </ul>
+        <p>
+          例：2 × 4 × 8 × 10 × 12 里有偶数 2 → 积是偶数。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-o" style="font-size:17px;font-weight:900">奇偶</span>判断小工具</h4>
+        <ul class="n-list">
+          <li><b>只看个位</b>：个位 1、3、5、7、9 → 奇数；0、2、4、6、8 → 偶数。别忘 <b>0 是偶数</b>。</li>
+          <li>大算式：先圈出<b>每一个奇数</b>，奇数个数定奇偶。</li>
+          <li>一连串数（1、2、3…）：奇偶是<b>奇、偶、奇、偶</b>循环的。</li>
+          <li>数列规律：把奇偶写成“偶、奇、奇”这样的短串，找周期最方便。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 题目 ========== -->
+  <section class="sec" id="practice">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>开始闯关</h2>
+      <span class="sec-sub">先自己认真做 → 想不出点“小提示” → 最后才看“完整解法”</span>
+    </div>
+    <div class="rule"></div>
+    <div id="questionList"></div>
+  </section>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" id="resetBtn">清空进度与草稿，重新做一遍</button>
+  </div>
+</main>
+
+<footer>
+  奥数 · 举一反三 — 奇偶性的判断（练习三）　|　离线可用，孩子的草稿保存在本机浏览器里<br>
+  给爸爸妈妈：12 题中第 1~3 题一星、第 4~8 题二星、第 9~12 题三星；二星与三星属于“举一反三”题型。<br>
+  <span class="heart">♥</span> Made for a curious little math explorer
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   题库数据：以后出“练习三”时，复制本文件，替换下面的 QS 数组即可。
+   字段说明：
+     lv   : 星级（1/2/3）
+     text : 题干（可加 <b></b> 圈重点）
+     hint : 第一层小提示
+     hint2: 第二层提示（可选，只有再点“再给一点点提示”才显示）
+     steps: 完整解法 [{t:小标题, d:讲解，可用 <br> 与 <div class="eq">}]
+     fig  : 配图（可选，写 HTML）
+     ans  : 完整答案句（答案数字包在 <span class="ans-num"> 里会标蓝加粗）
+     check: 验算小尾巴（可选）
+     note : 小提醒（可选）
+===================================================================== */
+var SUBJECT = "奇偶性的判断";
+
+var QS = [
+  {
+    id:1, lv:1,
+    text:"按要求填空。<br>（1）和为奇数：265 + 47□，□里可填的数字有（　　）。<br>（2）差为偶数：26□ − 163，□里可填的数字有（　　）。<br>（3）积为奇数：455 × 47□，□里可填的数字有（　　）。",
+    hint:"每个数只看个位就能判断奇偶。然后套口诀：加减想得奇数要“一奇一偶”；乘积想得奇数要“两个因数都是奇数”。",
+    hint2:"（1）265 是奇数，和要奇数 → 47□ 必须是偶数，□ 填 0、2、4、6、8；（2）26□ − 163 差为偶 → 26□ 要和 163 同奇偶（同为奇数），□ 填 1、3、5、7、9；（3）455 × 47□ 积为奇 → 两个因数都得是奇数，□ 填 1、3、5、7、9。",
+    steps:[
+      {t:"先看三个已知数",d:"265 个位 5 → 奇数；163 个位 3 → 奇数；455 个位 5 → 奇数。"},
+      {t:"（1）和为奇数",d:"奇 ＋ 奇 ＝ 偶，所以想得奇数必须是“奇 ＋ 偶”。265 是奇数，47□ 就要是<b>偶数</b>：<div class=\"eq\">□ ＝ 0、2、4、6、8</div>"},
+      {t:"（2）差为偶数",d:"同奇偶相减得偶数。163 是奇数，26□ 也要是<b>奇数</b>：<div class=\"eq\">□ ＝ 1、3、5、7、9</div>"},
+      {t:"（3）积为奇数",d:"乘法里有一个偶数，积就是偶数。想积为奇数，两个因数都得是奇数。455 是奇数，47□ 也必须是<b>奇数</b>：<div class=\"eq\">□ ＝ 1、3、5、7、9</div>"}
+    ],
+    ans:"（1）<span class=\"ans-num\">0、2、4、6、8</span>；（2）<span class=\"ans-num\">1、3、5、7、9</span>；（3）<span class=\"ans-num\">1、3、5、7、9</span>。",
+    check:"验算：（1）265 + 478 = 743（奇）✓；（2）263 − 163 = 100（偶）✓；（3）455 × 473 = 215215（奇）✓。",
+    note:"判断一个数的奇偶，只要看个位：个位是 1、3、5、7、9 是奇数；个位是 0、2、4、6、8 是偶数。"
+  },
+  {
+    id:2, lv:1,
+    text:"现有 12 张卡片，每张卡片上面都写着一个数字。其中 3 张写着数字 3，3 张写着数字 5，3 张写着数字 7，3 张写着数字 9。你能否从中选出 5 张卡片，使卡片上数字之和为 20？",
+    hint:"这 12 张卡片上的数全是奇数。想一想：选 5 张，就是 5 个奇数相加，结果是什么？20 又是什么数？",
+    steps:[
+      {t:"看选出的 5 个数",d:"卡片上的数 3、5、7、9 全都是<b>奇数</b>，选 5 张就是 5 个奇数相加。"},
+      {t:"判断奇偶",d:"奇数个奇数相加，和是奇数：<div class=\"eq\">5 个奇数相加 → 奇数</div>但 20 是<b>偶数</b>，不可能得到。"}
+    ],
+    ans:"不能。5 个奇数相加永远是奇数，不可能得到偶数 20。",
+    check:"验算：最小的 5 个奇数之和是 3+3+3+5+5 = 19（奇），最大的 5 个是 9×5 = 45（奇）——无论怎么选，和都是奇数。",
+    note:"记住：奇数的个数是奇数个 → 和是奇数；奇数的个数是偶数个 → 和是偶数。"
+  },
+  {
+    id:3, lv:1,
+    text:"算式 2 × 4 × 8 × 10 × 12 的积是奇数还是偶数？",
+    hint:"乘法口诀：只要有一个因数是偶数，积就是偶数。这个算式里有偶数吗？",
+    steps:[
+      {t:"找偶数因数",d:"2、4、8、10、12 全都是偶数，第一个因数 2 就是偶数。"},
+      {t:"下结论",d:"乘法中有一个偶数，积就是偶数：<div class=\"eq\">2 × 4 × 8 × 10 × 12 → 偶数</div>"}
+    ],
+    ans:"积是<span class=\"ans-num\">偶数</span>。",
+    check:"因为里面有因数 2，2 的倍数一定是偶数。",
+    note:"“见偶必偶”——只要因数里有偶数，不用算也能立刻知道积是偶数。"
+  },
+  {
+    id:4, lv:2,
+    text:"两个自然数的和是奇数，那么这两个数的积是奇数还是偶数？",
+    hint:"和为奇数说明什么？两个数是一奇一偶。那一奇一偶相乘，积是什么数？",
+    steps:[
+      {t:"从“和是奇数”反推",d:"奇 ＋ 偶 ＝ 奇，所以这两个自然数一个奇数、一个偶数。"},
+      {t:"看积",d:"奇 × 偶 ＝ 偶（因为里面有偶数）：<div class=\"eq\">积是偶数</div>"}
+    ],
+    ans:"这两个数的积是<span class=\"ans-num\">偶数</span>。",
+    check:"举例：1 + 2 = 3（奇），1 × 2 = 2（偶）✓。",
+    note:"反过来也成立：两个数一奇一偶，和是奇数、积是偶数。"
+  },
+  {
+    id:5, lv:2,
+    text:"1、22、333、4444、55555、666666、777777 这 7 个数的和是奇数还是偶数？",
+    hint:"【小提示】奇数个奇数相加，结果是奇数；偶数个奇数相加，结果是偶数。先数数这串数里有几个奇数。",
+    hint2:"是奇数的有 1、333、55555、777777，一共 4 个（偶数个）→ 4 个奇数相加是偶数；22、4444、666666 是偶数不影响结果。",
+    steps:[
+      {t:"数出其中的奇数",d:"个位看奇偶：1（奇）、22（偶）、333（奇）、4444（偶）、55555（奇）、666666（偶）、777777（奇）。奇数有 4 个。"},
+      {t:"判断",d:"4 是偶数 → 偶数个奇数相加，和是<b>偶数</b>；偶数相加也不改变奇偶。<div class=\"eq\">和是偶数</div>"}
+    ],
+    ans:"这 7 个数的和是<span class=\"ans-num\">偶数</span>。",
+    check:"验算个位和：1 + 2 + 3 + 4 + 5 + 6 + 7 = 28（偶）✓。",
+    note:"多个数相加，偶数完全“不捣乱”，只要数清有几个奇数就够了。"
+  },
+  {
+    id:6, lv:2,
+    text:"在 20 ~ 300 中，所有 3 的倍数的和是奇数还是偶数？",
+    hint:"【小提示】找出 20 ~ 300 中所有 3 的倍数中有多少个奇数。想一想：3 × 奇数 ＝ 奇数，3 × 偶数 ＝ 偶数。",
+    hint2:"20 之后第一个 3 的倍数是 21（3×7），300 是最后一个（3×100）。所以看 3×k，k 从 7 到 100；k 是奇数时乘积才是奇数：7、9、…、99 一共有 (99 − 7) ÷ 2 + 1 = 47 个。47 是奇数个 → 和为奇数。",
+    steps:[
+      {t:"改写：找“3×k”里 k 的奇偶",d:"3 的倍数都长这样：3×7＝21、3×8＝24、3×9＝27……最后一个 3×100＝300。k 是奇数 → 积是奇数。"},
+      {t:"数 k＝7 到 100 里奇数的个数",d:"奇数 k：7、9、11、…、99。<div class=\"eq\">(99 − 7) ÷ 2 ＋ 1 ＝ 47（个）</div>"},
+      {t:"判断",d:"47 是<b>奇数</b>个，奇数个奇数相加：<div class=\"eq\">和是奇数</div>"}
+    ],
+    ans:"20 ~ 300 中所有 3 的倍数的和是<span class=\"ans-num\">奇数</span>。",
+    check:"也可以这样想：3 的倍数在 21、24、27…300 之间“奇、偶、奇、偶”交替，共 94 个，其中奇数 47 个 → 奇数和是奇数。",
+    note:"关键不是“3 的倍数有多少个”，而是这些倍数里奇数有多少个。"
+  },
+  {
+    id:7, lv:2,
+    text:"算式 1 × 2 × 3 × 4 × 5 × … × 98 × 99 × 1000 的积是奇数还是偶数？",
+    hint:"【小提示】多个自然数相乘，只要其中有一个偶数，结果就为偶数。这个长算式里有没有偶数？",
+    steps:[
+      {t:"找一找因数里的偶数",d:"从 1 乘到 1000，因数里明明有 2、4、6……1000 一大堆偶数。"},
+      {t:"下结论",d:"只要有一个因数是偶数，积就是偶数：<div class=\"eq\">积是偶数</div>"}
+    ],
+    ans:"积是<span class=\"ans-num\">偶数</span>。",
+    check:"别被长长的算式吓到——里面有 1000 这样的偶数，答案立刻出来。",
+    note:"这道题考的就是“见偶必偶”。"
+  },
+  {
+    id:8, lv:2,
+    text:"算式 1 ＋ 2×3 ＋ 4×5 ＋ 6×7 ＋ … ＋ 96×97 的结果是奇数还是偶数？",
+    hint:"【小提示】先判断各个乘法算式的结果的奇偶性，再判断连加算式的结果的奇偶性。每项都是“偶数 × 奇数”。",
+    hint2:"2×3、4×5、…、96×97 每项都是 偶×奇 ＝ 偶，共 48 个偶数相加得偶数；再加上最前面的 1（奇数）→ 偶 ＋ 奇 ＝ 奇。",
+    steps:[
+      {t:"看每一项",d:"从 2×3 开始，每项都是（偶数）×（奇数）＝ <b>偶数</b>。一共有 2、4、…、96 共 48 项。"},
+      {t:"先加乘法部分",d:"48 个偶数相加：<div class=\"eq\">偶 ＋ 偶 ＋ … ＋ 偶 ＝ 偶数</div>"},
+      {t:"别忘了开头的 1",d:"整个算式最前面还有一个单独的 1（奇数）：<div class=\"eq\">偶数 ＋ 1 ＝ 奇数</div>"}
+    ],
+    ans:"结果是<span class=\"ans-num\">奇数</span>。",
+    check:"分块想：后面一堆乘法全是偶数，加起来是偶；偶再加奇数 1 → 奇 ✓。",
+    note:"小题藏在前面：开头的“1 ＋”别漏掉。"
+  },
+  {
+    id:9, lv:3,
+    text:"算式 1＋2＋3＋…＋99＋100＋101＋99＋98＋…＋3＋2＋1 的和是奇数还是偶数？",
+    hint:"别急着算总和，先数一数：这串数里一共有多少个奇数？（1、3、5…99、101 都要算进去，后面 99、97…1 也有哦）",
+    hint2:"前半段 1~100 里有 50 个奇数，再加上 101 是 1 个，后半段 99~1 里又有 50 个奇数。一共 50＋1＋50＝101 个奇数 → 奇数个奇数相加 → 和是奇数。",
+    steps:[
+      {t:"分段数奇数",d:"1＋2＋…＋100 里有 50 个奇数；再加一个 101（奇数）；后面 99＋98＋…＋1 里有 50 个奇数。<div class=\"eq\">50 ＋ 1 ＋ 50 ＝ 101（个）</div>"},
+      {t:"下结论",d:"101 是奇数 → <b>奇数个</b>奇数相加：<div class=\"eq\">和是奇数</div>"}
+    ],
+    ans:"这个长算式的和是<span class=\"ans-num\">奇数</span>。",
+    check:"实际和：1~100 是 5050，加 101 得 5151，再加 1~99 的和 4950，一共 10101 → 奇数 ✓。",
+    note:"10101 正好说明：光“数奇数个数”就能判断，不必真的把和算出来。"
+  },
+  {
+    id:10, lv:3,
+    text:"a、b、c 三个数的和与它们的积的和为奇数，这三个数中最多有几个奇数？",
+    hint:"意思是：(a＋b＋c) ＋ (a×b×c) 是奇数。把“奇数个数”分成 0、1、2、3 四种情况，每种都算一算，看看哪种能得奇数。",
+    hint2:"0 个或 2 个奇数：和是偶，积里有一个偶数所以积也是偶 → 偶＋偶＝偶，不行；3 个奇数：和是奇、积是奇 → 奇＋奇＝偶，也不行；只有 1 个奇数：和是奇、积是偶（另外有偶数）→ 奇＋偶＝奇 ✓。所以最多 1 个。",
+    steps:[
+      {t:"列四种情况",d:"三个数里奇数可能有 0、1、2、3 个。"},
+      {t:"逐个检查（和 与 积）",d:"<div class=\"eq small\">0 个或 2 个奇数：和偶，积偶 → 偶＋偶＝偶 ✗</div><div class=\"eq small\">3 个奇数：和奇，积奇 → 奇＋奇＝偶 ✗</div><div class=\"eq\">1 个奇数：和奇，积偶 → 奇＋偶＝奇 ✓</div>"}
+    ],
+    ans:"最多有 <span class=\"ans-num\">1</span> 个奇数（也就是只能恰好一个奇数）。",
+    check:"举例：1、2、4 → 和 7（奇），积 8（偶），7＋8＝15（奇）✓。",
+    note:"“和与积的和为奇数”要同时看两边：和是奇时积必须偶；和是偶时积必须奇——逐个检查最稳。"
+  },
+  {
+    id:11, lv:3,
+    text:"一个偶数分别和与其相邻的两个奇数相乘，所得的两个积相差 80。这三个数的和是多少？",
+    hint:"把偶数夹在两个相邻奇数中间：奇数（小一点）、偶数、奇数（大一点）。两次乘法都乘同一个偶数，另一个乘数相差多少？",
+    hint2:"两次另一个乘数相差 2（比如 39 和 41），都乘同一个偶数，所以两个积的差 = 这个偶数 × 2 = 80 → 偶数是 40，三个数 39、40、41，和是 120。",
+    steps:[
+      {t:"把三个数排一排",d:"偶数 n 的相邻奇数是 n−1 和 n＋1，比如：39、40、41。"},
+      {t:"看两次乘法",d:"n × (n−1) 与 n × (n＋1)，两次都乘同一个 n，另一个因数相差 2：<div class=\"eq\">两个积相差 ＝ n × 2</div>"},
+      {t:"求偶数 n",d:"<div class=\"eq\">n × 2 ＝ 80 → n ＝ 40</div>三个数就是 39、40、41。"},
+      {t:"求和",d:"<div class=\"eq\">39 ＋ 40 ＋ 41 ＝ 120</div>"}
+    ],
+    ans:"这三个数是 39、40、41，和是 <span class=\"ans-num\">120</span>。",
+    check:"验算：40 × 41 − 40 × 39 ＝ 1640 − 1560 ＝ 80 ✓。",
+    note:"“相邻的两个奇数”一个比偶数小 1、一个比它大 1，两个乘数相差 2——这是解题的小钥匙。"
+  },
+  {
+    id:12, lv:3,
+    text:"已知 a、b、c 是三个连续的自然数，其中 a 是偶数。小浩说：“那么 a＋1、b＋2、c＋3 这三个数的积一定是奇数。”小艾说：“不对，a＋1、b＋2、c＋3 这三个数的积是偶数。”谁的说法正确？",
+    hint:"三个连续自然数 a、b、c，a 是偶数 → 奇偶排列是 偶、奇、偶。分别算一算 a＋1、b＋2、c＋3 的奇偶，再看三个数相乘。",
+    hint2:"a＋1：偶＋1 → 奇；b＋2：奇＋偶 → 奇；c＋3：偶＋奇 → 奇。三个都是奇数 → 积是奇数 → 小浩对。",
+    steps:[
+      {t:"先排奇偶",d:"a、b、c 连续且 a 是偶数：<div class=\"eq\">a 偶，b 奇，c 偶</div>"},
+      {t:"算三个新数",d:"<div class=\"eq small\">a＋1：偶＋奇 ＝ 奇</div><div class=\"eq small\">b＋2：奇＋偶 ＝ 奇</div><div class=\"eq small\">c＋3：偶＋奇 ＝ 奇</div>"},
+      {t:"三奇相乘",d:"奇 × 奇 × 奇 ＝ <b>奇数</b>：<div class=\"eq\">积是奇数</div>"}
+    ],
+    ans:"小浩的说法正确：a＋1、b＋2、c＋3 的积是<span class=\"ans-num\">奇数</span>（小艾说错了）。",
+    check:"举例：a＝2，b＝3，c＝4 → 3、5、7 都是奇数，3×5×7＝105（奇）✓。",
+    note:"加 1、加 2、加 3 会改变奇偶吗？记住：加偶数不改变奇偶，加奇数会翻转奇偶。"
+  }
+];
+
+
+/* ===================== 界面逻辑 ===================== */
+var LEVELS = {
+  1:{name:"一星 · 热身", chip:"基础起步", cls:"l1", intro:"热身三题：记住加减数奇数个数、乘法见偶必偶，就能拿下。"},
+  2:{name:"二星 · 闯关", chip:"举一反三", cls:"l2", intro:"闯关：把每个数的奇偶先圈出来，再一串串判断，就能一路顺下去。"},
+  3:{name:"三星 · 挑战", chip:"举一反三", cls:"l3", intro:"挑战：学会把大算式化成“几个奇数相加/相乘”，奇偶性一眼看穿。"}
+};
+
+function $(id){return document.getElementById(id);}
+
+/* localStorage 安全封装（某些环境可能禁止） */
+var store = {
+  get:function(k,d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+var DONE_KEY = "jfys_parity_done";
+var NAME_KEY = "jfys_parity_name";
+var TA_PREFIX = "ta_parity_";
+
+function starsHtml(n){
+  var out = "";
+  for(var i=1;i<=3;i++){ out += (i<=n ? "★" : "<i>☆</i>"); }
+  return '<span class="stars">'+out+'</span>';
+}
+
+function stepsHtml(steps){
+  var h = "";
+  for(var i=0;i<steps.length;i++){
+    h += '<div class="step"><span class="step-no">'+(i+1)+'</span>'+'<div class="step-t">'+steps[i].t+'</div>'+'<div class="step-d">'+steps[i].d+'</div></div>';
+  }
+  return h;
+}
+
+function buildQuestion(q){
+  var lv = LEVELS[q.lv];
+  var html = '<article class="card lv'+q.lv+'" id="card-'+q.id+'" data-id="'+q.id+'">'+
+    '<div class="card-head">'+
+      '<span class="q-no">第 '+q.id+' 题</span>'+starsHtml(q.lv)+
+      '<span class="lvl-tag">'+lv.name+' · '+lv.chip+'</span>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="done-chip" data-act="done" data-q="'+q.id+'">我做出来啦！</button>'+
+    '</div>'+
+    '<div class="q-text">'+q.text+'</div>'+
+    '<div class="think"><label for="ta-'+q.id+'">✎ 我的小练习本（写写算式和想法，会帮你保存在本机）</label>'+
+    '<textarea id="ta-'+q.id+'" placeholder="例如：30 + 40 = 70（千米/时）……"></textarea></div>'+
+    '<div class="actions">'+
+      '<button type="button" class="btn btn-hint" data-act="hint" data-q="'+q.id+'">💡 小提示</button>'+
+      '<button type="button" class="btn btn-sol" data-act="sol" data-q="'+q.id+'">📖 看完整解法</button>'+
+    '</div>'+
+    '<div class="hint-box" data-hintbox="'+q.id+'">'+
+      '<div class="h-tag">小提示</div>'+
+      '<p class="hint1">'+q.hint+'</p>'+
+      (q.hint2 ? '<p class="hint2">'+q.hint2+'</p><button type="button" class="morehint" data-act="morehint" data-q="'+q.id+'">再给一点点提示 →</button>' : '')+
+    '</div>'+
+    '<div class="sol" data-sol="'+q.id+'">'+
+      '<div class="sol-head">完整解法 · 一步一步跟我走</div>'+
+      stepsHtml(q.steps)+
+      (q.fig||'')+
+      '<div class="ans"><span class="ans-label">答 案</span><p>'+q.ans+'</p>'+
+      (q.check ? '<p class="check">'+q.check+'</p>' : '')+'</div>'+
+      (q.note ? '<div class="note"><span class="note-tag">小提醒</span>'+q.note+'</div>' : '')+
+    '</div></article>';
+  return html;
+}
+
+function buildLevels(){
+  var cont = $("questionList");
+  var html = "";
+  var order = [1,2,3];
+  for(var li=0; li<order.length; li++){
+    var lv = order[li];
+    var info = LEVELS[lv];
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    html += '<div class="lvl" id="level-'+lv+'">'+
+      '<div class="lvl-head">'+
+        '<h3 class="lvl-name">'+info.name+'</h3>'+
+        '<span class="lv-chip '+info.cls+'">'+info.chip+'</span>'+
+        '<span class="lvl-count" id="lc-'+lv+'">已完成 0/'+cards.length+'</span>'+
+      '</div>'+
+      '<p class="lvl-intro">'+info.intro+'</p>'+
+      '<div>'+cards.map(buildQuestion).join("")+'</div>'+
+    '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---- 进度 ----
+   每完成一题，按星级点亮星星（一星1颗、二星2颗、三星3颗）
+   一共：3×1 + 5×2 + 4×3 = 25 颗 */
+var MAX_STAR = QS.reduce(function(s,q){return s+q.lv;},0);
+
+function getDone(){ return JSON.parse(store.get(DONE_KEY,"[]")||"[]"); }
+function saveDone(list){ store.set(DONE_KEY,JSON.stringify(list)); }
+
+function renderProgress(){
+  var done = getDone();
+  var set = {};
+  done.forEach(function(id){set[id]=true;});
+  var total = QS.length;
+  var dcount = done.length;
+  var stars = 0;
+  QS.forEach(function(q){ if(set[q.id]) stars += q.lv; });
+
+  $("doneText").textContent = dcount + " / " + total;
+  $("starText").textContent = "★ " + stars + " / " + MAX_STAR;
+  $("pbarFill").style.width = (total ? Math.round(dcount/total*100) : 0) + "%";
+
+  /* 每级计数 */
+  [1,2,3].forEach(function(lv){
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    var c = cards.filter(function(q){return set[q.id];}).length;
+    var el = $("lc-"+lv);
+    if(el) el.textContent = "已完成 " + c + "/" + cards.length;
+  });
+
+  /* 卡片状态 */
+  QS.forEach(function(q){
+    var card = $("card-"+q.id);
+    if(!card) return;
+    var chip = card.querySelector(".done-chip");
+    if(set[q.id]){
+      card.classList.add("done");
+      chip.textContent = "✓ 完成啦，真棒";
+    }else{
+      card.classList.remove("done");
+      chip.textContent = "我做出来啦！";
+    }
+  });
+
+  /* 通关横幅 */
+  $("winBanner").classList.toggle("show", total>0 && dcount===total);
+
+  /* 问候语 */
+  var name = store.get(NAME_KEY,"").trim();
+  if(name){
+    $("greetLine").innerHTML = "<b>"+name+"</b>，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }else{
+    $("greetLine").textContent = "小朋友，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }
+}
+
+/* 事件：点击题目卡里的按钮 */
+$("questionList").addEventListener("click", function(ev){
+  var btn = ev.target.closest("button[data-act]");
+  if(!btn) return;
+  var id = +btn.getAttribute("data-q");
+  var act = btn.getAttribute("data-act");
+  var card = $("card-"+id);
+  if(!card) return;
+
+  if(act==="hint"){
+    var hb = card.querySelector(".hint-box");
+    var open = hb.classList.toggle("on");
+    btn.classList.toggle("open", open);
+    btn.textContent = open ? "收起提示" : "💡 小提示";
+    if(open){
+      var more = hb.querySelector(".morehint");
+      var h2 = hb.querySelector(".hint2");
+      if(more) more.style.display = "";
+      if(h2 && h2.classList.contains("show")) h2.style.display = "";
+    }
+  }
+  if(act==="morehint"){
+    var hb2 = card.querySelector(".hint-box");
+    var h22 = hb2.querySelector(".hint2");
+    if(h22){ h22.classList.add("show"); h22.style.display = "block"; }
+    btn.style.display = "none";
+  }
+  if(act==="sol"){
+    var sb = card.querySelector(".sol");
+    var open2 = sb.classList.toggle("on");
+    btn.classList.toggle("open", open2);
+    btn.textContent = open2 ? "收起解法" : "📖 看完整解法";
+  }
+  if(act==="done"){
+    var list = getDone();
+    var idx = list.indexOf(id);
+    if(idx>=0){ list.splice(idx,1); }
+    else{ list.push(id); }
+    saveDone(list);
+    renderProgress();
+  }
+});
+
+/* 草稿自动保存 */
+$("questionList").addEventListener("input", function(ev){
+  if(ev.target && ev.target.id && ev.target.id.indexOf("ta-")===0){
+    store.set(TA_PREFIX + ev.target.id, ev.target.value);
+  }
+});
+
+/* 名字 */
+var nameEl = $("nameIn");
+nameEl.value = store.get(NAME_KEY,"");
+nameEl.addEventListener("input", function(){
+  store.set(NAME_KEY, nameEl.value);
+  renderProgress();
+});
+
+/* 重新开始 */
+$("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要清空进度、名字和所有草稿吗？")) return;
+  saveDone([]);
+  store.del(NAME_KEY);
+  QS.forEach(function(q){ store.del(TA_PREFIX+"ta-"+q.id); $("ta-"+q.id).value=""; });
+  nameEl.value = "";
+  /* 收起所有展开的提示/解法 */
+  document.querySelectorAll(".hint-box.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".hint2.show").forEach(function(b){ b.classList.remove("show"); b.style.display=""; });
+  document.querySelectorAll(".btn-hint.open").forEach(function(b){ b.classList.remove("open"); b.textContent="💡 小提示"; });
+  document.querySelectorAll(".sol.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".btn-sol.open").forEach(function(b){ b.classList.remove("open"); b.textContent="📖 看完整解法"; });
+  renderProgress();
+});
+
+/* 日期 */
+(function(){
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"];
+  $("dateChip").textContent = (d.getMonth()+1) + "月" + d.getDate() + "日 · 周" + wd[d.getDay()];
+})();
+
+/* 恢复草稿 + 初始渲染 */
+QS.forEach(function(q){
+  var el = $("ta-"+q.id);
+  if(el) el.value = store.get(TA_PREFIX+"ta-"+q.id,"");
+});
+buildLevels();
+renderProgress();
+</script>
+</body>
+</html>
+

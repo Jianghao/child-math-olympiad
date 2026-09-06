@@ -268,6 +268,28 @@ var SETS = [
     icon:"meet",
     ac:"#F06B3C",
     soft:"#FFEBDD"
+  },
+  {
+    no:"练习三",
+    file:"练习三-奇偶性的判断.html",
+    title:"奇偶性的判断",
+    tag:"数与代数 · 奇偶性质",
+    desc:"看个位断奇偶：加减数一数奇数个数、乘法见偶必偶——一套口诀判断奇偶性。",
+    lv:{1:3, 2:5, 3:4},
+    icon:"parity",
+    ac:"#3A8FE0",
+    soft:"#E9EEFF"
+  },
+  {
+    no:"练习四",
+    file:"练习四-奇偶性的应用.html",
+    title:"奇偶性的应用",
+    tag:"奇偶应用 · 相邻交换与传递",
+    desc:"黑白染色、奇偶次数、数列循环——用奇偶性当小侦探，找规律、断是非。",
+    lv:{1:2, 2:3, 3:3},
+    icon:"swap",
+    ac:"#8A5CF6",
+    soft:"#F0EAFF"
   }
 ];
 
@@ -299,6 +321,19 @@ function iconSvg(icon, color){
       '<polygon points="24,11 36,20 24,29" fill="'+c+'"/>'+
       '<line x1="42" y1="30" x2="20" y2="30" stroke="'+c+'" stroke-width="6" stroke-linecap="round"/>'+
       '<polygon points="24,21 12,30 24,39" fill="'+c+'"/></svg>';
+  }
+  if(icon === "parity"){
+    return '<svg viewBox="0 0 48 48" fill="none">'+
+      '<circle cx="16" cy="19" r="6" fill="'+c+'"/>'+
+      '<circle cx="32" cy="19" r="6" fill="'+c+'"/>'+
+      '<circle cx="24" cy="33" r="6" stroke="'+c+'" stroke-width="3"/></svg>';
+  }
+  if(icon === "swap"){
+    return '<svg viewBox="0 0 48 48" fill="none">'+
+      '<line x1="13" y1="35" x2="35" y2="15" stroke="'+c+'" stroke-width="5" stroke-linecap="round"/>'+
+      '<polygon points="36,10 39,21 29,16" fill="'+c+'"/>'+
+      '<line x1="35" y1="35" x2="13" y2="15" stroke="'+c+'" stroke-width="5" stroke-linecap="round"/>'+
+      '<polygon points="12,10 9,21 19,16" fill="'+c+'"/></svg>';
   }
   return "";
 }
