@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>奥数 · 举一反三 — 过河问题（练习九）</title>
+<style>
+  :root{
+    --paper:#FFF6E6;
+    --card:#FFFFFF;
+    --ink:#2B2B33;
+    --mut:#8B8274;
+    --line:#EFE4CE;
+    --sun:#FFC53D;
+    --sun-soft:#FFF4D0;
+    --brand:#3553D6;
+    --brand-deep:#1F2E74;
+    --green:#1FA37F;
+    --blue:#3A8FE0;
+    --orange:#F06B3C;
+    --red:#D6452A;
+    --amber:#E09A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(31,46,116,.07) 1px,transparent 1.3px);
+    background-size:22px 22px;
+    line-height:1.75;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  button{font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none}
+  textarea{font-family:inherit}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--brand-deep);
+    color:#fff;
+    padding:22px 0 66px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topline{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+  .flag{display:inline-flex;align-items:center;gap:8px}
+  .flag::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .hero-in{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+    padding:34px 0 16px;
+  }
+  h1{
+    font-size:clamp(42px,7vw,66px);font-weight:900;letter-spacing:.02em;line-height:1.08;
+    margin:0;
+  }
+  .zh-yellow{color:var(--sun)}
+  .hero-sub{
+    margin-top:14px;font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);
+    line-height:1.9;max-width:600px;
+  }
+  .hero-sub b{color:var(--sun);font-weight:700}
+  .hero-art{text-align:center}
+  .hero-art svg{width:min(300px,52vw);height:auto;display:block;margin:0 auto}
+  .road-strip{
+    position:absolute;left:0;right:0;bottom:0;height:34px;
+    background:rgba(11,18,58,.42);
+  }
+  .road-strip::before{
+    content:"";position:absolute;left:0;right:0;top:15px;height:4px;
+    background:repeating-linear-gradient(to right,rgba(255,197,61,.95) 0 26px,transparent 26px 52px);
+  }
+  .cone{position:absolute;bottom:-6px;color:var(--sun)}
+  .cone.c1{left:10%}
+  .cone.c2{left:88%}
+
+  /* ============ WELCOME / PROGRESS ============ */
+  .welcome{
+    background:#fff;border:1px solid #F3EAD8;border-radius:20px;
+    box-shadow:0 12px 30px rgba(31,46,116,.12);
+    margin-top:-34px;padding:18px 22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .greet{font-size:13px;color:var(--mut)}
+  .greet b{color:var(--brand-deep);font-size:16px}
+  .name-in{
+    border:1.5px dashed #D9CBA9;border-radius:10px;padding:4px 10px;font-size:15px;
+    width:170px;background:#FFFDF6;outline:none;color:var(--ink);
+  }
+  .name-in:focus{border-color:var(--brand)}
+  .wel-right{min-width:250px}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+  .pmeta .star-count{color:#D98E04;font-weight:700}
+  .pbar{height:12px;background:#EFE8D8;border-radius:999px;overflow:hidden}
+  .pbar-fill{height:100%;width:0;background:var(--brand);border-radius:999px;transition:width .5s ease}
+  .win-banner{
+    margin-top:18px;display:none;align-items:center;gap:12px;
+    background:#FFF2CB;border:1.5px solid #F2D68A;color:#6B4B00;
+    border-radius:16px;padding:14px 18px;font-size:16px;font-weight:700;
+  }
+  .win-banner.show{display:flex;animation:pop .4s ease}
+  .win-banner svg{flex:none}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* ============ SECTIONS ============ */
+  .sec{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .sec-no{
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;
+    background:var(--brand-deep);border-radius:8px;padding:3px 9px;
+    align-self:center;
+  }
+  .sec-head h2{font-size:clamp(22px,3.4vw,28px);font-weight:900}
+  .sec-head .sec-sub{color:var(--mut);font-size:14px}
+  .rule{height:1px;background:var(--line);margin:12px 0 20px}
+
+  /* ============ LESSON ============ */
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .lcard{
+    background:#fff;border:1px solid #F1E6D0;border-radius:18px;padding:20px 20px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .lcard h4{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .ic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .ic.ic-b{background:#E9EEFF;color:var(--brand)}
+  .ic.ic-g{background:#E1F6EF;color:var(--green)}
+  .ic.ic-o{background:#FFEBDD;color:var(--orange)}
+  .lcard p{font-size:14.5px;color:#4A4439}
+  .lcard p b{color:var(--ink)}
+  .tri{margin:8px auto 2px;text-align:center}
+  .pill{
+    display:inline-block;border-radius:12px;padding:5px 18px;margin:3px;
+    font-weight:800;font-size:16px;color:#fff;
+  }
+  .pill.top{background:var(--brand)}
+  .pill.l{background:var(--green)}
+  .pill.r{background:var(--orange)}
+  .tri .op{font-size:20px;font-weight:900;color:var(--mut);padding:0 6px}
+  .tri-cap{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .u-list,.n-list{list-style:none;font-size:14px;color:#4A4439}
+  .u-list li,.n-list li{padding:5px 0;border-bottom:1px dashed #F0E5D0}
+  .u-list li:last-child,.n-list li:last-child{border-bottom:none}
+  .u-chip{
+    display:inline-block;background:#F1F5FF;color:var(--brand);
+    border-radius:8px;padding:1px 8px;font-weight:700;font-size:13.5px;margin:1px 0;
+  }
+  .n-list b{color:var(--orange)}
+
+  /* ============ PRACTICE LEVEL ============ */
+  .lvl{margin-top:36px}
+  .lvl-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .lvl-name{font-size:20px;font-weight:900;margin-right:2px}
+  .lv-chip{
+    font-size:12px;font-weight:800;color:#fff;border-radius:999px;
+    padding:2px 11px;letter-spacing:.05em;
+  }
+  .lv-chip.l1{background:var(--green)}
+  .lv-chip.l2{background:var(--blue)}
+  .lv-chip.l3{background:var(--orange)}
+  .lvl-count{margin-left:auto;font-size:13px;color:var(--mut);font-weight:700}
+  .lvl-intro{font-size:14px;color:var(--mut);margin:4px 0 2px 2px}
+
+  /* ============ QUESTION CARD ============ */
+  .card{
+    background:#fff;border:1px solid #F1E6D0;border-top:6px solid #ddd;
+    border-radius:18px;padding:20px 22px 22px;margin-top:18px;
+    box-shadow:0 6px 18px rgba(31,46,116,.05);
+    transition:box-shadow .2s ease;
+  }
+  .card.lv1{border-top-color:var(--green)}
+  .card.lv2{border-top-color:var(--blue)}
+  .card.lv3{border-top-color:var(--orange)}
+  .card.done{background:#FDFFFC}
+  .card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .q-no{
+    font-size:15px;font-weight:900;color:var(--brand-deep);
+    background:#EEF1FF;border-radius:10px;padding:3px 12px;
+  }
+  .stars{color:var(--sun);font-size:17px;letter-spacing:2px}
+  .stars i{color:#E9DCBC;font-style:normal}
+  .spacer{flex:1}
+  .lvl-tag{font-size:12px;color:var(--mut);font-weight:700}
+  .done-chip{
+    border:1.5px solid #E2D9C4;background:#FFFDF7;color:#A89B82;
+    border-radius:999px;padding:4px 13px;font-size:13px;font-weight:800;
+  }
+  .done-chip:hover{border-color:#BFD9CB;color:var(--green)}
+  .card.done .done-chip{background:#E2F6EC;border-color:#B7E3CF;color:#0F8A5F}
+  .q-text{
+    background:#FBF5E6;border:1px solid #F1E7CE;border-radius:14px;
+    padding:15px 17px;margin-top:14px;font-size:16.5px;line-height:1.95;
+  }
+  .q-text b{font-weight:800;color:var(--brand-deep);border-bottom:2px solid var(--sun)}
+  .think{margin-top:12px}
+  .think label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:5px}
+  .think textarea{
+    width:100%;min-height:62px;resize:vertical;border:1.5px dashed #DFD3B8;
+    border-radius:12px;background:#FFFEF9;padding:9px 12px;font-size:15px;line-height:1.7;
+    color:var(--ink);outline:none;
+  }
+  .think textarea:focus{border-color:var(--brand)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:800;
+    border:1px solid transparent;transition:transform .08s ease,background .2s ease,color .2s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-hint{background:#FFF3D2;color:#8A5E00;border-color:#F0DDA2}
+  .btn-hint:hover{background:#FFE9A8}
+  .btn-hint.open{background:#FFD979}
+  .btn-sol{background:var(--brand);color:#fff}
+  .btn-sol:hover{background:#2A44C0}
+  .btn-sol.open{background:#E7ECFF;color:var(--brand);border-color:#C9D6FF}
+
+  .hint-box{display:none;margin-top:14px;background:#FFF9E6;border:1px solid #F2E2AC;
+    border-left:5px solid #EDB800;border-radius:12px;padding:12px 16px}
+  .hint-box.on{display:block;animation:fadein .25s ease}
+  .hint-box .h-tag{font-weight:900;color:#9A6E00;font-size:13.5px;margin-bottom:4px}
+  .hint1{font-size:15.5px}
+  .hint2{display:none;margin-top:10px;font-size:15px;color:#7A5A00;
+    border-top:1px dashed #EBD48F;padding-top:10px}
+  .hint2.show{display:block}
+  .morehint{
+    display:none;margin-top:10px;background:#fff;border:1px solid #E3CF8B;
+    color:#8A5E00;border-radius:999px;font-size:13px;font-weight:800;padding:4px 14px;
+  }
+  .hint-box.on .morehint{display:inline-block}
+  .morehint:hover{background:#FFEDBE}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  .sol{display:none;margin-top:16px}
+  .sol.on{display:block;animation:fadein .3s ease}
+  .sol-head{
+    display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;
+    color:var(--brand-deep);margin-bottom:12px;
+  }
+  .sol-head::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .step{
+    background:#F8FAFF;border:1px solid #E7ECFB;border-radius:14px;
+    padding:12px 16px 12px 50px;position:relative;margin-bottom:10px;
+  }
+  .step-no{
+    position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-t{font-weight:900;font-size:15px}
+  .step-d{font-size:14.5px;margin-top:3px;color:#3E3A32}
+  .eq{
+    margin:7px 0 2px;padding:7px 12px;background:#FFF3D2;border-left:4px solid var(--sun);
+    border-radius:8px;font-weight:800;font-size:16px;
+  }
+  .eq.small{font-weight:700;font-size:15px}
+  .fig{
+    background:#F7F2E6;border:1px dashed #E0D3B4;border-radius:14px;
+    padding:14px 16px;margin:14px 0 6px;
+  }
+  .fig-cap{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .rowcap{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-size:13px;color:#6B6355;margin:2px 0 6px;flex-wrap:wrap;
+  }
+  .rowcap em{font-style:normal;font-weight:800;color:var(--brand);background:#E7EDFF;
+    border-radius:999px;padding:1px 10px}
+  .rowcap sub{font-size:12px;color:var(--mut)}
+  .row{display:flex;gap:6px;margin-bottom:6px}
+  .seg{
+    flex:1;min-width:0;text-align:center;border-radius:10px;
+    padding:8px 2px 6px;font-weight:800;font-size:15px;line-height:1.25;
+  }
+  .seg i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.72;line-height:1.3;margin-top:3px}
+  .c-blue{background:#E9EFFF;color:#2B56C8}
+  .c-orange{background:#FFF0E2;color:#C55E18}
+  .c-gold{background:#FFF3CC;color:#B07C00}
+  .seg.stop{background:#ECEAE3;color:#8A8578}
+  .seg.late{outline:2px dashed var(--red);background:#FFE3D8;color:#C03A12}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+    font-weight:800;margin:10px 0 2px;
+  }
+  .fchip{background:#E9EFFF;color:#2B56C8;border-radius:10px;padding:6px 12px;font-size:14px}
+  .fchip.b{background:#FFF0E2;color:#C55E18}
+  .farrow{color:var(--mut);font-size:15px}
+  .fnote{font-size:12.5px;color:var(--mut);text-align:center;margin-top:4px}
+
+  .mapwrap{width:100%;margin:6px 0 2px}
+  .mapwrap svg{width:100%;height:auto;display:block}
+  .mapnote{font-size:12.5px;color:var(--mut);margin-top:4px;text-align:center}
+
+  .ans{
+    margin-top:14px;background:#F1F6FF;border:1.5px dashed var(--brand);
+    border-radius:14px;padding:13px 16px;
+  }
+  .ans-label{
+    display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    border-radius:999px;padding:1px 12px;margin-bottom:6px;letter-spacing:.1em;
+  }
+  .ans p{font-size:16px;font-weight:700}
+  .ans .ans-num{color:var(--brand);font-weight:900}
+  .check{margin-top:8px;font-size:13.5px;color:#5F584A;border-top:1px dashed #C9D7F5;padding-top:8px}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4F0;border:1px solid #FFDCD0;
+    border-radius:12px;padding:10px 14px;color:#7A4534}
+  .note-tag{font-weight:900;color:var(--orange);margin-right:6px}
+
+  .reset-wrap{text-align:center;margin:34px 0 6px}
+  .btn-reset{
+    background:transparent;border:1px dashed #C9BC9C;color:var(--mut);
+    border-radius:999px;padding:7px 18px;font-size:13px;
+  }
+  .btn-reset:hover{color:var(--red);border-color:var(--red);background:#FFF6F3}
+  footer{
+    text-align:center;color:#B3A98F;font-size:12px;line-height:2;
+    padding:30px 18px 40px;
+  }
+  footer .heart{color:var(--orange);font-weight:900}
+
+  @media (max-width:760px){
+    .hero-in{grid-template-columns:1fr;padding-top:22px}
+    .hero-art{display:none}
+    .welcome{flex-direction:column;align-items:flex-start}
+    .wel-right{width:100%}
+    .step{padding-left:44px}
+    .step-no{left:10px}
+    .q-no{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="flag">奥数 · 举一反三</span>
+      <span>过河问题 · 练习九 · <span id="dateChip"></span></span>
+    </div>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1>过河<span class="zh-yellow">问题</span></h1>
+        <p class="hero-sub">
+          小船不会自己回来，每送一趟都要有人<b>划回</b>；<br>
+          双人同船按慢的算，最快的当“摆渡人”，<br>
+          一次一次，全部过河。
+        </p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 260 210" role="img" aria-label="小船过河装饰图">
+          <circle cx="130" cy="96" r="92" fill="#FFC53D"/>
+          <path d="M50 150 q20 -14 40 0 q20 14 40 0 q20 -14 40 0" fill="none" stroke="#1F2E74" stroke-width="7" stroke-linecap="round"/>
+          <path d="M60 122 q40 -34 80 0" fill="none" stroke="#1F2E74" stroke-width="10" stroke-linecap="round"/>
+          <path d="M150 122 q40 -34 80 0" fill="none" stroke="#F06B3C" stroke-width="10" stroke-linecap="round"/>
+          <line x1="70" y1="96" x2="70" y2="118" stroke="#D6452A" stroke-width="8"/>
+          <polygon points="70,96 92,104 70,112" fill="#D6452A"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="road-strip">
+    <svg class="cone c1" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+    <svg class="cone c2" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="welcome">
+    <div class="wel-left">
+      <div class="greet" id="greetLine">小朋友，今天来闯过河问题题！</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="name-in" id="nameIn" maxlength="12" placeholder="写下你的名字（可选）" />
+        <span style="font-size:13px;color:var(--mut)">我的小练功房</span>
+      </div>
+    </div>
+    <div class="wel-right">
+      <div class="pmeta">
+        <span>通关进度 <b id="doneText">0 / 6</b></span>
+        <span class="star-count" id="starText">★ 0 / 12</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
+    </div>
+  </section>
+
+  <div class="win-banner" id="winBanner">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B47A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.4-6.3 4.4L8 13.8l-6-4.6h7.6z"/></svg>
+    <span>全部通关！你已经会安排船夫和顺序，让所有人顺利过河啦～</span>
+  </div>
+
+  <!-- ========== 知识点 ========== -->
+  <section class="sec" id="lesson">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>过河问题小课堂</h2>
+      <span class="sec-sub">做题之前，先分清是“合走”还是“补差距”</span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="lesson-grid">
+      <div class="lcard">
+        <h4><span class="ic ic-b" style="font-size:18px;font-weight:900">船</span>船要有人划回来</h4>
+        <p>
+          小船过河最大的秘密：<b>船不会自己回来</b>。
+        </p>
+        <ul class="u-list">
+          <li>每送一批人到对岸，都要有人把船<b>划回来</b>（最后一趟除外）</li>
+          <li>去一次算一次、回一次也算一次</li>
+          <li>先想清楚：谁当“船夫”来回最合适</li>
+        </ul>
+        <p>
+          所以过河方案经常是：<b>送 → 回 → 送 → 回 → … → 最后全部过去</b>。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-g" style="font-size:18px;font-weight:900">快</span>双人船：让“快”的多跑腿</h4>
+        <p>
+          两人同坐一条船，用的时间按<b>较慢的人</b>算。
+        </p>
+        <ul class="n-list">
+          <li>最快的 1 号负责来回“接人”，最省时间；</li>
+          <li>两个最慢的<b>一起过</b>，只慢一次而不是两次；</li>
+          <li>经典模式（过桥题 1、2、5、6 分钟）：<br>1＋2 过（2）→ 1 回（1）→ 5＋6 过（6）→ 2 回（2）→ 1＋2 过（2），共 13 分。</li>
+        </ul>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-o" style="font-size:16px;font-weight:900">规矩</span>“不能单独在一起”的过河</h4>
+        <ul class="n-list">
+          <li>狗会咬兔、兔会吃菜 → 船上先带走<b>兔子</b>，让狗和菜留在一起最安全。</li>
+          <li>猫狗过河：任何岸边<b>只要有猫，猫就不能比狗少</b>。</li>
+          <li>列出“哪些组合能留在一起”，再安排顺序，最后数一数来回次数。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 题目 ========== -->
+  <section class="sec" id="practice">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>开始闯关</h2>
+      <span class="sec-sub">先自己认真做 → 想不出点“小提示” → 最后才看“完整解法”</span>
+    </div>
+    <div class="rule"></div>
+    <div id="questionList"></div>
+  </section>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" id="resetBtn">清空进度与草稿，重新做一遍</button>
+  </div>
+</main>
+
+<footer>
+  奥数 · 举一反三 — 过河问题（练习九）　|　离线可用，孩子的草稿保存在本机浏览器里<br>
+  给爸爸妈妈：6 题中第 1~2 题一星、第 3~4 题二星、第 5~6 题三星；二星与三星属于“举一反三”题型。<br>
+  <span class="heart">♥</span> Made for a curious little math explorer
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   题库数据：以后出“练习三”时，复制本文件，替换下面的 QS 数组即可。
+   字段说明：
+     lv   : 星级（1/2/3）
+     text : 题干（可加 <b></b> 圈重点）
+     hint : 第一层小提示
+     hint2: 第二层提示（可选，只有再点“再给一点点提示”才显示）
+     steps: 完整解法 [{t:小标题, d:讲解，可用 <br> 与 <div class="eq">}]
+     fig  : 配图（可选，写 HTML）
+     ans  : 完整答案句（答案数字包在 <span class="ans-num"> 里会标蓝加粗）
+     check: 验算小尾巴（可选）
+     note : 小提醒（可选）
+===================================================================== */
+var SUBJECT = "过河问题";
+
+var QS = [
+  {
+    id:1, lv:1,
+    text:"壮壮、军军、豆豆三人要过一条小河，河边有一条能同时坐两人的小船，壮壮划船过河需要 2 分钟，军军划船过河需要 5 分钟，豆豆划船过河需要 4 分钟。三人想尽快过河，应该采用怎样的过河方式？三人最少需要多少分钟才可以全部过河？",
+    hint:"两人同坐一条船，速度按慢的那个人算。让最快的壮壮（2 分钟）负责把船划回来送另外两人。",
+    steps:[
+      {t:"壮壮先送一个",d:"壮壮（2 分）和豆豆（4 分）一起过：按慢的算，用 4 分钟。<div class=\"eq\">4 分钟</div>"},
+      {t:"壮壮划回来",d:"<div class=\"eq\">2 分钟</div>"},
+      {t:"壮壮再送军军",d:"壮壮（2 分）和军军（5 分）一起过：<div class=\"eq\">5 分钟</div>"},
+      {t:"加起来",d:"<div class=\"eq\">4 ＋ 2 ＋ 5 ＝ 11（分钟）</div>"}
+    ],
+    ans:"壮壮先带豆豆过河（4 分），壮壮划回（2 分），再带军军过河（5 分）；最少共 <span class=\"ans-num\">11</span> 分钟。",
+    check:"船最后一次到达对岸就不用再回来，所以只去 2 趟、回 1 趟。",
+    note:"让最快的壮壮当“摆渡人”来回接送最省时间。"
+  },
+  {
+    id:2, lv:1,
+    text:"三个成人和四个少年一起过河，河边只有一条船，每次只能载一个成人或者一到四个少年，他们七人都会划船但都不会游泳。他们至少需要几次才可以全部过河？（来回各算一次）",
+    hint:"船每次只能“一个成人”或“最多四个少年”。先让少年把船当“桥”——送过去又划回来，一次次把成人渡过去，最后少年再一起走。",
+    hint2:"9 次的方案：①4 少年过；②1 少年回；③1 成人过；④1 少年回；⑤1 成人过；⑥1 少年回；⑦1 成人过；⑧1 少年回；⑨4 少年过。",
+    steps:[
+      {t:"前 3 个成人轮流过河",d:"每次让 1 个少年划船到对岸再回来，把船停在起点，好让下一个成人过去：<div class=\"eq small\">4 少年过（1次）→ 1 少年回（1次）→ 1 成人过（1次）</div><div class=\"eq small\">1 少年回（1次）→ 1 成人过（1次）→ 1 少年回（1次）→ 1 成人过（1次）</div>"},
+      {t:"最后少年一起过",d:"3 个成人都过去了，还有 1 个少年在对岸等着划船回来接另外 3 个少年：<div class=\"eq\">1 少年回 ＋ 4 少年过</div>"},
+      {t:"数一数",d:"4 少年过、1 回、成人过、1 回、成人过、1 回、成人过、1 回、4 少年过：<div class=\"eq\">共 9 次</div>"}
+    ],
+    ans:"至少需要 <span class=\"ans-num\">9</span> 次：4 少年先过，1 少年回来，再依次让 3 个成人单独过（成人每过一次，就有一名少年把船划回），最后 4 少年一起过。",
+    check:"成人只能单独坐船，所以每送一个成人必须“回”一次；少年人多可以自己当船夫，最后一起走。",
+    note:"最后一次（4 少年一起过）不用再划回来，这是省时间的关键。"
+  },
+  {
+    id:3, lv:2,
+    text:"爸爸、妈妈、哥哥、弟弟四人要从河的东岸渡到西岸，岸边只有一条载重 75 千克的小船。已知四人的体重分别是 65 千克、55 千克、35 千克和 25 千克，他们都会划船但都不会游泳。四人要顺利过河，至少需要来回几次？（小船从东岸到西岸算一次，从西岸到东岸也算一次）",
+    hint:"【小提示】将船的载重与四人的体重进行比较：只有哥哥＋弟弟（35＋25＝60）能一起坐船，爸爸、妈妈都只能单独坐。",
+    hint2:"9 次方案：①哥弟过；②哥回；③爸过；④弟回；⑤哥弟过；⑥哥回；⑦妈过；⑧弟回；⑨哥弟过。",
+    steps:[
+      {t:"看看谁能一起坐",d:"能合坐一船的不超过 75 千克：<div class=\"eq\">只有哥哥（35）＋弟弟（25）＝60 千克</div>爸爸 65、妈妈 55 都只能单独坐。"},
+      {t:"按顺序渡",d:"<div class=\"eq small\">① 哥哥＋弟弟 过　② 哥哥回</div><div class=\"eq small\">③ 爸爸过　④ 弟弟回</div><div class=\"eq small\">⑤ 哥哥＋弟弟 过　⑥ 哥哥回</div><div class=\"eq small\">⑦ 妈妈过　⑧ 弟弟回　⑨ 哥哥＋弟弟 过</div>"},
+      {t:"数次数",d:"每次都是“一去一回”，只有最后一趟不用回：<div class=\"eq\">共 9 次</div>"}
+    ],
+    ans:"至少需要 <span class=\"ans-num\">9</span> 次：哥哥和弟弟这对“轻量组合”当船夫来回接送爸爸、妈妈（爸爸、妈妈各自单独过一次）。",
+    check:"每趟重量：哥＋弟 60、爸 65、妈 55 都不超过 75 ✓。",
+    note:"重量题先看“哪两个人能合坐”，再决定让谁来回划船。"
+  },
+  {
+    id:4, lv:3,
+    text:"一个猎人带了一条狗、一只兔子和一筐白菜乘船过河。船小，猎人一次只能带一样东西，但是当猎人不在时，狗会咬兔子，兔子会吃白菜。若猎人利用合理的方法过河，最少需要几次？（来回各算一次）",
+    hint:"【小提示】猎人不在时不能留下“狗＋兔”或“兔＋菜”。先带走兔子，让狗和菜留在原地（它们不互相伤害）。",
+    hint2:"7 次：①带兔过；②空手回；③带狗过；④带兔回；⑤带菜过；⑥空手回；⑦带兔过。",
+    steps:[
+      {t:"第一次先带兔子",d:"如果先带狗或菜，剩下兔＋菜或狗＋兔会出事。先带<b>兔子</b>过去：<div class=\"eq\">① 猎人带兔过河</div>"},
+      {t:"回来带狗",d:"猎人空手回来（②），再带狗过去（③）。对岸有狗，原岸剩菜——没问题。但狗和兔不能单独留一起，所以把<b>兔子带回来</b>（④）。"},
+      {t:"带菜过去",d:"带菜过河（⑤），原岸只剩兔子，对岸狗＋菜安全。再空手回来（⑥），最后带兔子过去（⑦）。<div class=\"eq\">共 7 次</div>"}
+    ],
+    ans:"最少需要 <span class=\"ans-num\">7</span> 次：先带兔、再带狗（把兔带回）、再带菜、最后带兔。",
+    check:"方案：兔过→回→狗过→兔回→菜过→回→兔过，共 7 次；过程中从没有让“狗兔”或“兔菜”单独在一起 ✓。",
+    note:"兔子既是“不能单独被欺负”的那个，也是两次出问题的核心——先处理它。"
+  },
+  {
+    id:5, lv:3,
+    text:"天黑了，壮壮、小浩、军军和豆豆结伴回家，他们来到一条河的东岸，要通过一座小木桥到西岸，但是他们 4 人只有 1 个手电筒。由于桥的承重量小，每次只能过 2 人，因此需要 2 人拿着手电筒过桥后，由 1 人将手电筒送回，再由 2 人拿着手电筒过桥，以此类推，直到 4 人都通过小木桥。已知壮壮单独过桥需要 2 分钟，小浩单独过桥需要 1 分钟，军军单独过桥需要 5 分钟，豆豆单独过桥需要 6 分钟，那么 4 人都通过小木桥最少需要多少分钟？",
+    hint:"最快的 1 分钟（小浩）和 2 分钟（壮壮）当“接送员”，让最慢的 5 分钟、6 分钟一起过桥（只慢一次）。",
+    hint2:"方案：①小浩＋壮壮过（2 分）；②小浩回（1 分）；③军军＋豆豆过（6 分）；④壮壮回（2 分）；⑤小浩＋壮壮过（2 分）。共 2＋1＋6＋2＋2＝13 分钟。",
+    steps:[
+      {t:"让最快的两人先过去",d:"小浩（1）＋壮壮（2）过桥，按慢的算：<div class=\"eq\">2 分钟</div>"},
+      {t:"小浩送手电筒回来",d:"<div class=\"eq\">1 分钟</div>"},
+      {t:"两个最慢的一起过",d:"军军（5）＋豆豆（6）过桥：<div class=\"eq\">6 分钟</div>最慢的两人一起过，只慢一次。"},
+      {t:"壮壮送手电筒回来",d:"<div class=\"eq\">2 分钟</div>"},
+      {t:"最后小浩＋壮壮再过去",d:"<div class=\"eq\">2 分钟</div>"},
+      {t:"加起来",d:"<div class=\"eq\">2 ＋ 1 ＋ 6 ＋ 2 ＋ 2 ＝ 13（分钟）</div>"}
+    ],
+    ans:"4 人都通过小木桥最少需要 <span class=\"ans-num\">13</span> 分钟。",
+    check:"小浩(1)＋壮壮(2)过→小浩回→军军(5)＋豆豆(6)过→壮壮回→小浩＋壮壮过：2＋1＋6＋2＋2＝13 ✓。",
+    note:"别让两个最慢的分开过桥！他们一起过，手电筒由 1 号、2 号轮流送。"
+  },
+  {
+    id:6, lv:3,
+    text:"有 3 只小猫和 3 只小狗要划船过河，河边只有一条小船，最多可以载 2 只小动物。在任何时候，小猫的数量不能少于小狗的数量，否则小猫会被小狗欺负。它们至少需要多少次才能顺利过河？（来回各算一次）",
+    hint:"先把 2 只小狗送过去当“排头兵”（那边只有狗、没有猫，不会有人被欺负），再把猫一批批送，最后把狗也全部送过去。",
+    hint2:"11 次方案（一次一行）：2狗过→1狗回→2狗过→1狗回→2猫过→1猫1狗回→2猫过→1狗回→2狗过→1狗回→2狗过。",
+    steps:[
+      {t:"先把狗“运”过去一部分",d:"空的对岸没有猫，可以先把狗送过去：<div class=\"eq small\">① 2狗过　② 1狗回　③ 2狗过　④ 1狗回</div>（此时对岸 2 狗，这边 3 猫 1 狗）"},
+      {t:"再把猫送过去",d:"<div class=\"eq small\">⑤ 2猫过　⑥ 1猫1狗回　⑦ 2猫过</div>（对岸 3 猫 1 狗：猫比狗多，安全）"},
+      {t:"最后把剩下的狗送完",d:"<div class=\"eq small\">⑧ 1狗回　⑨ 2狗过　⑩ 1狗回　⑪ 2狗过</div>"},
+      {t:"数一数",d:"整个过程共：<div class=\"eq\">11 次</div>"}
+    ],
+    ans:"最少需要 <span class=\"ans-num\">11</span> 次（方案：2狗过→1狗回→2狗过→1狗回→2猫过→1猫1狗回→2猫过→1狗回→2狗过→1狗回→2狗过）。",
+    check:"任意时刻：有猫的岸边，猫数都不少于狗数 → 没有小猫被欺负 ✓。",
+    note:"“只有狗”的岸边是安全的（没有猫可被欺负），可以利用这一点先运狗。"
+  }
+];
+
+
+/* ===================== 界面逻辑 ===================== */
+var LEVELS = {
+  1:{name:"一星 · 热身", chip:"基础起步", cls:"l1", intro:"热身：船要有人划回来——让最快的当船夫，一趟一趟送。"},
+  2:{name:"二星 · 闯关", chip:"举一反三", cls:"l2", intro:"闯关：限重小船、狗兔白菜——先想谁和谁能一起坐、谁能留在一起。"},
+  3:{name:"三星 · 挑战", chip:"举一反三", cls:"l3", intro:"挑战：手电筒过桥、小猫小狗——把“不能出事”的规则写成步骤。"}
+};
+
+function $(id){return document.getElementById(id);}
+
+/* localStorage 安全封装（某些环境可能禁止） */
+var store = {
+  get:function(k,d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+var DONE_KEY = "jfys_river_done";
+var NAME_KEY = "jfys_river_name";
+var TA_PREFIX = "jfys_river_";
+
+function starsHtml(n){
+  var out = "";
+  for(var i=1;i<=3;i++){ out += (i<=n ? "★" : "<i>☆</i>"); }
+  return '<span class="stars">'+out+'</span>';
+}
+
+function stepsHtml(steps){
+  var h = "";
+  for(var i=0;i<steps.length;i++){
+    h += '<div class="step"><span class="step-no">'+(i+1)+'</span>'+'<div class="step-t">'+steps[i].t+'</div>'+'<div class="step-d">'+steps[i].d+'</div></div>';
+  }
+  return h;
+}
+
+function buildQuestion(q){
+  var lv = LEVELS[q.lv];
+  var html = '<article class="card lv'+q.lv+'" id="card-'+q.id+'" data-id="'+q.id+'">'+
+    '<div class="card-head">'+
+      '<span class="q-no">第 '+q.id+' 题</span>'+starsHtml(q.lv)+
+      '<span class="lvl-tag">'+lv.name+' · '+lv.chip+'</span>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="done-chip" data-act="done" data-q="'+q.id+'">我做出来啦！</button>'+
+    '</div>'+
+    '<div class="q-text">'+q.text+'</div>'+
+    '<div class="think"><label for="ta-'+q.id+'">✎ 我的小练习本（写写算式和想法，会帮你保存在本机）</label>'+
+    '<textarea id="ta-'+q.id+'" placeholder="例如：30 + 40 = 70（千米/时）……"></textarea></div>'+
+    '<div class="actions">'+
+      '<button type="button" class="btn btn-hint" data-act="hint" data-q="'+q.id+'">💡 小提示</button>'+
+      '<button type="button" class="btn btn-sol" data-act="sol" data-q="'+q.id+'">📖 看完整解法</button>'+
+    '</div>'+
+    '<div class="hint-box" data-hintbox="'+q.id+'">'+
+      '<div class="h-tag">小提示</div>'+
+      '<p class="hint1">'+q.hint+'</p>'+
+      (q.hint2 ? '<p class="hint2">'+q.hint2+'</p><button type="button" class="morehint" data-act="morehint" data-q="'+q.id+'">再给一点点提示 →</button>' : '')+
+    '</div>'+
+    '<div class="sol" data-sol="'+q.id+'">'+
+      '<div class="sol-head">完整解法 · 一步一步跟我走</div>'+
+      stepsHtml(q.steps)+
+      (q.fig||'')+
+      '<div class="ans"><span class="ans-label">答 案</span><p>'+q.ans+'</p>'+
+      (q.check ? '<p class="check">'+q.check+'</p>' : '')+'</div>'+
+      (q.note ? '<div class="note"><span class="note-tag">小提醒</span>'+q.note+'</div>' : '')+
+    '</div></article>';
+  return html;
+}
+
+function buildLevels(){
+  var cont = $("questionList");
+  var html = "";
+  var order = [1,2,3];
+  for(var li=0; li<order.length; li++){
+    var lv = order[li];
+    var info = LEVELS[lv];
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    html += '<div class="lvl" id="level-'+lv+'">'+
+      '<div class="lvl-head">'+
+        '<h3 class="lvl-name">'+info.name+'</h3>'+
+        '<span class="lv-chip '+info.cls+'">'+info.chip+'</span>'+
+        '<span class="lvl-count" id="lc-'+lv+'">已完成 0/'+cards.length+'</span>'+
+      '</div>'+
+      '<p class="lvl-intro">'+info.intro+'</p>'+
+      '<div>'+cards.map(buildQuestion).join("")+'</div>'+
+    '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---- 进度 ----
+   每完成一题，按星级点亮星星（一星1颗、二星2颗、三星3颗）
+   一共：2×1 + 2×2 + 2×3 = 12 颗 */
+var MAX_STAR = QS.reduce(function(s,q){return s+q.lv;},0);
+
+function getDone(){ return JSON.parse(store.get(DONE_KEY,"[]")||"[]"); }
+function saveDone(list){ store.set(DONE_KEY,JSON.stringify(list)); }
+
+function renderProgress(){
+  var done = getDone();
+  var set = {};
+  done.forEach(function(id){set[id]=true;});
+  var total = QS.length;
+  var dcount = done.length;
+  var stars = 0;
+  QS.forEach(function(q){ if(set[q.id]) stars += q.lv; });
+
+  $("doneText").textContent = dcount + " / " + total;
+  $("starText").textContent = "★ " + stars + " / " + MAX_STAR;
+  $("pbarFill").style.width = (total ? Math.round(dcount/total*100) : 0) + "%";
+
+  /* 每级计数 */
+  [1,2,3].forEach(function(lv){
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    var c = cards.filter(function(q){return set[q.id];}).length;
+    var el = $("lc-"+lv);
+    if(el) el.textContent = "已完成 " + c + "/" + cards.length;
+  });
+
+  /* 卡片状态 */
+  QS.forEach(function(q){
+    var card = $("card-"+q.id);
+    if(!card) return;
+    var chip = card.querySelector(".done-chip");
+    if(set[q.id]){
+      card.classList.add("done");
+      chip.textContent = "✓ 完成啦，真棒";
+    }else{
+      card.classList.remove("done");
+      chip.textContent = "我做出来啦！";
+    }
+  });
+
+  /* 通关横幅 */
+  $("winBanner").classList.toggle("show", total>0 && dcount===total);
+
+  /* 问候语 */
+  var name = store.get(NAME_KEY,"").trim();
+  if(name){
+    $("greetLine").innerHTML = "<b>"+name+"</b>，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }else{
+    $("greetLine").textContent = "小朋友，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }
+}
+
+/* 事件：点击题目卡里的按钮 */
+$("questionList").addEventListener("click", function(ev){
+  var btn = ev.target.closest("button[data-act]");
+  if(!btn) return;
+  var id = +btn.getAttribute("data-q");
+  var act = btn.getAttribute("data-act");
+  var card = $("card-"+id);
+  if(!card) return;
+
+  if(act==="hint"){
+    var hb = card.querySelector(".hint-box");
+    var open = hb.classList.toggle("on");
+    btn.classList.toggle("open", open);
+    btn.textContent = open ? "收起提示" : "💡 小提示";
+    if(open){
+      var more = hb.querySelector(".morehint");
+      var h2 = hb.querySelector(".hint2");
+      if(more) more.style.display = "";
+      if(h2 && h2.classList.contains("show")) h2.style.display = "";
+    }
+  }
+  if(act==="morehint"){
+    var hb2 = card.querySelector(".hint-box");
+    var h22 = hb2.querySelector(".hint2");
+    if(h22){ h22.classList.add("show"); h22.style.display = "block"; }
+    btn.style.display = "none";
+  }
+  if(act==="sol"){
+    var sb = card.querySelector(".sol");
+    var open2 = sb.classList.toggle("on");
+    btn.classList.toggle("open", open2);
+    btn.textContent = open2 ? "收起解法" : "📖 看完整解法";
+  }
+  if(act==="done"){
+    var list = getDone();
+    var idx = list.indexOf(id);
+    if(idx>=0){ list.splice(idx,1); }
+    else{ list.push(id); }
+    saveDone(list);
+    renderProgress();
+  }
+});
+
+/* 草稿自动保存 */
+$("questionList").addEventListener("input", function(ev){
+  if(ev.target && ev.target.id && ev.target.id.indexOf("ta-")===0){
+    store.set(TA_PREFIX + ev.target.id, ev.target.value);
+  }
+});
+
+/* 名字 */
+var nameEl = $("nameIn");
+nameEl.value = store.get(NAME_KEY,"");
+nameEl.addEventListener("input", function(){
+  store.set(NAME_KEY, nameEl.value);
+  renderProgress();
+});
+
+/* 重新开始 */
+$("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要清空进度、名字和所有草稿吗？")) return;
+  saveDone([]);
+  store.del(NAME_KEY);
+  QS.forEach(function(q){ store.del(TA_PREFIX+"ta-"+q.id); $("ta-"+q.id).value=""; });
+  nameEl.value = "";
+  /* 收起所有展开的提示/解法 */
+  document.querySelectorAll(".hint-box.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".hint2.show").forEach(function(b){ b.classList.remove("show"); b.style.display=""; });
+  document.querySelectorAll(".btn-hint.open").forEach(function(b){ b.classList.remove("open"); b.textContent="💡 小提示"; });
+  document.querySelectorAll(".sol.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".btn-sol.open").forEach(function(b){ b.classList.remove("open"); b.textContent="📖 看完整解法"; });
+  renderProgress();
+});
+
+/* 日期 */
+(function(){
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"];
+  $("dateChip").textContent = (d.getMonth()+1) + "月" + d.getDate() + "日 · 周" + wd[d.getDay()];
+})();
+
+/* 恢复草稿 + 初始渲染 */
+QS.forEach(function(q){
+  var el = $("ta-"+q.id);
+  if(el) el.value = store.get(TA_PREFIX+"ta-"+q.id,"");
+});
+buildLevels();
+renderProgress();
+</script>
+</body>
+</html>
+
