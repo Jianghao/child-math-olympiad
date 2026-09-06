@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>奥数 · 举一反三 — 相遇与追及（练习二）</title>
+<style>
+  :root{
+    --paper:#FFF6E6;
+    --card:#FFFFFF;
+    --ink:#2B2B33;
+    --mut:#8B8274;
+    --line:#EFE4CE;
+    --sun:#FFC53D;
+    --sun-soft:#FFF4D0;
+    --brand:#3553D6;
+    --brand-deep:#1F2E74;
+    --green:#1FA37F;
+    --blue:#3A8FE0;
+    --orange:#F06B3C;
+    --red:#D6452A;
+    --amber:#E09A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(31,46,116,.07) 1px,transparent 1.3px);
+    background-size:22px 22px;
+    line-height:1.75;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  button{font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none}
+  textarea{font-family:inherit}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--brand-deep);
+    color:#fff;
+    padding:22px 0 66px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topline{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+  .flag{display:inline-flex;align-items:center;gap:8px}
+  .flag::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .hero-in{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+    padding:34px 0 16px;
+  }
+  h1{
+    font-size:clamp(42px,7vw,66px);font-weight:900;letter-spacing:.02em;line-height:1.08;
+    margin:0;
+  }
+  .zh-yellow{color:var(--sun)}
+  .hero-sub{
+    margin-top:14px;font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);
+    line-height:1.9;max-width:600px;
+  }
+  .hero-sub b{color:var(--sun);font-weight:700}
+  .hero-art{text-align:center}
+  .hero-art svg{width:min(300px,52vw);height:auto;display:block;margin:0 auto}
+  .road-strip{
+    position:absolute;left:0;right:0;bottom:0;height:34px;
+    background:rgba(11,18,58,.42);
+  }
+  .road-strip::before{
+    content:"";position:absolute;left:0;right:0;top:15px;height:4px;
+    background:repeating-linear-gradient(to right,rgba(255,197,61,.95) 0 26px,transparent 26px 52px);
+  }
+  .cone{position:absolute;bottom:-6px;color:var(--sun)}
+  .cone.c1{left:10%}
+  .cone.c2{left:88%}
+
+  /* ============ WELCOME / PROGRESS ============ */
+  .welcome{
+    background:#fff;border:1px solid #F3EAD8;border-radius:20px;
+    box-shadow:0 12px 30px rgba(31,46,116,.12);
+    margin-top:-34px;padding:18px 22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .greet{font-size:13px;color:var(--mut)}
+  .greet b{color:var(--brand-deep);font-size:16px}
+  .name-in{
+    border:1.5px dashed #D9CBA9;border-radius:10px;padding:4px 10px;font-size:15px;
+    width:170px;background:#FFFDF6;outline:none;color:var(--ink);
+  }
+  .name-in:focus{border-color:var(--brand)}
+  .wel-right{min-width:250px}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+  .pmeta .star-count{color:#D98E04;font-weight:700}
+  .pbar{height:12px;background:#EFE8D8;border-radius:999px;overflow:hidden}
+  .pbar-fill{height:100%;width:0;background:var(--brand);border-radius:999px;transition:width .5s ease}
+  .win-banner{
+    margin-top:18px;display:none;align-items:center;gap:12px;
+    background:#FFF2CB;border:1.5px solid #F2D68A;color:#6B4B00;
+    border-radius:16px;padding:14px 18px;font-size:16px;font-weight:700;
+  }
+  .win-banner.show{display:flex;animation:pop .4s ease}
+  .win-banner svg{flex:none}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* ============ SECTIONS ============ */
+  .sec{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .sec-no{
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;
+    background:var(--brand-deep);border-radius:8px;padding:3px 9px;
+    align-self:center;
+  }
+  .sec-head h2{font-size:clamp(22px,3.4vw,28px);font-weight:900}
+  .sec-head .sec-sub{color:var(--mut);font-size:14px}
+  .rule{height:1px;background:var(--line);margin:12px 0 20px}
+
+  /* ============ LESSON ============ */
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .lcard{
+    background:#fff;border:1px solid #F1E6D0;border-radius:18px;padding:20px 20px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .lcard h4{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .ic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .ic.ic-b{background:#E9EEFF;color:var(--brand)}
+  .ic.ic-g{background:#E1F6EF;color:var(--green)}
+  .ic.ic-o{background:#FFEBDD;color:var(--orange)}
+  .lcard p{font-size:14.5px;color:#4A4439}
+  .lcard p b{color:var(--ink)}
+  .tri{margin:8px auto 2px;text-align:center}
+  .pill{
+    display:inline-block;border-radius:12px;padding:5px 18px;margin:3px;
+    font-weight:800;font-size:16px;color:#fff;
+  }
+  .pill.top{background:var(--brand)}
+  .pill.l{background:var(--green)}
+  .pill.r{background:var(--orange)}
+  .tri .op{font-size:20px;font-weight:900;color:var(--mut);padding:0 6px}
+  .tri-cap{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .u-list,.n-list{list-style:none;font-size:14px;color:#4A4439}
+  .u-list li,.n-list li{padding:5px 0;border-bottom:1px dashed #F0E5D0}
+  .u-list li:last-child,.n-list li:last-child{border-bottom:none}
+  .u-chip{
+    display:inline-block;background:#F1F5FF;color:var(--brand);
+    border-radius:8px;padding:1px 8px;font-weight:700;font-size:13.5px;margin:1px 0;
+  }
+  .n-list b{color:var(--orange)}
+
+  /* ============ PRACTICE LEVEL ============ */
+  .lvl{margin-top:36px}
+  .lvl-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .lvl-name{font-size:20px;font-weight:900;margin-right:2px}
+  .lv-chip{
+    font-size:12px;font-weight:800;color:#fff;border-radius:999px;
+    padding:2px 11px;letter-spacing:.05em;
+  }
+  .lv-chip.l1{background:var(--green)}
+  .lv-chip.l2{background:var(--blue)}
+  .lv-chip.l3{background:var(--orange)}
+  .lvl-count{margin-left:auto;font-size:13px;color:var(--mut);font-weight:700}
+  .lvl-intro{font-size:14px;color:var(--mut);margin:4px 0 2px 2px}
+
+  /* ============ QUESTION CARD ============ */
+  .card{
+    background:#fff;border:1px solid #F1E6D0;border-top:6px solid #ddd;
+    border-radius:18px;padding:20px 22px 22px;margin-top:18px;
+    box-shadow:0 6px 18px rgba(31,46,116,.05);
+    transition:box-shadow .2s ease;
+  }
+  .card.lv1{border-top-color:var(--green)}
+  .card.lv2{border-top-color:var(--blue)}
+  .card.lv3{border-top-color:var(--orange)}
+  .card.done{background:#FDFFFC}
+  .card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .q-no{
+    font-size:15px;font-weight:900;color:var(--brand-deep);
+    background:#EEF1FF;border-radius:10px;padding:3px 12px;
+  }
+  .stars{color:var(--sun);font-size:17px;letter-spacing:2px}
+  .stars i{color:#E9DCBC;font-style:normal}
+  .spacer{flex:1}
+  .lvl-tag{font-size:12px;color:var(--mut);font-weight:700}
+  .done-chip{
+    border:1.5px solid #E2D9C4;background:#FFFDF7;color:#A89B82;
+    border-radius:999px;padding:4px 13px;font-size:13px;font-weight:800;
+  }
+  .done-chip:hover{border-color:#BFD9CB;color:var(--green)}
+  .card.done .done-chip{background:#E2F6EC;border-color:#B7E3CF;color:#0F8A5F}
+  .q-text{
+    background:#FBF5E6;border:1px solid #F1E7CE;border-radius:14px;
+    padding:15px 17px;margin-top:14px;font-size:16.5px;line-height:1.95;
+  }
+  .q-text b{font-weight:800;color:var(--brand-deep);border-bottom:2px solid var(--sun)}
+  .think{margin-top:12px}
+  .think label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:5px}
+  .think textarea{
+    width:100%;min-height:62px;resize:vertical;border:1.5px dashed #DFD3B8;
+    border-radius:12px;background:#FFFEF9;padding:9px 12px;font-size:15px;line-height:1.7;
+    color:var(--ink);outline:none;
+  }
+  .think textarea:focus{border-color:var(--brand)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:800;
+    border:1px solid transparent;transition:transform .08s ease,background .2s ease,color .2s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-hint{background:#FFF3D2;color:#8A5E00;border-color:#F0DDA2}
+  .btn-hint:hover{background:#FFE9A8}
+  .btn-hint.open{background:#FFD979}
+  .btn-sol{background:var(--brand);color:#fff}
+  .btn-sol:hover{background:#2A44C0}
+  .btn-sol.open{background:#E7ECFF;color:var(--brand);border-color:#C9D6FF}
+
+  .hint-box{display:none;margin-top:14px;background:#FFF9E6;border:1px solid #F2E2AC;
+    border-left:5px solid #EDB800;border-radius:12px;padding:12px 16px}
+  .hint-box.on{display:block;animation:fadein .25s ease}
+  .hint-box .h-tag{font-weight:900;color:#9A6E00;font-size:13.5px;margin-bottom:4px}
+  .hint1{font-size:15.5px}
+  .hint2{display:none;margin-top:10px;font-size:15px;color:#7A5A00;
+    border-top:1px dashed #EBD48F;padding-top:10px}
+  .hint2.show{display:block}
+  .morehint{
+    display:none;margin-top:10px;background:#fff;border:1px solid #E3CF8B;
+    color:#8A5E00;border-radius:999px;font-size:13px;font-weight:800;padding:4px 14px;
+  }
+  .hint-box.on .morehint{display:inline-block}
+  .morehint:hover{background:#FFEDBE}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  .sol{display:none;margin-top:16px}
+  .sol.on{display:block;animation:fadein .3s ease}
+  .sol-head{
+    display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;
+    color:var(--brand-deep);margin-bottom:12px;
+  }
+  .sol-head::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .step{
+    background:#F8FAFF;border:1px solid #E7ECFB;border-radius:14px;
+    padding:12px 16px 12px 50px;position:relative;margin-bottom:10px;
+  }
+  .step-no{
+    position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-t{font-weight:900;font-size:15px}
+  .step-d{font-size:14.5px;margin-top:3px;color:#3E3A32}
+  .eq{
+    margin:7px 0 2px;padding:7px 12px;background:#FFF3D2;border-left:4px solid var(--sun);
+    border-radius:8px;font-weight:800;font-size:16px;
+  }
+  .eq.small{font-weight:700;font-size:15px}
+  .fig{
+    background:#F7F2E6;border:1px dashed #E0D3B4;border-radius:14px;
+    padding:14px 16px;margin:14px 0 6px;
+  }
+  .fig-cap{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .rowcap{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-size:13px;color:#6B6355;margin:2px 0 6px;flex-wrap:wrap;
+  }
+  .rowcap em{font-style:normal;font-weight:800;color:var(--brand);background:#E7EDFF;
+    border-radius:999px;padding:1px 10px}
+  .rowcap sub{font-size:12px;color:var(--mut)}
+  .row{display:flex;gap:6px;margin-bottom:6px}
+  .seg{
+    flex:1;min-width:0;text-align:center;border-radius:10px;
+    padding:8px 2px 6px;font-weight:800;font-size:15px;line-height:1.25;
+  }
+  .seg i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.72;line-height:1.3;margin-top:3px}
+  .c-blue{background:#E9EFFF;color:#2B56C8}
+  .c-orange{background:#FFF0E2;color:#C55E18}
+  .c-gold{background:#FFF3CC;color:#B07C00}
+  .seg.stop{background:#ECEAE3;color:#8A8578}
+  .seg.late{outline:2px dashed var(--red);background:#FFE3D8;color:#C03A12}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+    font-weight:800;margin:10px 0 2px;
+  }
+  .fchip{background:#E9EFFF;color:#2B56C8;border-radius:10px;padding:6px 12px;font-size:14px}
+  .fchip.b{background:#FFF0E2;color:#C55E18}
+  .farrow{color:var(--mut);font-size:15px}
+  .fnote{font-size:12.5px;color:var(--mut);text-align:center;margin-top:4px}
+
+  .mapwrap{width:100%;margin:6px 0 2px}
+  .mapwrap svg{width:100%;height:auto;display:block}
+  .mapnote{font-size:12.5px;color:var(--mut);margin-top:4px;text-align:center}
+
+  .ans{
+    margin-top:14px;background:#F1F6FF;border:1.5px dashed var(--brand);
+    border-radius:14px;padding:13px 16px;
+  }
+  .ans-label{
+    display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    border-radius:999px;padding:1px 12px;margin-bottom:6px;letter-spacing:.1em;
+  }
+  .ans p{font-size:16px;font-weight:700}
+  .ans .ans-num{color:var(--brand);font-weight:900}
+  .check{margin-top:8px;font-size:13.5px;color:#5F584A;border-top:1px dashed #C9D7F5;padding-top:8px}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4F0;border:1px solid #FFDCD0;
+    border-radius:12px;padding:10px 14px;color:#7A4534}
+  .note-tag{font-weight:900;color:var(--orange);margin-right:6px}
+
+  .reset-wrap{text-align:center;margin:34px 0 6px}
+  .btn-reset{
+    background:transparent;border:1px dashed #C9BC9C;color:var(--mut);
+    border-radius:999px;padding:7px 18px;font-size:13px;
+  }
+  .btn-reset:hover{color:var(--red);border-color:var(--red);background:#FFF6F3}
+  footer{
+    text-align:center;color:#B3A98F;font-size:12px;line-height:2;
+    padding:30px 18px 40px;
+  }
+  footer .heart{color:var(--orange);font-weight:900}
+
+  @media (max-width:760px){
+    .hero-in{grid-template-columns:1fr;padding-top:22px}
+    .hero-art{display:none}
+    .welcome{flex-direction:column;align-items:flex-start}
+    .wel-right{width:100%}
+    .step{padding-left:44px}
+    .step-no{left:10px}
+    .q-no{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="flag">奥数 · 举一反三</span>
+      <span>相遇与追及 · 练习二 · <span id="dateChip"></span></span>
+    </div>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1>相遇与<span class="zh-yellow">追及</span></h1>
+        <p class="hero-sub">
+          面对面走，是两个人<b>“合走”</b>一段路；<br>
+          快的人从后面追慢的人，是<b>“补差距”</b>；<br>
+          认清这两条，行程题的路就通了。
+        </p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 260 210" role="img" aria-label="相向而行示意装饰图">
+          <circle cx="130" cy="96" r="92" fill="#FFC53D"/>
+          <line x1="56" y1="92" x2="134" y2="92" stroke="#1F2E74" stroke-width="9" stroke-linecap="round"/>
+          <polygon points="126,82 148,92 126,102" fill="#1F2E74"/>
+          <line x1="204" y1="130" x2="126" y2="130" stroke="#F06B3C" stroke-width="9" stroke-linecap="round"/>
+          <polygon points="134,120 112,130 134,140" fill="#F06B3C"/>
+          <line x1="130" y1="76" x2="130" y2="150" stroke="#ffffff" stroke-width="3" stroke-dasharray="5 5" opacity=".75"/>
+          <circle cx="130" cy="113" r="9" fill="#D6452A" stroke="#fff" stroke-width="3"/>
+          <text x="46" y="84" text-anchor="middle" fill="#1F2E74" font-size="15" font-weight="800">甲</text>
+          <text x="210" y="146" text-anchor="middle" fill="#C55E18" font-size="15" font-weight="800">乙</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="road-strip">
+    <svg class="cone c1" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+    <svg class="cone c2" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="welcome">
+    <div class="wel-left">
+      <div class="greet" id="greetLine">小朋友，今天来闯相遇与追及题！</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="name-in" id="nameIn" maxlength="12" placeholder="写下你的名字（可选）" />
+        <span style="font-size:13px;color:var(--mut)">我的小练功房</span>
+      </div>
+    </div>
+    <div class="wel-right">
+      <div class="pmeta">
+        <span>通关进度 <b id="doneText">0 / 10</b></span>
+        <span class="star-count" id="starText">★ 0 / 21</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
+    </div>
+  </section>
+
+  <div class="win-banner" id="winBanner">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B47A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.4-6.3 4.4L8 13.8l-6-4.6h7.6z"/></svg>
+    <span>全部通关！你已经能用“合走”和“补差距”解开相遇与追及题啦，快把这个好消息告诉爸爸妈妈吧～</span>
+  </div>
+
+  <!-- ========== 知识点 ========== -->
+  <section class="sec" id="lesson">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>相遇与追及小课堂</h2>
+      <span class="sec-sub">做题之前，先分清是“合走”还是“补差距”</span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="lesson-grid">
+      <div class="lcard">
+        <h4><span class="ic ic-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h6V5H4zM14 19h6v-8h-6zM4 21h16"/><path d="M7 9.5v1M17 13.5v1"/></svg></span>相遇 = 合走全程</h4>
+        <p>
+          甲从 A 出发，乙从 B 出发，<b>面对面（相向而行）</b>，在中间碰上，就是相遇。
+        </p>
+        <div class="tri">
+          <div class="pill top">全程</div>
+          <div class="tri-mid"><span class="pill l">甲速 + 乙速</span><span class="op">×</span><span class="pill r">时间</span></div>
+          <div class="tri-cap">两人 1 小时（1 分钟）合起来走多少，乘时间 = 全程。</div>
+        </div>
+        <p>
+          例：甲车 30 千米/时、乙车 40 千米/时，每小时合走 <b>70</b> 千米，5 小时合走 <b>350</b> 千米＝全程。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></span>追及 = 补差距</h4>
+        <p>
+          快的人（爸爸、老师、哥哥）从后面追慢的人，一开始两人隔着一段<b>差距</b>。
+        </p>
+        <div class="tri">
+          <div class="pill top" style="background:#2FA98A">差距</div>
+          <div class="tri-mid"><span class="pill l">快 − 慢</span><span class="op">×</span><span class="pill r">时间</span></div>
+          <div class="tri-cap">每分钟快的人比慢的人多走“速度差”，追上的那一刻，正好把差距补完。</div>
+        </div>
+        <p>
+          例：爸爸每分钟 180 米追每分钟 80 米的孩子，每分钟追近 <b>100</b> 米。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M21 21l-5.2-5.2"/></svg></span>看图再判断</h4>
+        <p>
+          动手前先做三件事：
+        </p>
+        <ul class="n-list">
+          <li>① 圈出是<b>“相向而行”</b>还是<b>“同向而行”</b>：面对面是相遇，快追慢是追及。</li>
+          <li>② 画一条线，把两人起点和<b>相遇点 / 追上点</b>标出来。</li>
+          <li>③ 再想：这题在算<b>“合走”</b>，还是在算<b>“补差距”</b>？</li>
+        </ul>
+        <p style="margin-top:6px">
+          小心：题目说“相距 XX 米/千米”时，可能有<b>两种时刻</b>——还没碰到，或者已经错过（第 5、9 题就会考你）。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 题目 ========== -->
+  <section class="sec" id="practice">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>开始闯关</h2>
+      <span class="sec-sub">先自己认真做 → 想不出点“小提示” → 最后才看“完整解法”</span>
+    </div>
+    <div class="rule"></div>
+    <div id="questionList"></div>
+  </section>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" id="resetBtn">清空进度与草稿，重新做一遍</button>
+  </div>
+</main>
+
+<footer>
+  奥数 · 举一反三 — 相遇与追及（练习二）　|　离线可用，孩子的草稿保存在本机浏览器里<br>
+  给爸爸妈妈：10 题中第 1~3 题一星、第 4~6 题二星、第 7~10 题三星；二星与三星属于“举一反三”题型。<br>
+  <span class="heart">♥</span> Made for a curious little math explorer
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   题库数据：以后出“练习三”时，复制本文件，替换下面的 QS 数组即可。
+   字段说明：
+     lv   : 星级（1/2/3）
+     text : 题干（可加 <b></b> 圈重点）
+     hint : 第一层小提示
+     hint2: 第二层提示（可选，只有再点“再给一点点提示”才显示）
+     steps: 完整解法 [{t:小标题, d:讲解，可用 <br> 与 <div class="eq">}]
+     fig  : 配图（可选，写 HTML）
+     ans  : 完整答案句（答案数字包在 <span class="ans-num"> 里会标蓝加粗）
+     check: 验算小尾巴（可选）
+     note : 小提醒（可选）
+===================================================================== */
+var SUBJECT = "相遇与追及";
+
+var QS = [
+  /* ============ 一星 ============ */
+  {
+    id:1, lv:1,
+    text:"甲、乙两车分别从 A、B 两地出发<b>相向而行</b>，甲车每小时行驶 <b>30</b> 千米，乙车每小时行驶 <b>40</b> 千米，<b>5</b> 小时后两车相遇。求 A、B 两地的距离。",
+    hint:"相向而行就是面对面开。想一想：两车每 1 小时会一起靠近多少千米？开了 5 小时才碰上，说明 A、B 的距离就是他们 5 小时“合走”的路程。",
+    steps:[
+      {t:"先算每小时两车合走多少",d:"甲车 30 千米 + 乙车 40 千米：<div class=\"eq\">30 + 40 = 70（千米/时）</div>这就是“速度和”：他们每小时一起走 70 千米。"},
+      {t:"5 小时合走的路程 = 全程",d:"每小时合走 70 千米，走 5 小时：<div class=\"eq\">70 × 5 = 350（千米）</div>相遇时他们正好把 A、B 之间整段路走完，所以全程就是 350 千米。"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">一条路分两段：相遇点左边是甲车 5 小时开的（30×5=150 千米），右边是乙车 5 小时开的（40×5=200 千米），两段加起来就是全程。</div>'+
+        '<div class="rowcap"><span>A 地</span><em>相遇点</em><span>B 地</span></div>'+
+        '<div class="row">'+
+        '<span class="seg c-blue" style="flex:3"><b>甲车</b><i>30×5 = 150 千米</i></span>'+
+        '<span class="seg c-orange" style="flex:4"><b>乙车</b><i>40×5 = 200 千米</i></span>'+
+        '</div>'+
+        '<div class="rowcap sub"><span>150 + 200 = 350（千米）＝全程</span></div></div>',
+    ans:"A、B 两地的距离是 <span class=\"ans-num\">350</span> 千米。",
+    check:"验算：350 ÷ 5 = 70（千米/时），正好等于 30 + 40 → 每小时合走 70，5 小时走完，对啦！"
+  },
+  {
+    id:2, lv:1,
+    text:"妈妈去距家 <b>4000 米</b>的学校接小晶。如果妈妈和小晶<b>同时出发</b>，经过 <b>25 分钟</b>后，妈妈接到小晶。已知小晶每分钟走 <b>70</b> 米，那么妈妈每分钟走多少米？",
+    hint:"妈妈从家出发，小晶从学校出发，面对面走。25 分钟里，两个人“合走”完 4000 米——先算两人每分钟一共走多少米，再减去小晶的速度。",
+    steps:[
+      {t:"先算两人每分钟合走多少",d:"25 分钟合走 4000 米，每分钟合走：<div class=\"eq\">4000 ÷ 25 = 160（米/分）</div>"},
+      {t:"减去小晶的速度",d:"合速度 160 里，有 70 是小晶走的，剩下的是妈妈：<div class=\"eq\">160 − 70 = 90（米/分）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">合速度的“分家”：每分钟合走 160 米 ＝ 妈妈 90 米 ＋ 小晶 70 米。</div>'+
+        '<div class="flow"><span class="fchip">合走 4000 ÷ 25 = 160 米/分</span><span class="farrow">−</span><span class="fchip">小晶 70 米/分</span><span class="farrow">=</span><span class="fchip b">妈妈 90 米/分</span></div></div>',
+    ans:"妈妈每分钟走 <span class=\"ans-num\">90</span> 米。",
+    check:"验算：25 ×（90 + 70）= 25 × 160 = 4000（米）→ 正好 25 分钟在中间接上，对啦！"
+  },
+  {
+    id:3, lv:1,
+    text:"童太奇以每分钟 <b>80</b> 米的速度步行去学校，出发 <b>5 分钟</b>后，爸爸发现童太奇没带作业，于是骑车以每分钟 <b>180</b> 米的速度去追童太奇，爸爸几分钟后能追上童太奇？追上时他们离家多少米？",
+    hint:"爸爸出发时，童太奇已经先走了 5 分钟，两人之间有了一个“差距”。爸爸每分钟能把这个差距缩小多少米？",
+    hint2:"差距 = 80 × 5 = 400 米；每分钟缩小 180 − 80 = 100 米；400 ÷ 100 = 4 分钟追上。追上时离家：爸爸骑车 4 分钟 180 × 4 = 720 米（也可以算童太奇共走 5 + 4 = 9 分钟，80 × 9 = 720 米）。",
+    steps:[
+      {t:"先算爸爸出发时两人的差距",d:"童太奇先走了 5 分钟，每分钟 80 米：<div class=\"eq\">80 × 5 = 400（米）</div>"},
+      {t:"算每分钟爸爸能追近多少",d:"爸爸 180 米/分，童太奇 80 米/分：<div class=\"eq small\">180 − 80 = 100（米/分）</div>"},
+      {t:"求追上的时间",d:"差距 400 米，每分钟补 100 米：<div class=\"eq\">400 ÷ 100 = 4（分钟）</div>"},
+      {t:"算追上时离家多远",d:"爸爸骑车追了 4 分钟：<div class=\"eq\">180 × 4 = 720（米）</div>也可以想：童太奇一共走了 5 + 4 = 9 分钟，80 × 9 = 720 米，两种算法结果一样。"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">追上点离家一样远（720 米）：童太奇走 9 分钟 × 80，爸爸骑 4 分钟 × 180，两排一样长。</div>'+
+        '<div class="rowcap"><span>童太奇：前 5 分钟 + 被追上前的 4 分钟（共 9 分钟×80）</span><em>离家 720 米</em></div>'+
+        '<div class="row c-blue">'+('<span class="seg"><b>80</b><i>1分钟</i></span>'.repeat(9))+'</div>'+
+        '<div class="rowcap"><span>爸爸：骑车 4 分钟（180 米/分）</span><em>离家 720 米</em></div>'+
+        '<div class="row c-orange">'+('<span class="seg"><b>180</b><i>1分钟</i></span>'.repeat(4))+'</div>'+
+        '</div>',
+    ans:"爸爸 <span class=\"ans-num\">4</span> 分钟后追上童太奇；追上时他们离家 <span class=\"ans-num\">720</span> 米。",
+    check:"验算：追上时童太奇走了 9 分钟，80 × 9 = 720；爸爸骑了 4 分钟，180 × 4 = 720。两人在同一个地点，对啦！"
+  },
+  {
+    id:4, lv:2,
+    text:"某校三年级学生去秋游，姜老师因为突发事件没有跟同学们一起出发。在同学们乘坐大巴车以每小时行驶 <b>60</b> 千米的速度出发 <b>15 分钟</b>后，姜老师处理好了突发事件，然后以每小时行驶 <b>78</b> 千米的速度开车追赶同学们。姜老师多久能追上同学们？",
+    hint:"老师出发时，大巴已经开了 15 分钟，领先了一段路。先算出大巴领先了多少米；再把老师和大巴的速度都换成“每分钟走多少米”，算算老师每分钟能追近多少米。",
+    hint2:"60 千米/时 = 每分钟 1000 米，领先 1000 × 15 = 15000 米；78 千米/时 = 每分钟 1300 米，每分钟追近 1300 − 1000 = 300 米；15000 ÷ 300 = 50 分钟。",
+    steps:[
+      {t:"换单位：把速度变成每分钟走多少米",d:"大巴 60 千米/时：60000 ÷ 60 = <b>1000 米/分</b>。姜老师 78 千米/时：78000 ÷ 60 = <b>1300 米/分</b>。"},
+      {t:"算大巴领先多少米",d:"老师出发时大巴已走 15 分钟：<div class=\"eq\">1000 × 15 = 15000（米）</div>"},
+      {t:"算每分钟老师追近多少",d:"<div class=\"eq small\">1300 − 1000 = 300（米/分）</div>"},
+      {t:"求追上时间",d:"差距 15000 米，每分钟补 300 米：<div class=\"eq\">15000 ÷ 300 = 50（分钟）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">把“每小时”换成“每分钟”就好算多啦：不出现小数，全是整数。</div>'+'<div class="flow"><span class="fchip">60 千米/时 → 1000 米/分</span><span class="fchip b">78 千米/时 → 1300 米/分</span></div>'+'<div class="flow"><span class="fchip">领先 15000 米</span><span class="farrow">÷ 每分钟追近 300 米</span><span class="fchip b">50 分钟</span></div></div>',
+    ans:"姜老师 <span class=\"ans-num\">50</span> 分钟后追上同学们。",
+    check:"验算：追上时姜老师走了 1300 × 50 = 65000 米；大巴从出发算起一共走了 15 + 50 = 65 分钟，1000 × 65 = 65000 米。两人路程一样 → 追上啦！"
+  },
+  {
+    id:5, lv:2,
+    text:"A、B 两人骑自行车从相距 <b>700 米</b>的甲、乙两地同时出发，<b>相向而行</b>。已知 A 每秒钟骑 <b>4</b> 米，B 每秒钟骑 <b>6</b> 米，他们多久以后<b>第一次相距 100 米</b>？多久以后<b>第二次相距 100 米</b>？",
+    hint:"【小提示】根据两人第一次与第二次相距的路程，求出两人骑行的路程。第一次相距 100 米——两人还没碰上，一共合骑了多少米？第二次相距 100 米——两人已经碰过面又分开，一共又合骑了多少米？",
+    hint2:"第一次：合骑 700 − 100 = 600 米；第二次：合骑 700 + 100 = 800 米。合速度是 4 + 6 = 10 米/秒，分别一除就得到 60 秒和 80 秒。",
+    steps:[
+      {t:"先算合速度",d:"A、B 面对面骑，每秒合起来靠近：<div class=\"eq\">4 + 6 = 10（米/秒）</div>"},
+      {t:"第一次相距 100 米（还没相遇）",d:"从 700 米缩到 100 米，两人一共合骑了：<div class=\"eq small\">700 − 100 = 600（米）</div><div class=\"eq\">600 ÷ 10 = 60（秒）</div>"},
+      {t:"第二次相距 100 米（已经错过）",d:"先相遇（合骑 700 米），再继续拉开 100 米，一共合骑了：<div class=\"eq small\">700 + 100 = 800（米）</div><div class=\"eq\">800 ÷ 10 = 80（秒）</div>也可以想：相遇要 700 ÷ 10 = 70 秒，再拉开 100 米要 100 ÷ 10 = 10 秒，70 + 10 = 80 秒。两种算法一样。"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">时间轴上一共出现两个“相距 100 米”：60 秒时是碰上之前，80 秒时是碰上之后。别漏掉第二个哦。</div>'+'<div class="flow"><span class="fchip b">0~60 秒：合骑 600 米（700−100）</span><span class="farrow">→</span><span class="fchip">70 秒相遇（合骑 700 米）</span><span class="farrow">→</span><span class="fchip b">80 秒合骑 800 米（700+100）</span></div>'+'<div class="fnote">第一次相距 100 米在 60 秒，第二次相距 100 米在 80 秒。</div></div>',
+    ans:"第一次相距 100 米是在出发后 <span class=\"ans-num\">60</span> 秒；第二次相距 100 米是在出发后 <span class=\"ans-num\">80</span> 秒。",
+    check:"验算：60 秒时 A 骑 240 米、B 骑 360 米，共 600 米，700 − 600 = 100 ✓；80 秒时共骑 800 米，超过相遇点 100 米 → 又相距 100 米 ✓。",
+    note:"“相距 100 米”一共有两个时刻：一个在碰上之前，一个在碰过之后。题目问“第一次”和“第二次”，就是要你两个都答。"
+  },
+  {
+    id:6, lv:2,
+    text:"壮壮和军军分别从 A、B 两地同时出发，相向而行。已知壮壮每分钟走 <b>60</b> 米，军军走完全程需要 <b>24 分钟</b>，出发 <b>8 分钟</b>后，壮壮和军军还相距 <b>1120 米</b>。还要过多少分钟，壮壮和军军才能相遇？",
+    hint:"【小提示】壮壮 8 分钟走的路程 + 8 分钟后两人相距的路程 = 军军 16 分钟走的路程。为什么是 16 分钟？因为军军走完全程要 24 分钟，24 − 8 = 16——先把这 16 分钟的路算出来，就知道军军的速度了。",
+    hint2:"壮壮 8 分钟走 60 × 8 = 480 米，加上相距的 1120 米 = 1600 米。这 1600 米就是军军 16 分钟走的路程，所以军军每分钟走 1600 ÷ 16 = 100 米。再用合速度算剩下 1120 米要几分钟走完。",
+    steps:[
+      {t:"画图：把全程分成 3 份",d:"军军走完全程要 24 分钟 = 3 个 8 分钟。出发 8 分钟时，军军正好走了全程的 1 份。<div class=\"row\" style=\"margin-top:8px\"><span class=\"seg c-blue\" style=\"flex:2\"><b>2 份</b><i>壮壮已走 480 米 ＋ 中间空着 1120 米</i></span><span class=\"seg c-orange\" style=\"flex:1\"><b>1 份</b><i>军军 8 分钟已走</i></span></div>"},
+      {t:"算出 1 份是多少",d:"壮壮 8 分钟走：60 × 8 = 480（米）。图中的 2 份 = 480 + 1120 = 1600（米）。<div class=\"eq\">1600 ÷ 2 = 800（米）→ 1 份</div>"},
+      {t:"求全程和军军的速度",d:"全程 3 份：800 × 3 = 2400（米）。军军 8 分钟走 1 份 800 米，速度：<div class=\"eq small\">800 ÷ 8 = 100（米/分）</div>"},
+      {t:"求还要几分钟相遇",d:"还相距 1120 米，两人合速度：<div class=\"eq small\">60 + 100 = 160（米/分）</div><div class=\"eq\">1120 ÷ 160 = 7（分钟）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">全程分成 3 份：左边 2 份被“壮壮已走的 480 米 ＋ 两人的间隔 1120 米”占着（共 1600 米）；右边 1 份是军军 8 分钟已经走完的（800 米）。</div>'+'<div class="row">'+'<span class="seg c-blue" style="flex:2"><b>1600 米 = 2 份</b><i>壮壮 480 米 ＋ 空档 1120 米</i></span>'+'<span class="seg c-orange" style="flex:1"><b>800 米 = 1 份</b><i>军军 8 分钟走完</i></span>'+'</div>'+'<div class="rowcap sub"><span>全程 3 份 = 2400 米　→　军军 800 ÷ 8 = 100 米/分</span></div></div>',
+    ans:"还要过 <span class=\"ans-num\">7</span> 分钟，壮壮和军军才能相遇。",
+    check:"验算：8 + 7 = 15 分钟相遇，壮壮走 60 × 15 = 900 米，军军走 100 × 15 = 1500 米，900 + 1500 = 2400 米 = 全程 → 对啦！",
+    note:"题目自带的小提示“壮壮 8 分钟 + 相距 1120 = 军军 16 分钟路程”其实就是在说：剩下的 2 份路程是 1600 米（军军 16 分钟 = 2 个 8 分钟）。学会把全程“切成几份”，难题就变简单了。"
+  },
+  {
+    id:7, lv:3,
+    text:"童太奇和哥哥放学后都要去打篮球，两人同时从学校出发，但是速度不同。已知童太奇每分钟走 <b>60</b> 米，哥哥每分钟走 <b>100</b> 米，出发 <b>8 分钟</b>后，哥哥发现忘记带篮球于是便返回学校拿篮球，拿到篮球后，哥哥去追童太奇。哥哥多少分钟后可以追上童太奇？",
+    hint:"【小提示】先求出哥哥回到学校拿篮球时，童太奇走的总时间和总路程，再解题。哥哥走到“发现忘带篮球”的地方用了 8 分钟，再走回学校还要 8 分钟——这 16 分钟里，童太奇可一直在走。",
+    hint2:"哥哥回到学校时，童太奇已经走了 60 × 16 = 960 米，这是新的差距。之后哥哥每分钟多走 100 − 60 = 40 米，960 ÷ 40 = 24 分钟追上。",
+    steps:[
+      {t:"先算哥哥回学校一共花多久",d:"哥哥向前走 8 分钟发现忘带球，原路走回学校还要 8 分钟：<div class=\"eq\">8 + 8 = 16（分钟）</div>"},
+      {t:"算这 16 分钟童太奇走了多远",d:"童太奇一直在走：<div class=\"eq\">60 × 16 = 960（米）</div>哥哥回到学校时，童太奇已经领先 960 米，这就是新的“差距”。"},
+      {t:"算哥哥从学校出发后每分钟追近多少",d:"哥哥 100 米/分，童太奇 60 米/分：<div class=\"eq small\">100 − 60 = 40（米/分）</div>"},
+      {t:"求追上时间",d:"差距 960 米，每分钟补 40 米：<div class=\"eq\">960 ÷ 40 = 24（分钟）</div>（如果问“从最初出发算起”，就是 16 + 24 = 40 分钟。）"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">两排一样长 = 追上点离学校 2400 米：童太奇先走 16 分钟（960 米），再走 24 分钟（1440 米）；哥哥返回后骑车 24 分钟直达同一个点。</div>'+'<div class="rowcap"><span>童太奇：16 分钟先走 960 米，之后又走 24 分钟</span><em>追上点</em></div>'+'<div class="row">'+'<span class="seg c-gold" style="flex:2"><b>960 米</b><i>前 16 分钟</i></span>'+'<span class="seg c-blue" style="flex:3"><b>1440 米</b><i>后 24 分钟×60</i></span>'+'</div>'+'<div class="rowcap"><span>哥哥：返回学校后骑车 24 分钟</span><em>追上点</em></div>'+'<div class="row c-orange"><span class="seg"><b>2400 米</b><i>100 × 24 分钟</i></span></div>'+'</div>',
+    ans:"哥哥再次从学校出发追，<span class=\"ans-num\">24</span> 分钟后追上童太奇（若从最初一起出发算起，共 16 + 24 = 40 分钟）。",
+    check:"验算：追上时童太奇共走 16 + 24 = 40 分钟，60 × 40 = 2400 米；哥哥骑 24 分钟，100 × 24 = 2400 米。两人在同一个点 → 对啦！",
+    note:"哥哥“白跑”了个来回：这 8 + 8 = 16 分钟里他不但没追上，童太奇还越走越远。做题时别忘记把童太奇这 16 分钟的路也算进去。"
+  },
+  {
+    id:8, lv:3,
+    text:"童太奇、小晶分别从体育馆和图书馆出发，相向而行。已知童太奇每分钟走 <b>120</b> 米，两人经过 <b>5 分钟</b>后相遇，相遇后没有停留，童太奇继续走向图书馆，小晶继续走向体育馆，过了 <b>3 分钟</b>，童太奇到达图书馆。那么体育馆到图书馆的距离是多少？小晶的速度是多少？",
+    hint:"画一条线，把“相遇点”标出来。相遇点把全程分成两段：体育馆到相遇点（童太奇走的 5 分钟），图书馆到相遇点（童太奇相遇后又走 3 分钟才到）。这两段都能用童太奇的速度算出来。",
+    hint2:"体育馆→相遇点 = 120 × 5 = 600 米；相遇点→图书馆 = 120 × 3 = 360 米；全程 = 600 + 360 = 960 米。小晶从图书馆走到相遇点也用了 5 分钟，这段正好 360 米，所以小晶速度 = 360 ÷ 5 = 72 米/分。",
+    steps:[
+      {t:"算体育馆到相遇点有多远",d:"童太奇以 120 米/分走了 5 分钟才相遇：<div class=\"eq\">120 × 5 = 600（米）</div>"},
+      {t:"算相遇点到图书馆有多远",d:"相遇后童太奇继续走 3 分钟到达图书馆：<div class=\"eq\">120 × 3 = 360（米）</div>"},
+      {t:"求全程",d:"两段加起来：<div class=\"eq\">600 + 360 = 960（米）</div>"},
+      {t:"求小晶的速度",d:"小晶从图书馆出发，走到相遇点用了 5 分钟，这段路正好是 360 米：<div class=\"eq\">360 ÷ 5 = 72（米/分）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">相遇点把全程分成两段：左段 600 米是童太奇 5 分钟走的，右段 360 米是童太奇又走 3 分钟才到的，也是小晶从图书馆出发 5 分钟走的路。</div>'+'<div class="rowcap"><span>体育馆</span><em>相遇点</em><span>图书馆</span></div>'+'<div class="row">'+'<span class="seg c-blue" style="flex:5"><b>600 米</b><i>童太奇 120×5</i></span>'+'<span class="seg c-orange" style="flex:3"><b>360 米</b><i>童太奇 120×3 ＝ 小晶 72×5</i></span>'+'</div>'+'<div class="rowcap sub"><span>全程 960 米；相遇后童太奇 3 分钟到图书馆，说明相遇点距图书馆只有 360 米。</span></div></div>',
+    ans:"体育馆到图书馆的距离是 <span class=\"ans-num\">960</span> 米；小晶的速度是 <span class=\"ans-num\">72</span> 米/分。",
+    check:"验算：童太奇从体育馆到图书馆全程走 5 + 3 = 8 分钟，120 × 8 = 960 米 ✓；两人合速度 120 + 72 = 192，960 ÷ 192 = 5 分钟正好相遇 ✓。",
+    note:"相遇点不一定在正中间！这题的相遇点离图书馆更近——因为童太奇走得快。把两段路程分别算出来，全程自然就出来了。"
+  },
+  {
+    id:9, lv:3,
+    text:"A、B 两地相距 <b>30 千米</b>，一辆汽车以每小时 <b>60</b> 千米的速度从 A 地出发，一辆客车以每小时 <b>55</b> 千米的速度从 B 地出发，两车同时出发，<b>同向而行</b>。经过几小时，两车相距 20 千米？",
+    hint:"两车同向而行，汽车在 A、客车在 B，客车在前，汽车在后面追。汽车每小时能追近多少？一开始相距 30 千米，想追到“只差 20 千米”，需要缩小多少千米？",
+    hint2:"别只答一种！追上之前会相距 20 千米；追上之后汽车继续往前开，又会把距离拉开到 20 千米。两种情况都要算：缩小 10 千米 ÷ 5 = 2 小时；多走 50 千米 ÷ 5 = 10 小时。",
+    steps:[
+      {t:"先算每小时汽车追近多少",d:"汽车 60 千米/时，客车 55 千米/时：<div class=\"eq\">60 − 55 = 5（千米/时）</div>"},
+      {t:"第一种：还没追上就相距 20 千米",d:"一开始相距 30，要缩小到 20，只需要追近：<div class=\"eq small\">30 − 20 = 10（千米）</div><div class=\"eq\">10 ÷ 5 = 2（小时）</div>"},
+      {t:"第二种：追上后又拉开到 20 千米",d:"汽车先追上客车（要多走 30 千米），再超过它 20 千米：<div class=\"eq small\">30 + 20 = 50（千米）</div><div class=\"eq\">50 ÷ 5 = 10（小时）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">这条路上“相距 20 千米”出现了两次：追上之前一次（2 小时），追上之后又一次（10 小时）。</div>'+'<div class="flow"><span class="fchip b">情况① 追上之前：差缩小 10 千米 → 10 ÷ 5 = 2 小时</span></div>'+'<div class="flow"><span class="fchip b">情况② 追上之后：汽车比客车多走 50 千米 → 50 ÷ 5 = 10 小时</span></div>'+'<div class="fnote">中间还会相遇一次（相距 0 千米），大约在 30 ÷ 5 = 6 小时。</div></div>',
+    ans:"经过 <span class=\"ans-num\">2</span> 小时（追上之前）或 <span class=\"ans-num\">10</span> 小时（追上之后），两车相距 20 千米。",
+    check:"验算：2 小时后汽车走 120 千米、客车走 110 千米，加上客车先出发的 30 千米 → 120 对 140，相距 20 ✓；10 小时后汽车 600、客车 550 + 30 = 580，汽车已超过 20 千米 ✓。",
+    note:"同向追及题里看到“相距多少”，先问自己：这是在追上之前，还是在追上之后？两种都算一遍，答案才完整。"
+  },
+  {
+    id:10, lv:3,
+    text:"甲、乙两车同时从 A 地开往 B 地，甲车每小时行驶 <b>90</b> 千米，乙车每小时行驶 <b>75</b> 千米。出发 <b>1 小时</b>后，甲车发现有重要文件落在了 A 地，于是立刻返回 A 地取文件，拿到文件后立即向 B 地出发，最后甲、乙两车同时到达 B 地。求 A、B 两地的距离。",
+    hint:"甲车去 1 小时、返回还要 1 小时。等甲车回到 A 地时，乙车已经连续开了 2 小时（走了 75 × 2 = 150 千米）。甲车这时候才真正开始“追”。",
+    hint2:"甲车回到 A 时落后乙车 150 千米；每小时能追近 90 − 75 = 15 千米，150 ÷ 15 = 10 小时追上（正好到 B）。乙车一共用了 2 + 10 = 12 小时，AB = 75 × 12 = 900 千米。",
+    steps:[
+      {t:"先算甲车折返耽误的时间",d:"甲车开 1 小时发现忘带文件，再开回 A 地还要 1 小时：<div class=\"eq\">1 + 1 = 2（小时）</div>这 2 小时里乙车一直在开：75 × 2 = 150（千米）。"},
+      {t:"看清楚：甲车回到 A 地时落后多少",d:"甲车回到 A 地（位置 0），乙车已经离 A 150 千米。这就是新的“差距”。"},
+      {t:"算甲车每小时能追近多少",d:"甲车 90 千米/时，乙车 75 千米/时：<div class=\"eq small\">90 − 75 = 15（千米/时）</div>"},
+      {t:"求追上（到达 B）需要多久",d:"差距 150 千米，每小时补 15 千米：<div class=\"eq\">150 ÷ 15 = 10（小时）</div>追上那一刻正好就是 B 地。"},
+      {t:"求 A、B 距离",d:"乙车从出发到被追上共用了：<div class=\"eq small\">2 + 10 = 12（小时）</div><div class=\"eq\">75 × 12 = 900（千米）</div>（甲车后 10 小时开 90 × 10 = 900 千米，也正好到 B。）"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">甲车“白跑”了一个来回：前 2 小时只是去又回，真正从 A 往 B 开是从第 2 小时才开始，用了 10 小时。</div>'+'<div class="flow"><span class="fchip">甲车回到 A 时，乙车已领先 75×2 = 150 千米</span></div>'+'<div class="flow"><span class="fchip">150 千米</span><span class="farrow">÷ 每小时追近 15 千米</span><span class="fchip b">10 小时到达 B</span></div>'+'<div class="flow"><span class="fchip b">AB = 75 ×（2 + 10）= 900 千米</span></div>'+'<div class="fnote">甲车全程开了 12 小时，但其中 2 小时在往返，别把它当成从 A 到 B 的时间。</div></div>',
+    ans:"A、B 两地的距离是 <span class=\"ans-num\">900</span> 千米。",
+    check:"验算：乙车 12 小时 × 75 = 900 千米；甲车实际从 A 往 B 开 10 小时 × 90 = 900 千米。两车同时到达 B → 对啦！",
+    note:"甲车一共行驶了 12 小时（去 1 + 回 1 + 再走 10），但其中有 2 小时是在往返“白跑”。算 AB 时要用甲车真正从 A 到 B 的 10 小时，或者直接用乙车的 12 小时，才不会把往返那段重复算进去。"
+  }
+];
+
+/* ===================== 界面逻辑 ===================== */
+var LEVELS = {
+  1:{name:"一星 · 热身", chip:"基础起步", cls:"l1", intro:"热身三题：看清是“合走”还是“补差距”，套上小公式就能拿下。"},
+  2:{name:"二星 · 闯关", chip:"举一反三", cls:"l2", intro:"要动脑筋了：换单位、想“两种相距”、用份数找速度——跟着提示慢慢来。"},
+  3:{name:"三星 · 挑战", chip:"举一反三", cls:"l3", intro:"折返、等量、追过了还要再算——把图画出来，答案会自己现身。"}
+};
+
+function $(id){return document.getElementById(id);}
+
+/* localStorage 安全封装（某些环境可能禁止） */
+var store = {
+  get:function(k,d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+var DONE_KEY = "jfys_meet_done";
+var NAME_KEY = "jfys_meet_name";
+var TA_PREFIX = "ta_meet_";
+
+function starsHtml(n){
+  var out = "";
+  for(var i=1;i<=3;i++){ out += (i<=n ? "★" : "<i>☆</i>"); }
+  return '<span class="stars">'+out+'</span>';
+}
+
+function stepsHtml(steps){
+  var h = "";
+  for(var i=0;i<steps.length;i++){
+    h += '<div class="step"><span class="step-no">'+(i+1)+'</span>'+'<div class="step-t">'+steps[i].t+'</div>'+'<div class="step-d">'+steps[i].d+'</div></div>';
+  }
+  return h;
+}
+
+function buildQuestion(q){
+  var lv = LEVELS[q.lv];
+  var html = '<article class="card lv'+q.lv+'" id="card-'+q.id+'" data-id="'+q.id+'">'+
+    '<div class="card-head">'+
+      '<span class="q-no">第 '+q.id+' 题</span>'+starsHtml(q.lv)+
+      '<span class="lvl-tag">'+lv.name+' · '+lv.chip+'</span>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="done-chip" data-act="done" data-q="'+q.id+'">我做出来啦！</button>'+
+    '</div>'+
+    '<div class="q-text">'+q.text+'</div>'+
+    '<div class="think"><label for="ta-'+q.id+'">✎ 我的小练习本（写写算式和想法，会帮你保存在本机）</label>'+
+    '<textarea id="ta-'+q.id+'" placeholder="例如：30 + 40 = 70（千米/时）……"></textarea></div>'+
+    '<div class="actions">'+
+      '<button type="button" class="btn btn-hint" data-act="hint" data-q="'+q.id+'">💡 小提示</button>'+
+      '<button type="button" class="btn btn-sol" data-act="sol" data-q="'+q.id+'">📖 看完整解法</button>'+
+    '</div>'+
+    '<div class="hint-box" data-hintbox="'+q.id+'">'+
+      '<div class="h-tag">小提示</div>'+
+      '<p class="hint1">'+q.hint+'</p>'+
+      (q.hint2 ? '<p class="hint2">'+q.hint2+'</p><button type="button" class="morehint" data-act="morehint" data-q="'+q.id+'">再给一点点提示 →</button>' : '')+
+    '</div>'+
+    '<div class="sol" data-sol="'+q.id+'">'+
+      '<div class="sol-head">完整解法 · 一步一步跟我走</div>'+
+      stepsHtml(q.steps)+
+      (q.fig||'')+
+      '<div class="ans"><span class="ans-label">答 案</span><p>'+q.ans+'</p>'+
+      (q.check ? '<p class="check">'+q.check+'</p>' : '')+'</div>'+
+      (q.note ? '<div class="note"><span class="note-tag">小提醒</span>'+q.note+'</div>' : '')+
+    '</div></article>';
+  return html;
+}
+
+function buildLevels(){
+  var cont = $("questionList");
+  var html = "";
+  var order = [1,2,3];
+  for(var li=0; li<order.length; li++){
+    var lv = order[li];
+    var info = LEVELS[lv];
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    html += '<div class="lvl" id="level-'+lv+'">'+
+      '<div class="lvl-head">'+
+        '<h3 class="lvl-name">'+info.name+'</h3>'+
+        '<span class="lv-chip '+info.cls+'">'+info.chip+'</span>'+
+        '<span class="lvl-count" id="lc-'+lv+'">已完成 0/'+cards.length+'</span>'+
+      '</div>'+
+      '<p class="lvl-intro">'+info.intro+'</p>'+
+      '<div>'+cards.map(buildQuestion).join("")+'</div>'+
+    '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---- 进度 ----
+   每完成一题，按星级点亮星星（一星1颗、二星2颗、三星3颗）
+   一共：3×1 + 3×2 + 4×3 = 21 颗 */
+var MAX_STAR = QS.reduce(function(s,q){return s+q.lv;},0);
+
+function getDone(){ return JSON.parse(store.get(DONE_KEY,"[]")||"[]"); }
+function saveDone(list){ store.set(DONE_KEY,JSON.stringify(list)); }
+
+function renderProgress(){
+  var done = getDone();
+  var set = {};
+  done.forEach(function(id){set[id]=true;});
+  var total = QS.length;
+  var dcount = done.length;
+  var stars = 0;
+  QS.forEach(function(q){ if(set[q.id]) stars += q.lv; });
+
+  $("doneText").textContent = dcount + " / " + total;
+  $("starText").textContent = "★ " + stars + " / " + MAX_STAR;
+  $("pbarFill").style.width = (total ? Math.round(dcount/total*100) : 0) + "%";
+
+  /* 每级计数 */
+  [1,2,3].forEach(function(lv){
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    var c = cards.filter(function(q){return set[q.id];}).length;
+    var el = $("lc-"+lv);
+    if(el) el.textContent = "已完成 " + c + "/" + cards.length;
+  });
+
+  /* 卡片状态 */
+  QS.forEach(function(q){
+    var card = $("card-"+q.id);
+    if(!card) return;
+    var chip = card.querySelector(".done-chip");
+    if(set[q.id]){
+      card.classList.add("done");
+      chip.textContent = "✓ 完成啦，真棒";
+    }else{
+      card.classList.remove("done");
+      chip.textContent = "我做出来啦！";
+    }
+  });
+
+  /* 通关横幅 */
+  $("winBanner").classList.toggle("show", total>0 && dcount===total);
+
+  /* 问候语 */
+  var name = store.get(NAME_KEY,"").trim();
+  if(name){
+    $("greetLine").innerHTML = "<b>"+name+"</b>，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }else{
+    $("greetLine").textContent = "小朋友，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }
+}
+
+/* 事件：点击题目卡里的按钮 */
+$("questionList").addEventListener("click", function(ev){
+  var btn = ev.target.closest("button[data-act]");
+  if(!btn) return;
+  var id = +btn.getAttribute("data-q");
+  var act = btn.getAttribute("data-act");
+  var card = $("card-"+id);
+  if(!card) return;
+
+  if(act==="hint"){
+    var hb = card.querySelector(".hint-box");
+    var open = hb.classList.toggle("on");
+    btn.classList.toggle("open", open);
+    btn.textContent = open ? "收起提示" : "💡 小提示";
+    if(open){
+      var more = hb.querySelector(".morehint");
+      var h2 = hb.querySelector(".hint2");
+      if(more) more.style.display = "";
+      if(h2 && h2.classList.contains("show")) h2.style.display = "";
+    }
+  }
+  if(act==="morehint"){
+    var hb2 = card.querySelector(".hint-box");
+    var h22 = hb2.querySelector(".hint2");
+    if(h22){ h22.classList.add("show"); h22.style.display = "block"; }
+    btn.style.display = "none";
+  }
+  if(act==="sol"){
+    var sb = card.querySelector(".sol");
+    var open2 = sb.classList.toggle("on");
+    btn.classList.toggle("open", open2);
+    btn.textContent = open2 ? "收起解法" : "📖 看完整解法";
+  }
+  if(act==="done"){
+    var list = getDone();
+    var idx = list.indexOf(id);
+    if(idx>=0){ list.splice(idx,1); }
+    else{ list.push(id); }
+    saveDone(list);
+    renderProgress();
+  }
+});
+
+/* 草稿自动保存 */
+$("questionList").addEventListener("input", function(ev){
+  if(ev.target && ev.target.id && ev.target.id.indexOf("ta-")===0){
+    store.set(TA_PREFIX + ev.target.id, ev.target.value);
+  }
+});
+
+/* 名字 */
+var nameEl = $("nameIn");
+nameEl.value = store.get(NAME_KEY,"");
+nameEl.addEventListener("input", function(){
+  store.set(NAME_KEY, nameEl.value);
+  renderProgress();
+});
+
+/* 重新开始 */
+$("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要清空进度、名字和所有草稿吗？")) return;
+  saveDone([]);
+  store.del(NAME_KEY);
+  QS.forEach(function(q){ store.del(TA_PREFIX+"ta-"+q.id); $("ta-"+q.id).value=""; });
+  nameEl.value = "";
+  /* 收起所有展开的提示/解法 */
+  document.querySelectorAll(".hint-box.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".hint2.show").forEach(function(b){ b.classList.remove("show"); b.style.display=""; });
+  document.querySelectorAll(".btn-hint.open").forEach(function(b){ b.classList.remove("open"); b.textContent="💡 小提示"; });
+  document.querySelectorAll(".sol.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".btn-sol.open").forEach(function(b){ b.classList.remove("open"); b.textContent="📖 看完整解法"; });
+  renderProgress();
+});
+
+/* 日期 */
+(function(){
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"];
+  $("dateChip").textContent = (d.getMonth()+1) + "月" + d.getDate() + "日 · 周" + wd[d.getDay()];
+})();
+
+/* 恢复草稿 + 初始渲染 */
+QS.forEach(function(q){
+  var el = $("ta-"+q.id);
+  if(el) el.value = store.get(TA_PREFIX+"ta-"+q.id,"");
+});
+buildLevels();
+renderProgress();
+</script>
+</body>
+</html>
+

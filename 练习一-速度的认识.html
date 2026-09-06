@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>奥数 · 举一反三 — 速度的认识（练习一）</title>
+<style>
+  :root{
+    --paper:#FFF6E6;
+    --card:#FFFFFF;
+    --ink:#2B2B33;
+    --mut:#8B8274;
+    --line:#EFE4CE;
+    --sun:#FFC53D;
+    --sun-soft:#FFF4D0;
+    --brand:#3553D6;
+    --brand-deep:#1F2E74;
+    --green:#1FA37F;
+    --blue:#3A8FE0;
+    --orange:#F06B3C;
+    --red:#D6452A;
+    --amber:#E09A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(31,46,116,.07) 1px,transparent 1.3px);
+    background-size:22px 22px;
+    line-height:1.75;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  button{font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none}
+  textarea{font-family:inherit}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--brand-deep);
+    color:#fff;
+    padding:22px 0 66px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topline{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+  .flag{display:inline-flex;align-items:center;gap:8px}
+  .flag::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .hero-in{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+    padding:34px 0 16px;
+  }
+  h1{
+    font-size:clamp(42px,7vw,66px);font-weight:900;letter-spacing:.02em;line-height:1.08;
+    margin:0;
+  }
+  .zh-yellow{color:var(--sun)}
+  .hero-sub{
+    margin-top:14px;font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);
+    line-height:1.9;max-width:560px;
+  }
+  .hero-sub b{color:var(--sun);font-weight:700}
+  .hero-art{text-align:center}
+  .hero-art svg{width:min(300px,52vw);height:auto;display:block;margin:0 auto}
+  .road-strip{
+    position:absolute;left:0;right:0;bottom:0;height:34px;
+    background:rgba(11,18,58,.42);
+  }
+  .road-strip::before{
+    content:"";position:absolute;left:0;right:0;top:15px;height:4px;
+    background:repeating-linear-gradient(to right,rgba(255,197,61,.95) 0 26px,transparent 26px 52px);
+  }
+  .cone{position:absolute;bottom:-6px;color:var(--sun)}
+  .cone.c1{left:10%}
+  .cone.c2{left:88%}
+
+  /* ============ WELCOME / PROGRESS ============ */
+  .welcome{
+    background:#fff;border:1px solid #F3EAD8;border-radius:20px;
+    box-shadow:0 12px 30px rgba(31,46,116,.12);
+    margin-top:-34px;padding:18px 22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .greet{font-size:13px;color:var(--mut)}
+  .greet b{color:var(--brand-deep);font-size:16px}
+  .name-in{
+    border:1.5px dashed #D9CBA9;border-radius:10px;padding:4px 10px;font-size:15px;
+    width:170px;background:#FFFDF6;outline:none;color:var(--ink);
+  }
+  .name-in:focus{border-color:var(--brand)}
+  .wel-right{min-width:250px}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+  .pmeta .star-count{color:#D98E04;font-weight:700}
+  .pbar{height:12px;background:#EFE8D8;border-radius:999px;overflow:hidden}
+  .pbar-fill{height:100%;width:0;background:var(--brand);border-radius:999px;transition:width .5s ease}
+  .win-banner{
+    margin-top:18px;display:none;align-items:center;gap:12px;
+    background:#FFF2CB;border:1.5px solid #F2D68A;color:#6B4B00;
+    border-radius:16px;padding:14px 18px;font-size:16px;font-weight:700;
+  }
+  .win-banner.show{display:flex;animation:pop .4s ease}
+  .win-banner svg{flex:none}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* ============ SECTIONS ============ */
+  .sec{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .sec-no{
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;
+    background:var(--brand-deep);border-radius:8px;padding:3px 9px;
+    align-self:center;
+  }
+  .sec-head h2{font-size:clamp(22px,3.4vw,28px);font-weight:900}
+  .sec-head .sec-sub{color:var(--mut);font-size:14px}
+  .rule{height:1px;background:var(--line);margin:12px 0 20px}
+
+  /* ============ LESSON ============ */
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .lcard{
+    background:#fff;border:1px solid #F1E6D0;border-radius:18px;padding:20px 20px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .lcard h4{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .ic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .ic.ic-b{background:#E9EEFF;color:var(--brand)}
+  .ic.ic-g{background:#E1F6EF;color:var(--green)}
+  .ic.ic-o{background:#FFEBDD;color:var(--orange)}
+  .lcard p{font-size:14.5px;color:#4A4439}
+  .lcard p b{color:var(--ink)}
+  .tri{margin:8px auto 2px;text-align:center}
+  .pill{
+    display:inline-block;border-radius:12px;padding:5px 18px;margin:3px;
+    font-weight:800;font-size:16px;color:#fff;
+  }
+  .pill.top{background:var(--brand)}
+  .pill.l{background:var(--green)}
+  .pill.r{background:var(--orange)}
+  .tri .op{font-size:20px;font-weight:900;color:var(--mut);padding:0 6px}
+  .tri-cap{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .u-list,.n-list{list-style:none;font-size:14px;color:#4A4439}
+  .u-list li,.n-list li{padding:5px 0;border-bottom:1px dashed #F0E5D0}
+  .u-list li:last-child,.n-list li:last-child{border-bottom:none}
+  .u-chip{
+    display:inline-block;background:#F1F5FF;color:var(--brand);
+    border-radius:8px;padding:1px 8px;font-weight:700;font-size:13.5px;margin:1px 0;
+  }
+  .n-list b{color:var(--orange)}
+
+  /* ============ PRACTICE LEVEL ============ */
+  .lvl{margin-top:36px}
+  .lvl-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .lvl-name{font-size:20px;font-weight:900;margin-right:2px}
+  .lv-chip{
+    font-size:12px;font-weight:800;color:#fff;border-radius:999px;
+    padding:2px 11px;letter-spacing:.05em;
+  }
+  .lv-chip.l1{background:var(--green)}
+  .lv-chip.l2{background:var(--blue)}
+  .lv-chip.l3{background:var(--orange)}
+  .lvl-count{margin-left:auto;font-size:13px;color:var(--mut);font-weight:700}
+  .lvl-intro{font-size:14px;color:var(--mut);margin:4px 0 2px 2px}
+
+  /* ============ QUESTION CARD ============ */
+  .card{
+    background:#fff;border:1px solid #F1E6D0;border-top:6px solid #ddd;
+    border-radius:18px;padding:20px 22px 22px;margin-top:18px;
+    box-shadow:0 6px 18px rgba(31,46,116,.05);
+    transition:box-shadow .2s ease;
+  }
+  .card.lv1{border-top-color:var(--green)}
+  .card.lv2{border-top-color:var(--blue)}
+  .card.lv3{border-top-color:var(--orange)}
+  .card.done{background:#FDFFFC}
+  .card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .q-no{
+    font-size:15px;font-weight:900;color:var(--brand-deep);
+    background:#EEF1FF;border-radius:10px;padding:3px 12px;
+  }
+  .stars{color:var(--sun);font-size:17px;letter-spacing:2px}
+  .stars i{color:#E9DCBC;font-style:normal}
+  .spacer{flex:1}
+  .lvl-tag{font-size:12px;color:var(--mut);font-weight:700}
+  .done-chip{
+    border:1.5px solid #E2D9C4;background:#FFFDF7;color:#A89B82;
+    border-radius:999px;padding:4px 13px;font-size:13px;font-weight:800;
+  }
+  .done-chip:hover{border-color:#BFD9CB;color:var(--green)}
+  .card.done .done-chip{background:#E2F6EC;border-color:#B7E3CF;color:#0F8A5F}
+  .q-text{
+    background:#FBF5E6;border:1px solid #F1E7CE;border-radius:14px;
+    padding:15px 17px;margin-top:14px;font-size:16.5px;line-height:1.95;
+  }
+  .q-text b{font-weight:800;color:var(--brand-deep);border-bottom:2px solid var(--sun)}
+  .think{margin-top:12px}
+  .think label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:5px}
+  .think textarea{
+    width:100%;min-height:62px;resize:vertical;border:1.5px dashed #DFD3B8;
+    border-radius:12px;background:#FFFEF9;padding:9px 12px;font-size:15px;line-height:1.7;
+    color:var(--ink);outline:none;
+  }
+  .think textarea:focus{border-color:var(--brand)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:800;
+    border:1px solid transparent;transition:transform .08s ease,background .2s ease,color .2s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-hint{background:#FFF3D2;color:#8A5E00;border-color:#F0DDA2}
+  .btn-hint:hover{background:#FFE9A8}
+  .btn-hint.open{background:#FFD979}
+  .btn-sol{background:var(--brand);color:#fff}
+  .btn-sol:hover{background:#2A44C0}
+  .btn-sol.open{background:#E7ECFF;color:var(--brand);border-color:#C9D6FF}
+
+  .hint-box{display:none;margin-top:14px;background:#FFF9E6;border:1px solid #F2E2AC;
+    border-left:5px solid #EDB800;border-radius:12px;padding:12px 16px}
+  .hint-box.on{display:block;animation:fadein .25s ease}
+  .hint-box .h-tag{font-weight:900;color:#9A6E00;font-size:13.5px;margin-bottom:4px}
+  .hint1{font-size:15.5px}
+  .hint2{display:none;margin-top:10px;font-size:15px;color:#7A5A00;
+    border-top:1px dashed #EBD48F;padding-top:10px}
+  .hint2.show{display:block}
+  .morehint{
+    display:none;margin-top:10px;background:#fff;border:1px solid #E3CF8B;
+    color:#8A5E00;border-radius:999px;font-size:13px;font-weight:800;padding:4px 14px;
+  }
+  .hint-box.on .morehint{display:inline-block}
+  .morehint:hover{background:#FFEDBE}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  .sol{display:none;margin-top:16px}
+  .sol.on{display:block;animation:fadein .3s ease}
+  .sol-head{
+    display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;
+    color:var(--brand-deep);margin-bottom:12px;
+  }
+  .sol-head::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .step{
+    background:#F8FAFF;border:1px solid #E7ECFB;border-radius:14px;
+    padding:12px 16px 12px 50px;position:relative;margin-bottom:10px;
+  }
+  .step-no{
+    position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-t{font-weight:900;font-size:15px}
+  .step-d{font-size:14.5px;margin-top:3px;color:#3E3A32}
+  .eq{
+    margin:7px 0 2px;padding:7px 12px;background:#FFF3D2;border-left:4px solid var(--sun);
+    border-radius:8px;font-weight:800;font-size:16px;
+  }
+  .eq.small{font-weight:700;font-size:15px}
+  .fig{
+    background:#F7F2E6;border:1px dashed #E0D3B4;border-radius:14px;
+    padding:14px 16px;margin:14px 0 6px;
+  }
+  .fig-cap{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .rowcap{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-size:13px;color:#6B6355;margin:2px 0 6px;flex-wrap:wrap;
+  }
+  .rowcap em{font-style:normal;font-weight:800;color:var(--brand);background:#E7EDFF;
+    border-radius:999px;padding:1px 10px}
+  .rowcap sub{font-size:12px;color:var(--mut)}
+  .row{display:flex;gap:6px;margin-bottom:6px}
+  .seg{
+    flex:1;min-width:0;text-align:center;border-radius:10px;
+    padding:8px 2px 6px;font-weight:800;font-size:15px;line-height:1.25;
+  }
+  .seg i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.72;line-height:1.3;margin-top:3px}
+  .c-blue{background:#E9EFFF;color:#2B56C8}
+  .c-orange{background:#FFF0E2;color:#C55E18}
+  .c-gold{background:#FFF3CC;color:#B07C00}
+  .seg.stop{background:#ECEAE3;color:#8A8578}
+  .seg.late{outline:2px dashed var(--red);background:#FFE3D8;color:#C03A12}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+    font-weight:800;margin:10px 0 2px;
+  }
+  .fchip{background:#E9EFFF;color:#2B56C8;border-radius:10px;padding:6px 12px;font-size:14px}
+  .fchip.b{background:#FFF0E2;color:#C55E18}
+  .farrow{color:var(--mut);font-size:15px}
+  .fnote{font-size:12.5px;color:var(--mut);text-align:center;margin-top:4px}
+
+  .mapwrap{width:100%;margin:6px 0 2px}
+  .mapwrap svg{width:100%;height:auto;display:block}
+  .mapnote{font-size:12.5px;color:var(--mut);margin-top:4px;text-align:center}
+
+  .ans{
+    margin-top:14px;background:#F1F6FF;border:1.5px dashed var(--brand);
+    border-radius:14px;padding:13px 16px;
+  }
+  .ans-label{
+    display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    border-radius:999px;padding:1px 12px;margin-bottom:6px;letter-spacing:.1em;
+  }
+  .ans p{font-size:16px;font-weight:700}
+  .ans .ans-num{color:var(--brand);font-weight:900}
+  .check{margin-top:8px;font-size:13.5px;color:#5F584A;border-top:1px dashed #C9D7F5;padding-top:8px}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4F0;border:1px solid #FFDCD0;
+    border-radius:12px;padding:10px 14px;color:#7A4534}
+  .note-tag{font-weight:900;color:var(--orange);margin-right:6px}
+
+  .reset-wrap{text-align:center;margin:34px 0 6px}
+  .btn-reset{
+    background:transparent;border:1px dashed #C9BC9C;color:var(--mut);
+    border-radius:999px;padding:7px 18px;font-size:13px;
+  }
+  .btn-reset:hover{color:var(--red);border-color:var(--red);background:#FFF6F3}
+  footer{
+    text-align:center;color:#B3A98F;font-size:12px;line-height:2;
+    padding:30px 18px 40px;
+  }
+  footer .heart{color:var(--orange);font-weight:900}
+
+  @media (max-width:760px){
+    .hero-in{grid-template-columns:1fr;padding-top:22px}
+    .hero-art{display:none}
+    .welcome{flex-direction:column;align-items:flex-start}
+    .wel-right{width:100%}
+    .step{padding-left:44px}
+    .step-no{left:10px}
+    .q-no{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="flag">奥数 · 举一反三</span>
+      <span>练习一 · 速度的认识 · <span id="dateChip"></span></span>
+    </div>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1>速度的<span class="zh-yellow">认识</span></h1>
+        <p class="hero-sub">
+          一条路有多远、走了多久、每小段走多快——<br>
+          请出 <b>路程、时间、速度</b> 三兄弟，<br>
+          速度题其实一点也不可怕。
+        </p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 260 210" role="img" aria-label="速度表装饰图">
+          <circle cx="130" cy="108" r="96" fill="#FFC53D"/>
+          <circle cx="130" cy="108" r="80" fill="none" stroke="#1F2E74" stroke-width="9"
+                  stroke-dasharray="12 9" opacity=".9"/>
+          <line x1="130" y1="108" x2="188" y2="58" stroke="#D6452A" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="130" cy="108" r="12" fill="#1F2E74"/>
+          <text x="130" y="158" text-anchor="middle" fill="#1F2E74" font-size="34" font-weight="900">80</text>
+          <text x="130" y="182" text-anchor="middle" fill="#1F2E74" font-size="15" font-weight="700">千米 / 时</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="road-strip">
+    <svg class="cone c1" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+    <svg class="cone c2" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="welcome">
+    <div class="wel-left">
+      <div class="greet" id="greetLine">小朋友，今天来闯 7 道速度题！</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="name-in" id="nameIn" maxlength="12" placeholder="写下你的名字（可选）" />
+        <span style="font-size:13px;color:var(--mut)">我的小练功房</span>
+      </div>
+    </div>
+    <div class="wel-right">
+      <div class="pmeta">
+        <span>通关进度 <b id="doneText">0 / 7</b></span>
+        <span class="star-count" id="starText">★ 0 / 13</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
+    </div>
+  </section>
+
+  <div class="win-banner" id="winBanner">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B47A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.4-6.3 4.4L8 13.8l-6-4.6h7.6z"/></svg>
+    <span>7 题全部通关！你已经会用“三兄弟公式”啦，快把这个好消息告诉爸爸妈妈吧～</span>
+  </div>
+
+  <!-- ========== 知识点 ========== -->
+  <section class="sec" id="lesson">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>速度小课堂</h2>
+      <span class="sec-sub">做题之前，先花 3 分钟读一读</span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="lesson-grid">
+      <div class="lcard">
+        <h4><span class="ic ic-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h6V5H4zM14 19h6v-8h-6zM4 21h16"/><path d="M7 9.5v1M17 13.5v1"/></svg></span>三兄弟公式</h4>
+        <div class="tri">
+          <div class="pill top">路程</div>
+          <div class="tri-mid"><span class="pill l">速度</span><span class="op">×</span><span class="pill r">时间</span></div>
+          <div class="tri-cap">捂住“路程”：速度 × 时间；<br>捂住“速度”或“时间”：路程 ÷ 另一个。</div>
+        </div>
+        <p>
+          <b>路程</b>：一共走了多远（千米、米）<br>
+          <b>速度</b>：平均每小时（每分钟）走多远<br>
+          <b>时间</b>：一共走了多久（小时、分钟）
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>单位要穿对“衣服”</h4>
+        <p>
+          “千米/时”读作<b>千米每小时</b>，意思是“1 小时走多少千米”；<br>
+          “米/分”就是“1 分钟走多少米”。
+        </p>
+        <ul class="u-list">
+          <li>路程是<b>千米</b>，时间就用<b>小时</b></li>
+          <li>路程是<b>米</b>，时间就用<b>分钟</b></li>
+          <li>不一样就换算：<span class="u-chip">1 千米 = 1000 米</span> <span class="u-chip">1 小时 = 60 分钟</span></li>
+          <li>例：<b>60 千米/时</b>＝每分钟 <b>1000 米</b></li>
+        </ul>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M21 21l-5.2-5.2"/></svg></span>找“不变”的秘密</h4>
+        <p>
+          很多速度题里都藏着一个宝贝：<b>有一段路程从头到尾不变</b>。
+        </p>
+        <ul class="n-list">
+          <li>第 1、3、4、5 题都是同一段路——<b>先把总路程算出来</b>，后面就好办啦。</li>
+          <li>第 6、7 题不知道路程，但可以<b>大胆“假如一下”</b>，再画一条线。</li>
+          <li>实在想不通，就在草稿纸上把数字圈一圈、画一画，<b>图会帮你说话</b>。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 题目 ========== -->
+  <section class="sec" id="practice">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>开始闯关</h2>
+      <span class="sec-sub">先自己认真做 → 想不出点“小提示” → 最后才看“完整解法”</span>
+    </div>
+    <div class="rule"></div>
+    <div id="questionList"></div>
+  </section>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" id="resetBtn">清空进度与草稿，重新做一遍</button>
+  </div>
+</main>
+
+<footer>
+  奥数 · 举一反三 — 速度的认识（练习一）　|　离线可用，孩子的草稿保存在本机浏览器里<br>
+  给爸爸妈妈：7 题中第 1~3 题一星、第 4~5 题二星、第 6~7 题三星；二星与三星属于“举一反三”题型。<br>
+  <span class="heart">♥</span> Made for a curious little math explorer
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   题库数据：以后出“练习二”时，复制本文件，替换下面的 QS 数组即可。
+   字段说明：
+     lv   : 星级（1/2/3）
+     text : 题干（可加 <b></b> 圈重点）
+     hint : 第一层小提示
+     hint2: 第二层提示（可选，只有再点“再给一点点提示”才显示）
+     steps: 完整解法 [{t:小标题, d:讲解，可用 <br> 与 <div class="eq">}]
+     fig  : 配图（可选，写 HTML）
+     ans  : 完整答案句（答案数字包在 <span class="ans-num"> 里会标蓝加粗）
+     check: 验算小尾巴（可选）
+     note : 小提醒（可选）
+===================================================================== */
+var QS = [
+  /* ============ 一星 ============ */
+  {
+    id:1, lv:1,
+    text:"一辆汽车从甲地开往乙地，每小时行驶 <b>80</b> 千米，<b>5</b> 小时后到达。若要 <b>4</b> 小时到达，那么这辆汽车每小时要行驶多少千米？",
+    hint:"不管开得快还是慢，甲地到乙地的这段路都不会变长变短。先把这段路有多长算出来吧！",
+    steps:[
+      {t:"先求出总路程",d:"汽车每小时开 80 千米，开了 5 小时，一共开了多少千米？<div class=\"eq\">80 × 5 = 400（千米）</div>这就是甲地到乙地的路程，它不会变。"},
+      {t:"再想：4 小时走完它",d:"现在要把 400 千米平均分到 4 个小时里，每个小时要开多少千米？<div class=\"eq\">400 ÷ 4 = 100（千米/时）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">两排都代表同一条路（400 千米）：上面分 5 段，下面分 4 段——段数越少，每段就越长。</div>'+
+        '<div class="rowcap"><span>原计划：每小时 80 千米 × 5 小时</span><em>全程 400 千米</em></div>'+
+        '<div class="row c-blue">'+('<span class="seg"><b>80</b><i>第1时</i></span>'.repeat(5))+'</div>'+
+        '<div class="rowcap"><span>改为 4 小时：每小时要开 ?</span><em>全程 400 千米</em></div>'+
+        '<div class="row c-orange">'+('<span class="seg"><b>100</b><i>第1时</i></span>'.repeat(4))+'</div>'+
+        '</div>',
+    ans:"每小时要行驶 <span class=\"ans-num\">100</span> 千米。",
+    check:"验算：4 × 100 = 400（千米），和 5 × 80 = 400 一样长 → 对啦！"
+  },
+  {
+    id:2, lv:1,
+    text:"李叔叔开车经过隧道，隧道内会进行测速，<b>限速每小时 60 千米</b>，测速路段总长 <b>8100 米</b>，李叔叔开车用 <b>9 分钟</b>通过。李叔叔的车在测速路段超速了吗？",
+    hint:"先别急着比大小！限速用的是“千米、小时”，测速记录用的是“米、分钟”，单位不一样。先把车“每分钟走多少米”算出来，再想想怎么变成“每小时多少千米”，最后和限速 60 比一比。",
+    steps:[
+      {t:"求车每分钟走多少米",d:"9 分钟走完 8100 米，每分钟走：<div class=\"eq\">8100 ÷ 9 = 900（米/分）</div>"},
+      {t:"把“米/分”变成“千米/时”",d:"1 小时有 60 分钟，每分钟 900 米，1 小时就能走：<div class=\"eq small\">900 × 60 = 54000（米）＝ 54（千米）</div>所以李叔叔的车速是每小时 54 千米。"},
+      {t:"和限速比一比",d:"54 千米/时 ＜ 60 千米/时。"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">换单位的小阶梯：先乘 60 把“每分钟”变成“每小时”，再除以 1000 把“米”变成“千米”。</div>'+
+        '<div class="flow"><span class="fchip">900 米/分</span><span class="farrow">× 60 →</span><span class="fchip">54000 米/时</span><span class="farrow">÷ 1000 →</span><span class="fchip b">54 千米/时</span></div>'+
+        '<div class="fnote">54 千米/时 ＜ 60 千米/时，所以没有超速。</div></div>',
+    ans:"没有超速。李叔叔的车速是 <span class=\"ans-num\">54</span> 千米/时，比限速的 60 千米/时小。",
+    check:"换一种算法再验算：60 千米/时 = 每分钟 1000 米，9 分钟最多只能走 9000 米；而测速路段只有 8100 米，9 分钟走完绰绰有余 → 确实没超速。"
+  },
+  {
+    id:3, lv:1,
+    text:"小晶的爸爸开车去车站接小晶，每小时行驶 <b>50</b> 千米，需要 <b>3</b> 小时才能到达车站。如果每小时<b>多行驶 25</b> 千米，则需要几小时就可以到达车站？",
+    hint:"家到车站的路程是不变的，先把它算出来。这回速度变快了，时间会变长还是变短？",
+    steps:[
+      {t:"先求路程",d:"每小时 50 千米 × 3 小时：<div class=\"eq\">50 × 3 = 150（千米）</div>"},
+      {t:"算一算提速后的速度",d:"每小时多行驶 25 千米：<div class=\"eq small\">50 + 25 = 75（千米/时）</div>"},
+      {t:"求新时间",d:"150 千米里能分出几个 75 千米，就要几小时：<div class=\"eq\">150 ÷ 75 = 2（小时）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">还是同一条路（150 千米）：上面每小时走 50 千米要 3 小时；下面每小时走 75 千米只要 2 小时。</div>'+
+        '<div class="rowcap"><span>每小时 50 千米 → 3 小时</span><em>全程 150 千米</em></div>'+
+        '<div class="row c-blue">'+('<span class="seg"><b>50</b><i>1小时</i></span>'.repeat(3))+'</div>'+
+        '<div class="rowcap"><span>每小时 75 千米 → ？小时</span><em>全程 150 千米</em></div>'+
+        '<div class="row c-orange">'+('<span class="seg"><b>75</b><i>1小时</i></span>'.repeat(2))+'</div>'+
+        '</div>',
+    ans:"只需要 <span class=\"ans-num\">2</span> 小时就可以到达车站。",
+    check:"验算：2 × 75 = 150（千米），和原来的 3 × 50 = 150 一样长 → 对啦！"
+  },
+
+  /* ============ 二星 ============ */
+  {
+    id:4, lv:2,
+    text:"甲、乙两地相距 <b>3600 米</b>，王叔叔打算用 <b>20 分钟</b>从甲地骑行到乙地，出发时因自行车故障，<b>耽误了 2 分钟</b>。若王叔叔打算按原计划的时间到达，那么他每分钟需要提速多少？",
+    hint:"题里已经悄悄告诉你啦：<b>王叔叔骑行的总路程不变</b>。耽误 2 分钟后，他只剩几分钟可以用来骑？这几分钟里要骑完 3600 米。",
+    hint2:"先算出原来的速度（每分钟骑多少米），再算出“耽误后只能骑 18 分钟”时的速度，最后比一比——提速多少，就是新速度减去原来的速度。",
+    steps:[
+      {t:"原来的速度",d:"20 分钟骑完 3600 米：<div class=\"eq\">3600 ÷ 20 = 180（米/分）</div>"},
+      {t:"剩下的时间变少了",d:"耽误 2 分钟，能骑的时间只剩：<div class=\"eq small\">20 − 2 = 18（分钟）</div>"},
+      {t:"算现在需要的速度",d:"要在 18 分钟里骑完 3600 米：<div class=\"eq\">3600 ÷ 18 = 200（米/分）</div>"},
+      {t:"比一比，提速多少",d:"原来每分钟 180 米，现在要每分钟 200 米：<div class=\"eq\">200 − 180 = 20（米/分）</div>"}
+    ],
+    ans:"他每分钟需要提速 <span class=\"ans-num\">20</span> 米（从每分钟 180 米提到 200 米）。",
+    check:"验算：18 × 200 = 3600（米）→ 只用 18 分钟就正好骑完，按原计划时间到达。",
+    note:"题目问的是“提速多少”，要回答“200 − 180 = 20”，可别在算到“现在每分钟 200 米”时就停笔啦。"
+  },
+  {
+    id:5, lv:2,
+    text:"甲、乙两地相距 <b>300 千米</b>，一辆汽车原计划 <b>5 小时</b>从甲地开到乙地，每小时应行驶多少千米？在实际行驶 <b>120 千米</b>后，汽车发生了故障，中途<b>停留了 1 小时</b>。如果要按原计划的时间到达，那么在剩下 <b>180 千米</b>的路程中，汽车的速度应调整为多少？",
+    hint:"把这段旅程切成 3 小段来看：①故障前；②故障停车；③故障后。原计划 5 小时是“总预算”——先按原速度算出第①段用了几小时，再加上第②段停的 1 小时，剩下的时间就是第③段能用的时间。",
+    hint2:"第①段：120 千米 ÷ 原计划速度 = 用了几小时？算完别忘把“行驶的 2 小时 + 停车的 1 小时”一起从 5 小时里减掉。",
+    steps:[
+      {t:"第一问：原计划每小时应行驶多少千米",d:"300 千米分 5 小时：<div class=\"eq\">300 ÷ 5 = 60（千米/时）</div>"},
+      {t:"算故障前用了多久",d:"按原计划速度开，120 千米需要：<div class=\"eq small\">120 ÷ 60 = 2（小时）</div>"},
+      {t:"看看已经花掉多少时间",d:"行驶 2 小时 + 停车 1 小时：<div class=\"eq small\">2 + 1 = 3（小时）</div>"},
+      {t:"算剩余时间",d:"总预算 5 小时 − 已用 3 小时：<div class=\"eq\">5 − 3 = 2（小时）</div>"},
+      {t:"求故障后的速度",d:"剩下 180 千米要在这 2 小时里走完：<div class=\"eq\">180 ÷ 2 = 90（千米/时）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">把 5 小时排成一排（每一格 = 1 小时）：前 2 格走 120 千米，第 3 格停车不动，后 2 格要走完剩下的 180 千米。</div>'+
+        '<div class="row">'+
+        '<span class="seg c-blue"><b>60</b><i>第1时·走60千米</i></span>'+
+        '<span class="seg c-blue"><b>60</b><i>第2时·走60千米</i></span>'+
+        '<span class="seg stop"><b>0</b><i>第3时·故障停车</i></span>'+
+        '<span class="seg c-orange"><b>90</b><i>第4时·走90千米</i></span>'+
+        '<span class="seg c-orange"><b>90</b><i>第5时·走90千米</i></span>'+
+        '</div>'+
+        '<div class="rowcap sub"><span>120 千米 ＋ 停车 1 小时 ＋ 180 千米 ＝ 300 千米（5 小时用完）</span></div></div>',
+    ans:"原计划每小时行驶 <span class=\"ans-num\">60</span> 千米；发生故障后，速度要调整为每小时 <span class=\"ans-num\">90</span> 千米。",
+    check:"验算：2×60 + 0 + 2×90 = 120 + 180 = 300（千米）→ 还是正好 300 千米。",
+    note:"先把第①段的时间算出来，别直接用 300 千米来分后面的时间——后面只剩 180 千米可以走啦。"
+  },
+
+  /* ============ 三星 ============ */
+  {
+    id:6, lv:3,
+    text:"童太奇一家开车去外地游玩，原计划每小时行驶 <b>80</b> 千米，实际上由于高速公路堵车，每小时只能行驶 <b>60</b> 千米，导致最后<b>晚到了 2 小时</b>。童太奇一家在路上实际花了几小时？",
+    hint:"“晚到 2 小时”就是说：实际用的时间比计划多 2 小时。想一想：在“原计划该到的时候”，实际的车还差多远没走完？",
+    hint2:"还差的那段路，按实际速度 60 千米/时来走正好要 2 小时：60 × 2 = 120 千米。而实际每小时比计划少开 80 − 60 = 20 千米——差出来的 120 千米，是几个“每小时少开 20 千米”攒起来的？那正是原计划的小时数。",
+    steps:[
+      {t:"先读懂“晚到 2 小时”",d:"在原计划该到的那个时刻，实际的车还没到，还差一小段路。按实际速度 60 千米/时，走完这一小段要 2 小时：<div class=\"eq\">60 × 2 = 120（千米）</div>也就是说，计划时间结束时，实际车还差 <b>120 千米</b>。"},
+      {t:"找“每小时少开”多少",d:"实际每小时比计划少开：<div class=\"eq small\">80 − 60 = 20（千米/时）</div>"},
+      {t:"问一问：多久会差出 120 千米",d:"每小时少开 20 千米，几个小时后会总共少开 120 千米？<div class=\"eq\">120 ÷ 20 = 6（小时）</div>这 6 小时，就是原计划要开的时间。"},
+      {t:"求实际时间",d:"实际比计划多 2 小时：<div class=\"eq\">6 + 2 = 8（小时）</div>"}
+    ],
+    fig:'<div class="fig"><div class="fig-cap">同样长的两段路：上面按每小时 80 千米分成 6 格；下面按每小时 60 千米要分成 8 格。下面比上面<b>多出 2 格</b>——这 2 个小时就是“晚到”的时间。</div>'+
+        '<div class="rowcap"><span>计划：每小时 80 千米 × 6 小时</span><em>全程 480 千米</em></div>'+
+        '<div class="row c-blue">'+('<span class="seg"><b>80</b><i>1小时</i></span>'.repeat(6))+'</div>'+
+        '<div class="rowcap"><span>实际：每小时 60 千米 × 8 小时</span><em>全程 480 千米</em></div>'+
+        '<div class="row c-orange">'+('<span class="seg"><b>60</b><i>1小时</i></span>'.repeat(6))+
+        '<span class="seg late"><b>60</b><i>晚到的1小时</i></span><span class="seg late"><b>60</b><i>晚到的1小时</i></span></div>'+
+        '<div class="rowcap sub"><span>前 6 小时每小时少开 20 千米 → 共少 120 千米，正好等于晚到 2 小时能走的路。</span></div></div>',
+    ans:"童太奇一家在路上实际花了 <span class=\"ans-num\">8</span> 小时。",
+    check:"验算：实际 8 小时 × 60 = 480（千米）；计划 6 小时 × 80 = 480（千米）。两条路一样长 → 没算错！",
+    note:"第 6 题没有告诉我们路程有多长，但两段路一样长——抓住“每小时少开 20 千米”和“晚到 2 小时”，就能把时间找出来。这就是“举一反三”要练的推理哦。"
+  },
+  {
+    id:7, lv:3,
+    text:"童太奇从家出发去学校上课，开始时<b>每分钟走 60 米，走了 3 分钟</b>，这时他想：若根据以往上学的经验，再按这个速度走下去，将会<b>迟到 1 分钟</b>。于是他加快速度，<b>每分钟多走 10 米</b>，结果<b>早到 2 分钟</b>。求童太奇家到学校的距离。",
+    hint:"把“上课铃响的那一刻”当成一条分界线。想一想：如果一直慢慢走，铃响时他在学校前还是后？如果加速走，铃响时他（不停下来继续走）又会到哪儿？",
+    hint2:"慢慢走：铃响时离学校还差 60 米；加速走：到校后不停，铃响时已经超出学校 140 米。同样是从“加速点”出发到铃响时刻，两次差了 60 + 140 = 200 米。而每分钟只多走 10 米——走了多少分钟才差出 200 米？",
+    steps:[
+      {t:"先算开头 3 分钟走了多远",d:"前 3 分钟每分钟 60 米：<div class=\"eq\">60 × 3 = 180（米）</div>这 180 米先放在一边，接下来从这儿“加速点”开始看。"},
+      {t:"看铃响时两种走法分别在哪儿",d:"<b>慢慢走</b>会迟到 1 分钟 → 上课铃响时，他还差 60 米才到学校。<br><b>加速走</b>会早到 2 分钟 → 到校后还有 2 分钟才打铃；如果到校后不停下来，继续按每分钟 70 米走，铃响时会超出学校：<div class=\"eq small\">70 × 2 = 140（米）</div>"},
+      {t:"算两种走法在铃响时相差多远",d:"一个在校门前还差 60 米，一个已经超出校门 140 米：<div class=\"eq\">60 + 140 = 200（米）</div>"},
+      {t:"这 200 米是多久攒出来的",d:"从加速那一刻起，每分钟多走 70 − 60 = 10 米。走多少分钟会多出 200 米？<div class=\"eq\">200 ÷ 10 = 20（分钟）</div>所以从“加速点”到上课铃响，一共 20 分钟。"},
+      {t:"求剩余路程（加速点到学校）",d:"按慢慢走来看：20 分钟走 60 × 20 = 1200 米，这时还差 60 米才到校：<div class=\"eq small\">1200 + 60 = 1260（米）</div>也可以按加速走：早到 2 分钟，实际只用了 20 − 2 = 18 分钟，70 × 18 = 1260 米。两种算法一样！"},
+      {t:"求家到学校的总距离",d:"开头 180 米 + 剩余 1260 米：<div class=\"eq\">180 + 1260 = 1440（米）</div>"}
+    ],
+    fig:'<div class="mapwrap"><svg viewBox="0 0 1000 190" aria-label="路线示意图">'+
+        '<line x1="40" y1="120" x2="985" y2="120" stroke="#3553D6" stroke-width="3"/>'+
+        '<line x1="868" y1="120" x2="868" y2="40" stroke="#1FA37F" stroke-width="2" stroke-dasharray="5 5"/>'+
+        '<text x="868" y="32" text-anchor="middle" fill="#1FA37F" font-size="16" font-weight="800">学校</text>'+
+        '<text x="505" y="104" text-anchor="middle" fill="#8B8274" font-size="12.5">剩余 1260 米</text>'+
+        '<text x="92" y="104" text-anchor="middle" fill="#8B8274" font-size="12.5">180 米</text>'+
+        '<circle cx="40" cy="120" r="7" fill="#1F2E74"/><text x="40" y="146" text-anchor="middle" fill="#1F2E74" font-size="14" font-weight="700">家</text>'+
+        '<circle cx="143.5" cy="120" r="7" fill="#1F2E74"/>'+
+        '<text x="143.5" y="146" text-anchor="middle" fill="#1F2E74" font-size="13" font-weight="700">走了3分钟·180米</text>'+
+        '<text x="143.5" y="164" text-anchor="middle" fill="#1F2E74" font-size="12.5">从这里加速</text>'+
+        '<circle cx="833.5" cy="120" r="8" fill="#E09A2C"/>'+
+        '<text x="825" y="82" text-anchor="middle" fill="#A26308" font-size="13.5" font-weight="800">铃响时·慢慢走：</text>'+
+        '<text x="825" y="102" text-anchor="middle" fill="#A26308" font-size="13.5">还差 60 米到学校</text>'+
+        '<circle cx="948.5" cy="120" r="8" fill="#D6452A"/>'+
+        '<text x="948" y="56" text-anchor="end" fill="#B0321A" font-size="13.5" font-weight="800">铃响时·加速不停：</text>'+
+        '<text x="948" y="76" text-anchor="end" fill="#B0321A" font-size="13.5">已经超出学校 140 米</text>'+
+        '</svg></div>',
+    ans:"童太奇家到学校的距离是 <span class=\"ans-num\">1440</span> 米。",
+    check:"验算：慢慢走全程要 1440 ÷ 60 = 24 分钟（比铃响晚 1 分钟）；加速后前 3 分钟走 180 米，之后 18 分钟 × 70 = 1260 米，共 180 + 1260 = 1440 米，到校时比铃响早 2 分钟 → 都对上啦！",
+    note:"“迟到 1 分钟”和“早到 2 分钟”放在一起，等于两次走法相差 3 分钟的路程。学会把“上课铃响”这条分界线画出来，这类题就不怕了。"
+  }
+];
+
+/* ===================== 界面逻辑 ===================== */
+var LEVELS = {
+  1:{name:"一星 · 热身", chip:"基础起步", cls:"l1", intro:"先热热身：认准路程、速度、时间三个量，会用公式就能拿下一星。"},
+  2:{name:"二星 · 闯关", chip:"举一反三", cls:"l2", intro:"要绕小弯啦：先找“不变的总路程”，再一步一步算。别怕，慢慢想。"},
+  3:{name:"三星 · 挑战", chip:"举一反三", cls:"l3", intro:"最烧脑的两题来啦！大胆“假如一下”，再画条线，答案就会自己冒出来。"}
+};
+
+function $(id){return document.getElementById(id);}
+
+/* localStorage 安全封装（某些环境可能禁止） */
+var store = {
+  get:function(k,d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+var DONE_KEY = "jfys_speed_done";
+var NAME_KEY = "jfys_speed_name";
+
+function starsHtml(n){
+  var out = "";
+  for(var i=1;i<=3;i++){ out += (i<=n ? "★" : "<i>☆</i>"); }
+  return '<span class="stars">'+out+'</span>';
+}
+
+function stepsHtml(steps){
+  var h = "";
+  for(var i=0;i<steps.length;i++){
+    h += '<div class="step"><span class="step-no">'+(i+1)+'</span>'+
+         '<div class="step-t">'+steps[i].t+'</div>'+
+         '<div class="step-d">'+steps[i].d+'</div></div>';
+  }
+  return h;
+}
+
+function buildQuestion(q){
+  var lv = LEVELS[q.lv];
+  var html = '<article class="card lv'+q.lv+'" id="card-'+q.id+'" data-id="'+q.id+'">'+
+    '<div class="card-head">'+
+      '<span class="q-no">第 '+q.id+' 题</span>'+starsHtml(q.lv)+
+      '<span class="lvl-tag">'+lv.name+' · '+lv.chip+'</span>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="done-chip" data-act="done" data-q="'+q.id+'">我做出来啦！</button>'+
+    '</div>'+
+    '<div class="q-text">'+q.text+'</div>'+
+    '<div class="think"><label for="ta-'+q.id+'">✎ 我的小练习本（写写算式和想法，会帮你保存在本机）</label>'+
+    '<textarea id="ta-'+q.id+'" placeholder="例如：80 × 5 = 400（千米）……"></textarea></div>'+
+    '<div class="actions">'+
+      '<button type="button" class="btn btn-hint" data-act="hint" data-q="'+q.id+'">💡 小提示</button>'+
+      '<button type="button" class="btn btn-sol" data-act="sol" data-q="'+q.id+'">📖 看完整解法</button>'+
+    '</div>'+
+    '<div class="hint-box" data-hintbox="'+q.id+'">'+
+      '<div class="h-tag">小提示</div>'+
+      '<p class="hint1">'+q.hint+'</p>'+
+      (q.hint2 ? '<p class="hint2">'+q.hint2+'</p><button type="button" class="morehint" data-act="morehint" data-q="'+q.id+'">再给一点点提示 →</button>' : '')+
+    '</div>'+
+    '<div class="sol" data-sol="'+q.id+'">'+
+      '<div class="sol-head">完整解法 · 一步一步跟我走</div>'+
+      stepsHtml(q.steps)+
+      (q.fig||'')+
+      '<div class="ans"><span class="ans-label">答 案</span><p>'+q.ans+'</p>'+
+      (q.check ? '<p class="check">'+q.check+'</p>' : '')+'</div>'+
+      (q.note ? '<div class="note"><span class="note-tag">小提醒</span>'+q.note+'</div>' : '')+
+    '</div></article>';
+  return html;
+}
+
+function buildLevels(){
+  var cont = $("questionList");
+  var html = "";
+  var order = [1,2,3];
+  for(var li=0; li<order.length; li++){
+    var lv = order[li];
+    var info = LEVELS[lv];
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    html += '<div class="lvl" id="level-'+lv+'">'+
+      '<div class="lvl-head">'+
+        '<h3 class="lvl-name">'+info.name+'</h3>'+
+        '<span class="lv-chip '+info.cls+'">'+info.chip+'</span>'+
+        '<span class="lvl-count" id="lc-'+lv+'">已完成 0/'+cards.length+'</span>'+
+      '</div>'+
+      '<p class="lvl-intro">'+info.intro+'</p>'+
+      '<div>'+cards.map(buildQuestion).join("")+'</div>'+
+    '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---- 进度 ----
+   每完成一题，按星级点亮星星（一星1颗、二星2颗、三星3颗）
+   一共：3×1 + 2×2 + 2×3 = 13 颗 */
+var MAX_STAR = QS.reduce(function(s,q){return s+q.lv;},0);
+
+function getDone(){ return JSON.parse(store.get(DONE_KEY,"[]")||"[]"); }
+function saveDone(list){ store.set(DONE_KEY,JSON.stringify(list)); }
+
+function renderProgress(){
+  var done = getDone();
+  var set = {};
+  done.forEach(function(id){set[id]=true;});
+  var total = QS.length;
+  var dcount = done.length;
+  var stars = 0;
+  QS.forEach(function(q){ if(set[q.id]) stars += q.lv; });
+
+  $("doneText").textContent = dcount + " / " + total;
+  $("starText").textContent = "★ " + stars + " / " + MAX_STAR;
+  $("pbarFill").style.width = (total ? Math.round(dcount/total*100) : 0) + "%";
+
+  /* 每级计数 */
+  [1,2,3].forEach(function(lv){
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    var c = cards.filter(function(q){return set[q.id];}).length;
+    var el = $("lc-"+lv);
+    if(el) el.textContent = "已完成 " + c + "/" + cards.length;
+  });
+
+  /* 卡片状态 */
+  QS.forEach(function(q){
+    var card = $("card-"+q.id);
+    if(!card) return;
+    var chip = card.querySelector(".done-chip");
+    if(set[q.id]){
+      card.classList.add("done");
+      chip.textContent = "✓ 完成啦，真棒";
+    }else{
+      card.classList.remove("done");
+      chip.textContent = "我做出来啦！";
+    }
+  });
+
+  /* 通关横幅 */
+  $("winBanner").classList.toggle("show", total>0 && dcount===total);
+
+  /* 问候语 */
+  var name = store.get(NAME_KEY,"").trim();
+  if(name){
+    $("greetLine").innerHTML = "<b>"+name+"</b>，今天来闯 7 道速度题！做对一题就点亮一颗小星星★";
+  }else{
+    $("greetLine").textContent = "小朋友，今天来闯 7 道速度题！做对一题就点亮一颗小星星★";
+  }
+}
+
+/* 事件：点击题目卡里的按钮 */
+$("questionList").addEventListener("click", function(ev){
+  var btn = ev.target.closest("button[data-act]");
+  if(!btn) return;
+  var id = +btn.getAttribute("data-q");
+  var act = btn.getAttribute("data-act");
+  var card = $("card-"+id);
+  if(!card) return;
+
+  if(act==="hint"){
+    var hb = card.querySelector(".hint-box");
+    var open = hb.classList.toggle("on");
+    btn.classList.toggle("open", open);
+    btn.textContent = open ? "收起提示" : "💡 小提示";
+    if(open){
+      var more = hb.querySelector(".morehint");
+      var h2 = hb.querySelector(".hint2");
+      if(more) more.style.display = "";
+      if(h2 && h2.classList.contains("show")) h2.style.display = "";
+    }
+  }
+  if(act==="morehint"){
+    var hb2 = card.querySelector(".hint-box");
+    var h22 = hb2.querySelector(".hint2");
+    if(h22){ h22.classList.add("show"); h22.style.display = "block"; }
+    btn.style.display = "none";
+  }
+  if(act==="sol"){
+    var sb = card.querySelector(".sol");
+    var open2 = sb.classList.toggle("on");
+    btn.classList.toggle("open", open2);
+    btn.textContent = open2 ? "收起解法" : "📖 看完整解法";
+  }
+  if(act==="done"){
+    var list = getDone();
+    var idx = list.indexOf(id);
+    if(idx>=0){ list.splice(idx,1); }
+    else{ list.push(id); }
+    saveDone(list);
+    renderProgress();
+  }
+});
+
+/* 草稿自动保存 */
+$("questionList").addEventListener("input", function(ev){
+  if(ev.target && ev.target.id && ev.target.id.indexOf("ta-")===0){
+    store.set("ta_" + ev.target.id, ev.target.value);
+  }
+});
+
+/* 名字 */
+var nameEl = $("nameIn");
+nameEl.value = store.get(NAME_KEY,"");
+nameEl.addEventListener("input", function(){
+  store.set(NAME_KEY, nameEl.value);
+  renderProgress();
+});
+
+/* 重新开始 */
+$("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要清空进度、名字和所有草稿吗？")) return;
+  saveDone([]);
+  store.del(NAME_KEY);
+  QS.forEach(function(q){ store.del("ta_ta-"+q.id); $("ta-"+q.id).value=""; });
+  nameEl.value = "";
+  /* 收起所有展开的提示/解法 */
+  document.querySelectorAll(".hint-box.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".hint2.show").forEach(function(b){ b.classList.remove("show"); b.style.display=""; });
+  document.querySelectorAll(".btn-hint.open").forEach(function(b){ b.classList.remove("open"); b.textContent="💡 小提示"; });
+  document.querySelectorAll(".sol.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".btn-sol.open").forEach(function(b){ b.classList.remove("open"); b.textContent="📖 看完整解法"; });
+  renderProgress();
+});
+
+/* 日期 */
+(function(){
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"];
+  $("dateChip").textContent = (d.getMonth()+1) + "月" + d.getDate() + "日 · 周" + wd[d.getDay()];
+})();
+
+/* 恢复草稿 + 初始渲染 */
+QS.forEach(function(q){
+  var el = $("ta-"+q.id);
+  if(el) el.value = store.get("ta_ta-"+q.id,"");
+});
+buildLevels();
+renderProgress();
+</script>
+</body>
+</html>
