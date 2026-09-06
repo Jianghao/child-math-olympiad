@@ -290,6 +290,17 @@ var SETS = [
     icon:"swap",
     ac:"#8A5CF6",
     soft:"#F0EAFF"
+  },
+  {
+    no:"练习五",
+    file:"练习五-找矛盾点的推理问题.html",
+    title:"找矛盾点的推理",
+    tag:"逻辑推理 · 假设法",
+    desc:"先假设再推理，撞上矛盾点就换一条路——名次、猜数、真假话一次拿下。",
+    lv:{1:1, 2:4, 3:3},
+    icon:"logic",
+    ac:"#009FB7",
+    soft:"#E0F5F8"
   }
 ];
 
@@ -334,6 +345,12 @@ function iconSvg(icon, color){
       '<polygon points="36,10 39,21 29,16" fill="'+c+'"/>'+
       '<line x1="35" y1="35" x2="13" y2="15" stroke="'+c+'" stroke-width="5" stroke-linecap="round"/>'+
       '<polygon points="12,10 9,21 19,16" fill="'+c+'"/></svg>';
+  }
+  if(icon === "logic"){
+    return '<svg viewBox="0 0 48 48" fill="none">'+
+      '<circle cx="24" cy="24" r="18" stroke="'+c+'" stroke-width="4"/>'+
+      '<rect x="21.5" y="15" width="5" height="14" rx="1.5" fill="'+c+'"/>'+
+      '<circle cx="24" cy="35" r="3" fill="'+c+'"/></svg>';
   }
   return "";
 }

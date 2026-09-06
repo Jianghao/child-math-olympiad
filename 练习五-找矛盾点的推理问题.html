@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>奥数 · 举一反三 — 找矛盾点的推理问题（练习五）</title>
+<style>
+  :root{
+    --paper:#FFF6E6;
+    --card:#FFFFFF;
+    --ink:#2B2B33;
+    --mut:#8B8274;
+    --line:#EFE4CE;
+    --sun:#FFC53D;
+    --sun-soft:#FFF4D0;
+    --brand:#3553D6;
+    --brand-deep:#1F2E74;
+    --green:#1FA37F;
+    --blue:#3A8FE0;
+    --orange:#F06B3C;
+    --red:#D6452A;
+    --amber:#E09A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(31,46,116,.07) 1px,transparent 1.3px);
+    background-size:22px 22px;
+    line-height:1.75;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  button{font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none}
+  textarea{font-family:inherit}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:var(--brand-deep);
+    color:#fff;
+    padding:22px 0 66px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topline{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+  .flag{display:inline-flex;align-items:center;gap:8px}
+  .flag::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .hero-in{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
+    padding:34px 0 16px;
+  }
+  h1{
+    font-size:clamp(42px,7vw,66px);font-weight:900;letter-spacing:.02em;line-height:1.08;
+    margin:0;
+  }
+  .zh-yellow{color:var(--sun)}
+  .hero-sub{
+    margin-top:14px;font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);
+    line-height:1.9;max-width:600px;
+  }
+  .hero-sub b{color:var(--sun);font-weight:700}
+  .hero-art{text-align:center}
+  .hero-art svg{width:min(300px,52vw);height:auto;display:block;margin:0 auto}
+  .road-strip{
+    position:absolute;left:0;right:0;bottom:0;height:34px;
+    background:rgba(11,18,58,.42);
+  }
+  .road-strip::before{
+    content:"";position:absolute;left:0;right:0;top:15px;height:4px;
+    background:repeating-linear-gradient(to right,rgba(255,197,61,.95) 0 26px,transparent 26px 52px);
+  }
+  .cone{position:absolute;bottom:-6px;color:var(--sun)}
+  .cone.c1{left:10%}
+  .cone.c2{left:88%}
+
+  /* ============ WELCOME / PROGRESS ============ */
+  .welcome{
+    background:#fff;border:1px solid #F3EAD8;border-radius:20px;
+    box-shadow:0 12px 30px rgba(31,46,116,.12);
+    margin-top:-34px;padding:18px 22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .greet{font-size:13px;color:var(--mut)}
+  .greet b{color:var(--brand-deep);font-size:16px}
+  .name-in{
+    border:1.5px dashed #D9CBA9;border-radius:10px;padding:4px 10px;font-size:15px;
+    width:170px;background:#FFFDF6;outline:none;color:var(--ink);
+  }
+  .name-in:focus{border-color:var(--brand)}
+  .wel-right{min-width:250px}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+  .pmeta .star-count{color:#D98E04;font-weight:700}
+  .pbar{height:12px;background:#EFE8D8;border-radius:999px;overflow:hidden}
+  .pbar-fill{height:100%;width:0;background:var(--brand);border-radius:999px;transition:width .5s ease}
+  .win-banner{
+    margin-top:18px;display:none;align-items:center;gap:12px;
+    background:#FFF2CB;border:1.5px solid #F2D68A;color:#6B4B00;
+    border-radius:16px;padding:14px 18px;font-size:16px;font-weight:700;
+  }
+  .win-banner.show{display:flex;animation:pop .4s ease}
+  .win-banner svg{flex:none}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* ============ SECTIONS ============ */
+  .sec{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .sec-no{
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;
+    background:var(--brand-deep);border-radius:8px;padding:3px 9px;
+    align-self:center;
+  }
+  .sec-head h2{font-size:clamp(22px,3.4vw,28px);font-weight:900}
+  .sec-head .sec-sub{color:var(--mut);font-size:14px}
+  .rule{height:1px;background:var(--line);margin:12px 0 20px}
+
+  /* ============ LESSON ============ */
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .lcard{
+    background:#fff;border:1px solid #F1E6D0;border-radius:18px;padding:20px 20px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .lcard h4{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .ic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .ic.ic-b{background:#E9EEFF;color:var(--brand)}
+  .ic.ic-g{background:#E1F6EF;color:var(--green)}
+  .ic.ic-o{background:#FFEBDD;color:var(--orange)}
+  .lcard p{font-size:14.5px;color:#4A4439}
+  .lcard p b{color:var(--ink)}
+  .tri{margin:8px auto 2px;text-align:center}
+  .pill{
+    display:inline-block;border-radius:12px;padding:5px 18px;margin:3px;
+    font-weight:800;font-size:16px;color:#fff;
+  }
+  .pill.top{background:var(--brand)}
+  .pill.l{background:var(--green)}
+  .pill.r{background:var(--orange)}
+  .tri .op{font-size:20px;font-weight:900;color:var(--mut);padding:0 6px}
+  .tri-cap{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .u-list,.n-list{list-style:none;font-size:14px;color:#4A4439}
+  .u-list li,.n-list li{padding:5px 0;border-bottom:1px dashed #F0E5D0}
+  .u-list li:last-child,.n-list li:last-child{border-bottom:none}
+  .u-chip{
+    display:inline-block;background:#F1F5FF;color:var(--brand);
+    border-radius:8px;padding:1px 8px;font-weight:700;font-size:13.5px;margin:1px 0;
+  }
+  .n-list b{color:var(--orange)}
+
+  /* ============ PRACTICE LEVEL ============ */
+  .lvl{margin-top:36px}
+  .lvl-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .lvl-name{font-size:20px;font-weight:900;margin-right:2px}
+  .lv-chip{
+    font-size:12px;font-weight:800;color:#fff;border-radius:999px;
+    padding:2px 11px;letter-spacing:.05em;
+  }
+  .lv-chip.l1{background:var(--green)}
+  .lv-chip.l2{background:var(--blue)}
+  .lv-chip.l3{background:var(--orange)}
+  .lvl-count{margin-left:auto;font-size:13px;color:var(--mut);font-weight:700}
+  .lvl-intro{font-size:14px;color:var(--mut);margin:4px 0 2px 2px}
+
+  /* ============ QUESTION CARD ============ */
+  .card{
+    background:#fff;border:1px solid #F1E6D0;border-top:6px solid #ddd;
+    border-radius:18px;padding:20px 22px 22px;margin-top:18px;
+    box-shadow:0 6px 18px rgba(31,46,116,.05);
+    transition:box-shadow .2s ease;
+  }
+  .card.lv1{border-top-color:var(--green)}
+  .card.lv2{border-top-color:var(--blue)}
+  .card.lv3{border-top-color:var(--orange)}
+  .card.done{background:#FDFFFC}
+  .card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .q-no{
+    font-size:15px;font-weight:900;color:var(--brand-deep);
+    background:#EEF1FF;border-radius:10px;padding:3px 12px;
+  }
+  .stars{color:var(--sun);font-size:17px;letter-spacing:2px}
+  .stars i{color:#E9DCBC;font-style:normal}
+  .spacer{flex:1}
+  .lvl-tag{font-size:12px;color:var(--mut);font-weight:700}
+  .done-chip{
+    border:1.5px solid #E2D9C4;background:#FFFDF7;color:#A89B82;
+    border-radius:999px;padding:4px 13px;font-size:13px;font-weight:800;
+  }
+  .done-chip:hover{border-color:#BFD9CB;color:var(--green)}
+  .card.done .done-chip{background:#E2F6EC;border-color:#B7E3CF;color:#0F8A5F}
+  .q-text{
+    background:#FBF5E6;border:1px solid #F1E7CE;border-radius:14px;
+    padding:15px 17px;margin-top:14px;font-size:16.5px;line-height:1.95;
+  }
+  .q-text b{font-weight:800;color:var(--brand-deep);border-bottom:2px solid var(--sun)}
+  .think{margin-top:12px}
+  .think label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:5px}
+  .think textarea{
+    width:100%;min-height:62px;resize:vertical;border:1.5px dashed #DFD3B8;
+    border-radius:12px;background:#FFFEF9;padding:9px 12px;font-size:15px;line-height:1.7;
+    color:var(--ink);outline:none;
+  }
+  .think textarea:focus{border-color:var(--brand)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:800;
+    border:1px solid transparent;transition:transform .08s ease,background .2s ease,color .2s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-hint{background:#FFF3D2;color:#8A5E00;border-color:#F0DDA2}
+  .btn-hint:hover{background:#FFE9A8}
+  .btn-hint.open{background:#FFD979}
+  .btn-sol{background:var(--brand);color:#fff}
+  .btn-sol:hover{background:#2A44C0}
+  .btn-sol.open{background:#E7ECFF;color:var(--brand);border-color:#C9D6FF}
+
+  .hint-box{display:none;margin-top:14px;background:#FFF9E6;border:1px solid #F2E2AC;
+    border-left:5px solid #EDB800;border-radius:12px;padding:12px 16px}
+  .hint-box.on{display:block;animation:fadein .25s ease}
+  .hint-box .h-tag{font-weight:900;color:#9A6E00;font-size:13.5px;margin-bottom:4px}
+  .hint1{font-size:15.5px}
+  .hint2{display:none;margin-top:10px;font-size:15px;color:#7A5A00;
+    border-top:1px dashed #EBD48F;padding-top:10px}
+  .hint2.show{display:block}
+  .morehint{
+    display:none;margin-top:10px;background:#fff;border:1px solid #E3CF8B;
+    color:#8A5E00;border-radius:999px;font-size:13px;font-weight:800;padding:4px 14px;
+  }
+  .hint-box.on .morehint{display:inline-block}
+  .morehint:hover{background:#FFEDBE}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  .sol{display:none;margin-top:16px}
+  .sol.on{display:block;animation:fadein .3s ease}
+  .sol-head{
+    display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;
+    color:var(--brand-deep);margin-bottom:12px;
+  }
+  .sol-head::before{content:"";width:10px;height:10px;background:var(--sun);border-radius:50%}
+  .step{
+    background:#F8FAFF;border:1px solid #E7ECFB;border-radius:14px;
+    padding:12px 16px 12px 50px;position:relative;margin-bottom:10px;
+  }
+  .step-no{
+    position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-t{font-weight:900;font-size:15px}
+  .step-d{font-size:14.5px;margin-top:3px;color:#3E3A32}
+  .eq{
+    margin:7px 0 2px;padding:7px 12px;background:#FFF3D2;border-left:4px solid var(--sun);
+    border-radius:8px;font-weight:800;font-size:16px;
+  }
+  .eq.small{font-weight:700;font-size:15px}
+  .fig{
+    background:#F7F2E6;border:1px dashed #E0D3B4;border-radius:14px;
+    padding:14px 16px;margin:14px 0 6px;
+  }
+  .fig-cap{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .rowcap{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    font-size:13px;color:#6B6355;margin:2px 0 6px;flex-wrap:wrap;
+  }
+  .rowcap em{font-style:normal;font-weight:800;color:var(--brand);background:#E7EDFF;
+    border-radius:999px;padding:1px 10px}
+  .rowcap sub{font-size:12px;color:var(--mut)}
+  .row{display:flex;gap:6px;margin-bottom:6px}
+  .seg{
+    flex:1;min-width:0;text-align:center;border-radius:10px;
+    padding:8px 2px 6px;font-weight:800;font-size:15px;line-height:1.25;
+  }
+  .seg i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.72;line-height:1.3;margin-top:3px}
+  .c-blue{background:#E9EFFF;color:#2B56C8}
+  .c-orange{background:#FFF0E2;color:#C55E18}
+  .c-gold{background:#FFF3CC;color:#B07C00}
+  .seg.stop{background:#ECEAE3;color:#8A8578}
+  .seg.late{outline:2px dashed var(--red);background:#FFE3D8;color:#C03A12}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+    font-weight:800;margin:10px 0 2px;
+  }
+  .fchip{background:#E9EFFF;color:#2B56C8;border-radius:10px;padding:6px 12px;font-size:14px}
+  .fchip.b{background:#FFF0E2;color:#C55E18}
+  .farrow{color:var(--mut);font-size:15px}
+  .fnote{font-size:12.5px;color:var(--mut);text-align:center;margin-top:4px}
+
+  .mapwrap{width:100%;margin:6px 0 2px}
+  .mapwrap svg{width:100%;height:auto;display:block}
+  .mapnote{font-size:12.5px;color:var(--mut);margin-top:4px;text-align:center}
+
+  .ans{
+    margin-top:14px;background:#F1F6FF;border:1.5px dashed var(--brand);
+    border-radius:14px;padding:13px 16px;
+  }
+  .ans-label{
+    display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    border-radius:999px;padding:1px 12px;margin-bottom:6px;letter-spacing:.1em;
+  }
+  .ans p{font-size:16px;font-weight:700}
+  .ans .ans-num{color:var(--brand);font-weight:900}
+  .check{margin-top:8px;font-size:13.5px;color:#5F584A;border-top:1px dashed #C9D7F5;padding-top:8px}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4F0;border:1px solid #FFDCD0;
+    border-radius:12px;padding:10px 14px;color:#7A4534}
+  .note-tag{font-weight:900;color:var(--orange);margin-right:6px}
+
+  .reset-wrap{text-align:center;margin:34px 0 6px}
+  .btn-reset{
+    background:transparent;border:1px dashed #C9BC9C;color:var(--mut);
+    border-radius:999px;padding:7px 18px;font-size:13px;
+  }
+  .btn-reset:hover{color:var(--red);border-color:var(--red);background:#FFF6F3}
+  footer{
+    text-align:center;color:#B3A98F;font-size:12px;line-height:2;
+    padding:30px 18px 40px;
+  }
+  footer .heart{color:var(--orange);font-weight:900}
+
+  @media (max-width:760px){
+    .hero-in{grid-template-columns:1fr;padding-top:22px}
+    .hero-art{display:none}
+    .welcome{flex-direction:column;align-items:flex-start}
+    .wel-right{width:100%}
+    .step{padding-left:44px}
+    .step-no{left:10px}
+    .q-no{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="flag">奥数 · 举一反三</span>
+      <span>找矛盾点的推理 · 练习五 · <span id="dateChip"></span></span>
+    </div>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1>找矛盾点的<span class="zh-yellow">推理</span></h1>
+        <p class="hero-sub">
+          遇到“只对一半”“只有一个人说真话”，别慌：<br>
+          先<b>假设</b>一句是对的，顺着往下推，<br>
+          一旦冒出<b>矛盾点</b>——马上换一条路。
+        </p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 260 210" role="img" aria-label="矛盾碰撞装饰图">
+          <circle cx="130" cy="96" r="92" fill="#FFC53D"/>
+          <line x1="56" y1="96" x2="112" y2="96" stroke="#1F2E74" stroke-width="10" stroke-linecap="round"/>
+          <polygon points="106,84 132,96 106,108" fill="#1F2E74"/>
+          <line x1="204" y1="96" x2="148" y2="96" stroke="#F06B3C" stroke-width="10" stroke-linecap="round"/>
+          <polygon points="154,84 128,96 154,108" fill="#F06B3C"/>
+          <circle cx="130" cy="138" r="26" fill="#D6452A"/>
+          <rect x="125" y="124" width="10" height="16" rx="2" fill="#fff"/>
+          <circle cx="130" cy="150" r="5" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="road-strip">
+    <svg class="cone c1" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+    <svg class="cone c2" width="18" height="22" viewBox="0 0 18 22"><polygon points="0,22 18,22 13,12 5,12" fill="#FF8A3C"/><rect x="6" y="12" width="6" height="4" fill="#fff"/><rect x="0" y="18" width="18" height="4" rx="1" fill="#E06A24"/></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="welcome">
+    <div class="wel-left">
+      <div class="greet" id="greetLine">小朋友，今天来闯找矛盾的推理题！</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="name-in" id="nameIn" maxlength="12" placeholder="写下你的名字（可选）" />
+        <span style="font-size:13px;color:var(--mut)">我的小练功房</span>
+      </div>
+    </div>
+    <div class="wel-right">
+      <div class="pmeta">
+        <span>通关进度 <b id="doneText">0 / 8</b></span>
+        <span class="star-count" id="starText">★ 0 / 18</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbarFill"></div></div>
+    </div>
+  </section>
+
+  <div class="win-banner" id="winBanner">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B47A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.4-6.3 4.4L8 13.8l-6-4.6h7.6z"/></svg>
+    <span>全部通关！你已经学会用“假设—找矛盾”解开推理题啦，快把这个好消息告诉爸爸妈妈吧～</span>
+  </div>
+
+  <!-- ========== 知识点 ========== -->
+  <section class="sec" id="lesson">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>矛盾推理小课堂</h2>
+      <span class="sec-sub">做题之前，先分清是“合走”还是“补差距”</span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="lesson-grid">
+      <div class="lcard">
+        <h4><span class="ic ic-b" style="font-size:18px;font-weight:900">假设</span>假设法：先猜再查</h4>
+        <p>
+          看到“每人只说对一半”“只有一个人说真话”，就请出法宝——<b>假设法</b>：
+        </p>
+        <ul class="u-list">
+          <li>① 先挑一句话，<b>假设它是对的</b></li>
+          <li>② 顺着往下推，看看会得到什么</li>
+          <li>③ 出现<b>矛盾点</b>（两个人抢同一个名次、同一个数又对又错）→ 假设错了，换另一句再试</li>
+        </ul>
+        <p>
+          口诀：<b>假设 → 推理 → 找矛盾 → 换假设</b>。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-g" style="font-size:18px;font-weight:900">示范</span>看一道例题（四人名次）</h4>
+        <p>
+          甲猜：豆豆1、小浩2；乙猜：壮壮1、军军4；丙猜：豆豆2、军军3。每人只对一半。
+        </p>
+        <ul class="n-list">
+          <li>假设“豆豆第1名”对 → 小浩不是2 → 壮壮也不能1 → 乙只能对“军军4” → 丙只能对“军军3”→ <b>军军又4又3，矛盾！</b></li>
+          <li>所以换过来：“小浩第2名”对 → 壮壮1、军军3、豆豆4</li>
+        </ul>
+        <p>
+          答案：壮壮1、小浩2、军军3、豆豆4。这就是课本“研学探究”里那道例题。
+        </p>
+      </div>
+
+      <div class="lcard">
+        <h4><span class="ic ic-o" style="font-size:16px;font-weight:900">侦探</span>三种常考类型</h4>
+        <ul class="n-list">
+          <li><b>猜数字 / 密码</b>：每句话都“对一半”→ 先假设某一位对了，别的全试。</li>
+          <li><b>真假话</b>（“至少几个人错”）→ 从 0 个、1 个、2 个……挨个假设“说错的人数”，让每句话自己和自己合得上。</li>
+          <li><b>名次 / 谁快谁慢</b>：画个小表格，打 ✓ / ✗，两个人抢同一名次就是矛盾点。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 题目 ========== -->
+  <section class="sec" id="practice">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>开始闯关</h2>
+      <span class="sec-sub">先自己认真做 → 想不出点“小提示” → 最后才看“完整解法”</span>
+    </div>
+    <div class="rule"></div>
+    <div id="questionList"></div>
+  </section>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" id="resetBtn">清空进度与草稿，重新做一遍</button>
+  </div>
+</main>
+
+<footer>
+  奥数 · 举一反三 — 找矛盾点的推理问题（练习五）　|　离线可用，孩子的草稿保存在本机浏览器里<br>
+  给爸爸妈妈：8 题中第 1 题一星、第 2~5 题二星、第 6~8 题三星；二星与三星属于“举一反三”题型。<br>
+  <span class="heart">♥</span> Made for a curious little math explorer
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   题库数据：以后出“练习三”时，复制本文件，替换下面的 QS 数组即可。
+   字段说明：
+     lv   : 星级（1/2/3）
+     text : 题干（可加 <b></b> 圈重点）
+     hint : 第一层小提示
+     hint2: 第二层提示（可选，只有再点“再给一点点提示”才显示）
+     steps: 完整解法 [{t:小标题, d:讲解，可用 <br> 与 <div class="eq">}]
+     fig  : 配图（可选，写 HTML）
+     ans  : 完整答案句（答案数字包在 <span class="ans-num"> 里会标蓝加粗）
+     check: 验算小尾巴（可选）
+     note : 小提醒（可选）
+===================================================================== */
+var SUBJECT = "找矛盾点的推理";
+
+var QS = [
+  {
+    id:1, lv:1,
+    text:"一个保险箱的密码是一个两位数。童太奇说：“它是 29。”小晶说：“它是 28。”小兰说：“它是 34。”豆豆说：“你们每人都只猜对一个数位上的数字。”这个保险箱的密码是多少？",
+    hint:"注意：29 和 28 猜的十位都是 2。先假设十位真是 2，那么这两句都已经对了一个数位；再看 34 这句必须对在哪儿。",
+    hint2:"若十位是 2：29、28 都只对了十位（个位不能是 9 或 8）；34 里十位 3 不对，就只能对个位 4 → 密码 24。若十位不是 2：29 只能对个位 9，28 又只能对个位 8，同一个个位不可能又是 9 又是 8 → 矛盾。",
+    steps:[
+      {t:"假设十位是 2",d:"童太奇猜 29、小晶猜 28 的十位都是 2。如果十位真是 2：<div class=\"eq small\">29、28 两句都只对“十位2”</div>所以它们的个位不能是 9，也不能是 8。"},
+      {t:"看小兰猜的 34",d:"十位是 2，说明小兰猜的十位 3 不对；她必须只对一个数位，所以个位就是：<div class=\"eq\">个位 ＝ 4</div>"},
+      {t:"得到密码",d:"十位 2、个位 4：<div class=\"eq\">密码是 24</div>为什么十位不能不是 2？若十位不是 2，29 只好靠个位 9 对，28 只好靠个位 8 对——同一个数位不可能同时是 9 和 8，矛盾。"}
+    ],
+    ans:"密码是 <span class=\"ans-num\">24</span>。",
+    check:"验证：24 对 29 → 十位 2 对、个位不对，只对 1 个 ✓；24 对 28 → 只对十位 2 ✓；24 对 34 → 个位 4 对、十位 3 不对 ✓。",
+    note:"两句都猜同一个数位时（这里都猜十位是 2），先假设它对，常常一下就能锁住答案。"
+  },
+  {
+    id:2, lv:2,
+    text:"小浩在纸条上写了一个三位数，让壮壮猜。壮壮问：“是 349 吗？”小浩说：“猜对一个数字，且位置正确。”壮壮问：“是 472 吗？”小浩说：“猜对了两个数字，但位置都不正确。”壮壮问：“是 624 吗？”小浩说：“猜对了三个数字，但位置都不正确。”这个三位数是多少？",
+    hint:"从信息最多的一句话开始：624 的三个数字都在，只是位置全错 → 答案由 6、2、4 组成。再看 472：两个数字在但位置都错；349：只有一个数字在且位置对。",
+    hint2:"624 全错位：6 不在百位、2 不在十位、4 不在个位。472 里 4 和 2 都在且错位：4 不在百位、2 不在个位，7 不在答案里。349 里只有 4 在且位置对 → 4 在十位（349 的十位是 4）。剩下的百位、个位由 6 和 2 填：6 不能百位 → 6 在个位、2 在百位 → 246。",
+    steps:[
+      {t:"由 624 确定数字",d:"“猜对三个数字，位置都不正确”→ 答案就是 6、2、4 的某种排列，并且：<div class=\"eq small\">6 不在百位　2 不在十位　4 不在个位</div>"},
+      {t:"由 472 排除 7、定位错位",d:"答案里有 2 和 4（都是 6、2、4 里的），所以 472 里对的两位是 4 和 2：<div class=\"eq small\">4 不在百位　2 不在个位</div>7 不在答案里。"},
+      {t:"由 349 找到 4 的位置",d:"349 里只有 4 可能在答案中，而且“位置正确”→ 4 在 349 的十位，也就是：<div class=\"eq\">4 在十位</div>"},
+      {t:"填好 6 和 2",d:"还剩百位和个位给 6、2：6 不能百位 → 6 在个位；2 在百位。<div class=\"eq\">答案：246</div>"}
+    ],
+    ans:"这个三位数是 <span class=\"ans-num\">246</span>。",
+    check:"验证：246 对 349 → 只有 4 在，且 4 在十位（349 的十位是 4）✓；对 472 → 4、2 在但位置都不对 ✓；对 624 → 6、2、4 都在但位置都不对 ✓。",
+    note:"“位置都不正确”是最强的线索：它告诉我们某数字一定不在哪个数位。"
+  },
+  {
+    id:3, lv:2,
+    text:"老爷爷的袋子里面装了一种水果，三个小朋友正在猜里面装的是什么水果。小浩猜：“不是西瓜，也不是菠萝。”壮壮猜：“不是西瓜，而是香蕉。”军军猜：“不是香蕉，而是西瓜。”老爷爷笑了笑，说道：“有一个人全猜对了，有一个人猜对了一半，还有一个人全猜错了。”谁全猜对了？谁全猜错了？谁猜对了一半？",
+    hint:"水果可能是西瓜、香蕉、菠萝（或别的）。把三种主要可能都试一遍：如果装的是西瓜，三个小朋友各对几句？",
+    hint2:"装西瓜：小浩“不是西瓜”错、“不是菠萝”对 → 对一半；壮壮两句都错 → 全错；军军“不是香蕉”对、“是西瓜”对 → 全对。正好全对、半对、全错各一人 → 就是西瓜。别的可能（香蕉会让小浩和壮壮都全对；菠萝等会让有两人都只对一半）都不行。",
+    steps:[
+      {t:"试试“装的是西瓜”",d:"<div class=\"eq small\">小浩：不是西瓜✗，不是菠萝✓ → 对一半</div><div class=\"eq small\">壮壮：不是西瓜✗，是香蕉✗ → 全错</div><div class=\"eq small\">军军：不是香蕉✓，是西瓜✓ → 全对</div>"},
+      {t:"检查正好各一人",d:"全对 1 人（军军）、半对 1 人（小浩）、全错 1 人（壮壮）——和爷爷说的一样！"},
+      {t:"为什么别的水果不行",d:"装香蕉 → 小浩、壮壮都全对；装菠萝或别的水果 → 至少两人都“对一半”或全对。都不符合，所以只能是西瓜。"}
+    ],
+    ans:"袋子里装的是<span class=\"ans-num\">西瓜</span>；<b>军军全猜对</b>，<b>小浩猜对一半</b>，<b>壮壮全猜错</b>。",
+    check:"按西瓜复查：小浩两句话一错一对；壮壮两句全错；军军两句全对 → 全对/半对/全错正好各一人 ✓。",
+    note:"遇到“一人全对、一人半对、一人全错”，把几个可能答案挨个代进去，谁满足谁就是真的。"
+  },
+  {
+    id:4, lv:2,
+    text:"小浩、壮壮和军军参加了一场数独比赛，赛后，他们对比赛结果进行了预测。小浩说：“我是第 1 名，壮壮是第 2 名，军军是第 3 名。”壮壮说：“我是第 1 名，小浩是第 2 名，军军是第 3 名。”军军说：“我是第 1 名，壮壮是第 2 名，小浩是第 3 名。”结果出来后，发现在他们三人的预测中，有一人三个名次都预测正确，其余两人都只预测对一个名次，那么三人的名次分别是多少？",
+    hint:"【小提示】先假设一个人说的话全部正确，再找出与其他人矛盾的点。试着假设小浩全对。",
+    hint2:"若小浩全对：小浩1、壮壮2、军军3。检查壮壮：他说的“我是1、小浩2、军军3”里只有军军3对 → 对 1 个 ✓；检查军军：“我是1、壮壮2、小浩3”里只有壮壮2对 → 对 1 个 ✓。完美！其他假设都会让某人只对 0 个，所以这组是唯一答案。",
+    steps:[
+      {t:"假设小浩三个全对",d:"<div class=\"eq\">小浩第 1 名，壮壮第 2 名，军军第 3 名</div>"},
+      {t:"检查壮壮对几个",d:"壮壮猜“壮壮1、小浩2、军军3”：壮壮其实第 2 → 第1句✗；小浩其实第 1 → ✗；军军第 3 ✓。<div class=\"eq small\">壮壮只对 1 个 ✓</div>"},
+      {t:"检查军军对几个",d:"军军猜“军军1、壮壮2、小浩3”：军军第 3 → ✗；壮壮第 2 ✓；小浩第 1 → ✗。<div class=\"eq small\">军军只对 1 个 ✓</div>"},
+      {t:"确认唯一",d:"若让壮壮或军军全对，会发现另外两人中出现只对 0 个的人，与“其余两人各对 1 个”矛盾。所以答案就是：<div class=\"eq\">小浩 1、壮壮 2、军军 3</div>"}
+    ],
+    ans:"小浩第 <span class=\"ans-num\">1</span> 名，壮壮第 <span class=\"ans-num\">2</span> 名，军军第 <span class=\"ans-num\">3</span> 名（小浩全对）。",
+    check:"验证：小浩的预测 3 个全对；壮壮只对“军军3”；军军只对“壮壮2” → 符合“一人全对，两人各对 1 个” ✓。",
+    note:"三句话里都出现“军军第 3”，如果军军不是第 3，三个人的预测就都要靠别的句——先假设最顺的那句全对试试。"
+  },
+  {
+    id:5, lv:2,
+    text:"小浩、壮壮、军军和豆豆四人比谁跑得更快，并且除豆豆外，其余三人都进行了预测。小浩说：“军军是第 1 名，我是第 3 名。”壮壮说：“我是第 1 名，豆豆是第 4 名。”军军说：“豆豆是第 2 名，我是第 3 名。”跑完后，发现预测的三人每人只说对了一半。你能说出他们四个人的名次吗？",
+    hint:"【小提示】运用假设法解题，假设小浩说的前半句话是正确的，此时与壮壮所说的话产生矛盾。",
+    hint2:"假设“军军第1”对：小浩后半“我是3”错 → 军军后半“我是3”也错（军军第1）→ 军军只能对“豆豆2” → 壮壮说“豆豆4”就错了 → 壮壮只好对“我是1” → 可军军已第1，壮壮又第1？矛盾！所以“军军第1”错 → 小浩第3对。再推：军军只能对“豆豆第2”（因小浩3）→ 壮壮只能对“我是1” → 剩下军军第4。",
+    steps:[
+      {t:"假设“军军第 1 名”对（会矛盾）",d:"小浩后半“我是第 3”错 → 军军后半“我是第 3”也错 → 军军只能对前半“豆豆第 2”。那么壮壮说的“豆豆第 4”错 → 壮壮只能对“我是第 1”。<div class=\"eq small\">军军第 1 又壮壮第 1 → 两人抢第 1，矛盾！</div>"},
+      {t:"换过来：小浩的后半句对",d:"“军军第 1”错，所以小浩对的是“我是第 3”：<div class=\"eq\">小浩第 3</div>"},
+      {t:"推军军的话",d:"军军后半“我是第 3”错（小浩第 3）→ 军军只能对前半：<div class=\"eq\">豆豆第 2</div>"},
+      {t:"推壮壮的话",d:"壮壮说“豆豆第 4”错（豆豆第 2）→ 壮壮对的是前半：<div class=\"eq\">壮壮第 1</div>"},
+      {t:"剩下军军",d:"名次 1、2、3 被壮壮、豆豆、小浩占走，剩下：<div class=\"eq\">军军第 4</div>"}
+    ],
+    ans:"壮壮第 <span class=\"ans-num\">1</span>，豆豆第 <span class=\"ans-num\">2</span>，小浩第 <span class=\"ans-num\">3</span>，军军第 <span class=\"ans-num\">4</span>。",
+    check:"验证：小浩对“小浩3”✓；壮壮对“壮壮1”✓；军军对“豆豆2”✓ → 三人各对一半 ✓。",
+    note:"假设产生“两个人抢第 1 名”的矛盾，就立刻换另一边——这就是找矛盾点。"
+  },
+  {
+    id:6, lv:3,
+    text:"A、B、C、D 四人的对话内容分别如下：<br>A：“我们中至少有一个人说的话是错误的。”<br>B：“我们中至少有两个人说的话是错误的。”<br>C：“我们中至少有一个人说的话是正确的。”<br>D：“我们中至少有两个人说的话是正确的。”<br>说错话的有多少人？",
+    hint:"【小提示】先假设四个人说的话全对，若有矛盾点，再假设三个人说的话正确，以此类推。也就是说：先猜“说错的人数”，再让每句话自己检验自己。",
+    hint2:"试着让“说错的人数是 1”：只有 B 错。检查：A 对（至少1人错 ✓）、B 错（并没有至少2人错）、C 对（有3人正确 ✓）、D 对（至少2人正确 ✓）——完全自洽！别的假设都会矛盾。",
+    steps:[
+      {t:"翻译每句话",d:"设说错的人数有 w 个。那么：<div class=\"eq small\">A 对 ⇔ w ≥ 1</div><div class=\"eq small\">B 对 ⇔ w ≥ 2</div><div class=\"eq small\">C 对 ⇔ 对的人数 ≥ 1（w ≤ 3）</div><div class=\"eq small\">D 对 ⇔ 对的人数 ≥ 2（w ≤ 2）</div>"},
+      {t:"挨个试 w",d:"<div class=\"eq small\">w=0：A 也说错？可 A 的话是“至少 1 人错”，0 人错时它成假 → 矛盾</div><div class=\"eq small\">w=1：只有 B 错 ✓（见验证）</div><div class=\"eq small\">w=2：那 A、B、C、D 都该对（各句都满足）→ 变成 0 人错，矛盾</div><div class=\"eq small\">w=3：C、D 都该错，但只有 2 人错 → 矛盾</div>"}
+    ],
+    ans:"说错话的有 <span class=\"ans-num\">1</span> 人（只有 B 说错，A、C、D 说的都对）。",
+    check:"验证：1 人错 → A：“至少 1 人错”对；B：“至少 2 人错”错；C：“至少 1 人对”对；D：“至少 2 人对”对 → 恰好 1 人错 ✓。",
+    note:"真假话题最稳的办法：直接假设“几个人说错”，再逐句检验，自己和自己合得上才作数。"
+  },
+  {
+    id:7, lv:3,
+    text:"在运动会上，甲、乙、丙、丁和童太奇进行赛跑，比赛结束后，五人谈论比赛结果。第 1 名说：“甲跑得比丙快。”第 2 名说：“我比丁跑得快。”第 3 名说：“我比童太奇跑得快。”第 4 名说：“甲比乙跑得快。”第 5 名说：“丁比童太奇跑得快。”如果五人中只有童太奇说了假话，那么甲得了第几名？",
+    hint:"把五句话先摆出来：第1名说“甲＞丙”，第4名说“甲＞乙”，第2名“我＞丁”，第3名“我＞童”，第5名“丁＞童”。只有说这些话的人是童太奇时，那句话才是假的。先猜童太奇在第几名。",
+    hint2:"试试童太奇是第 4 名：那么第 4 名的话“甲比乙快”是假的 → 乙在甲前面。第 1 名（真）说甲比丙快 → 甲在丙前面，所以 乙＞甲＞丙；第 5 名（真）说丁比童快 → 丁在童(4)前面；第 2、3 名也都真。最后排出来是：乙1、甲2、丁3、童4、丙5。甲第 2 名。（把童放在 1、2、3、5 名都会让别的话变假，只有第 4 名可行。）",
+    steps:[
+      {t:"找出最可能的“假话位置”",d:"五句话里，第 4 名说“甲比乙快”，第 5 名说“丁比童快”。假设童太奇是第 4 名 → 第 4 名的话是假的：“甲比乙快”是假 → <div class=\"eq\">乙跑得比甲快</div>"},
+      {t:"用第 1 名的话推出相对顺序",d:"第 1 名说的是真话：“甲比丙快”→ 甲在丙前面。与上一步合起来：<div class=\"eq\">乙 ＞ 甲 ＞ 丙（乙最快，丙最慢）</div>"},
+      {t:"用第 5 名的话定丁",d:"第 5 名说真话：“丁比童快”→ 丁在童太奇（第 4 名）前面：<div class=\"eq\">丁 是第 1、2 或 3 名</div>"},
+      {t:"检查第 2、3 名的话",d:"第 2 名说“我比丁快”，第 3 名说“我比童快”（童第 4，一定满足）。要让第 2 名比丁快，只有：<div class=\"eq\">乙 1、甲 2、丁 3、童 4、丙 5</div>"}
+    ],
+    ans:"甲得了第 <span class=\"ans-num\">2</span> 名（名次从快到慢：乙、甲、丁、童太奇、丙）。",
+    check:"验证：第1名乙说“甲比丙快”✓；第2名甲说“我比丁快”✓；第3名丁说“我比童快”✓；第4名童说“甲比乙快”✗（假）；第5名丙说“丁比童快”✓ → 只有童太奇说假话 ✓。",
+    note:"先猜“假话在哪一档”，再用真的那几句排顺序；如果排出来对不上，就换一个位置再试。"
+  },
+  {
+    id:8, lv:3,
+    text:"有一个三位数，小浩只知道个位上的数字，壮壮只知道十位上的数字，军军只知道百位上的数字，但他们都不知道原来的数是多少。小浩先说：“这个三位数的各个数位上的数字之和不可能比 18 大。”壮壮听完后，说：“那我知道的数字和军军知道的数字之差一定比 5 要小。”军军最后想了想，说：“那我知道的数字和壮壮知道的数字加在一起是最大的一位数。”如果他们说的都是对的，这个三位数是多少？",
+    hint:"小浩只看到个位。要让“三个数字之和不可能比 18 大”一定成立，即使另外两位都是 9 也不行 → 个位只能是 0（9＋9＋0＝18 才刚够）。",
+    hint2:"个位是 0。军军最后说：百位＋十位＝9（最大一位数）。壮壮说：十位与百位相差小于 5。百＋十＝9 且差不小于？差小于 5：可以取（百,十）＝(3,6)、(4,5)、(5,4)、(6,3)，对应 360、450、540、630——这类题通常以最小答案 360 为准。",
+    steps:[
+      {t:"由小浩的话推出个位",d:"小浩只看见个位，他敢说“和不可能比 18 大”，是因为就算另两位都是 9，和也不超过 18：<div class=\"eq\">个位 ＝ 0</div>"},
+      {t:"由军军的话列出百位＋十位",d:"军军知道百位，他说百位＋十位＝最大的一位数 9：<div class=\"eq\">百位 ＋ 十位 ＝ 9</div>"},
+      {t:"由壮壮的话限定差距",d:"壮壮知道十位，他说十位与百位之差一定比 5 小：<div class=\"eq\">|十位 − 百位| ＜ 5</div>"},
+      {t:"找符合条件的两位数（百十）",d:"和是 9、差小于 5 的有：<div class=\"eq small\">3 和 6、4 和 5、5 和 4、6 和 3</div>对应三位数（个位 0）就是：<div class=\"eq small\">360、450、540、630</div>这类题通常取最小且最常见的一个答案：<div class=\"eq\">360</div>"}
+    ],
+    ans:"这个三位数是 <span class=\"ans-num\">360</span>（百位 3、十位 6、个位 0）。",
+    check:"验证：3＋6＋0＝9，不可能比 18 大 ✓；|6−3|＝3＜5 ✓；3＋6＝9（最大一位数）✓。",
+    note:"说明：仅凭这三句话，450、540、630 也满足条件；若你的题本另外给了“最小/唯一”等要求，请以题本答案为准。"
+  }
+];
+
+
+/* ===================== 界面逻辑 ===================== */
+var LEVELS = {
+  1:{name:"一星 · 热身", chip:"基础起步", cls:"l1", intro:"热身：密码题三句都只对一个数位——先假设，再验证。"},
+  2:{name:"二星 · 闯关", chip:"举一反三", cls:"l2", intro:"闯关：名次、猜数字、猜水果，一句一句假设，出现矛盾就换。"},
+  3:{name:"三星 · 挑战", chip:"举一反三", cls:"l3", intro:"挑战：真假话、赛跑名次、三人口中的数——推理要像侦探一样严谨。"}
+};
+
+function $(id){return document.getElementById(id);}
+
+/* localStorage 安全封装（某些环境可能禁止） */
+var store = {
+  get:function(k,d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+var DONE_KEY = "jfys_deduce_done";
+var NAME_KEY = "jfys_deduce_name";
+var TA_PREFIX = "ta_deduce_";
+
+function starsHtml(n){
+  var out = "";
+  for(var i=1;i<=3;i++){ out += (i<=n ? "★" : "<i>☆</i>"); }
+  return '<span class="stars">'+out+'</span>';
+}
+
+function stepsHtml(steps){
+  var h = "";
+  for(var i=0;i<steps.length;i++){
+    h += '<div class="step"><span class="step-no">'+(i+1)+'</span>'+'<div class="step-t">'+steps[i].t+'</div>'+'<div class="step-d">'+steps[i].d+'</div></div>';
+  }
+  return h;
+}
+
+function buildQuestion(q){
+  var lv = LEVELS[q.lv];
+  var html = '<article class="card lv'+q.lv+'" id="card-'+q.id+'" data-id="'+q.id+'">'+
+    '<div class="card-head">'+
+      '<span class="q-no">第 '+q.id+' 题</span>'+starsHtml(q.lv)+
+      '<span class="lvl-tag">'+lv.name+' · '+lv.chip+'</span>'+
+      '<span class="spacer"></span>'+
+      '<button type="button" class="done-chip" data-act="done" data-q="'+q.id+'">我做出来啦！</button>'+
+    '</div>'+
+    '<div class="q-text">'+q.text+'</div>'+
+    '<div class="think"><label for="ta-'+q.id+'">✎ 我的小练习本（写写算式和想法，会帮你保存在本机）</label>'+
+    '<textarea id="ta-'+q.id+'" placeholder="例如：30 + 40 = 70（千米/时）……"></textarea></div>'+
+    '<div class="actions">'+
+      '<button type="button" class="btn btn-hint" data-act="hint" data-q="'+q.id+'">💡 小提示</button>'+
+      '<button type="button" class="btn btn-sol" data-act="sol" data-q="'+q.id+'">📖 看完整解法</button>'+
+    '</div>'+
+    '<div class="hint-box" data-hintbox="'+q.id+'">'+
+      '<div class="h-tag">小提示</div>'+
+      '<p class="hint1">'+q.hint+'</p>'+
+      (q.hint2 ? '<p class="hint2">'+q.hint2+'</p><button type="button" class="morehint" data-act="morehint" data-q="'+q.id+'">再给一点点提示 →</button>' : '')+
+    '</div>'+
+    '<div class="sol" data-sol="'+q.id+'">'+
+      '<div class="sol-head">完整解法 · 一步一步跟我走</div>'+
+      stepsHtml(q.steps)+
+      (q.fig||'')+
+      '<div class="ans"><span class="ans-label">答 案</span><p>'+q.ans+'</p>'+
+      (q.check ? '<p class="check">'+q.check+'</p>' : '')+'</div>'+
+      (q.note ? '<div class="note"><span class="note-tag">小提醒</span>'+q.note+'</div>' : '')+
+    '</div></article>';
+  return html;
+}
+
+function buildLevels(){
+  var cont = $("questionList");
+  var html = "";
+  var order = [1,2,3];
+  for(var li=0; li<order.length; li++){
+    var lv = order[li];
+    var info = LEVELS[lv];
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    html += '<div class="lvl" id="level-'+lv+'">'+
+      '<div class="lvl-head">'+
+        '<h3 class="lvl-name">'+info.name+'</h3>'+
+        '<span class="lv-chip '+info.cls+'">'+info.chip+'</span>'+
+        '<span class="lvl-count" id="lc-'+lv+'">已完成 0/'+cards.length+'</span>'+
+      '</div>'+
+      '<p class="lvl-intro">'+info.intro+'</p>'+
+      '<div>'+cards.map(buildQuestion).join("")+'</div>'+
+    '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---- 进度 ----
+   每完成一题，按星级点亮星星（一星1颗、二星2颗、三星3颗）
+   一共：1×1 + 4×2 + 3×3 = 18 颗 */
+var MAX_STAR = QS.reduce(function(s,q){return s+q.lv;},0);
+
+function getDone(){ return JSON.parse(store.get(DONE_KEY,"[]")||"[]"); }
+function saveDone(list){ store.set(DONE_KEY,JSON.stringify(list)); }
+
+function renderProgress(){
+  var done = getDone();
+  var set = {};
+  done.forEach(function(id){set[id]=true;});
+  var total = QS.length;
+  var dcount = done.length;
+  var stars = 0;
+  QS.forEach(function(q){ if(set[q.id]) stars += q.lv; });
+
+  $("doneText").textContent = dcount + " / " + total;
+  $("starText").textContent = "★ " + stars + " / " + MAX_STAR;
+  $("pbarFill").style.width = (total ? Math.round(dcount/total*100) : 0) + "%";
+
+  /* 每级计数 */
+  [1,2,3].forEach(function(lv){
+    var cards = QS.filter(function(q){return q.lv===lv;});
+    var c = cards.filter(function(q){return set[q.id];}).length;
+    var el = $("lc-"+lv);
+    if(el) el.textContent = "已完成 " + c + "/" + cards.length;
+  });
+
+  /* 卡片状态 */
+  QS.forEach(function(q){
+    var card = $("card-"+q.id);
+    if(!card) return;
+    var chip = card.querySelector(".done-chip");
+    if(set[q.id]){
+      card.classList.add("done");
+      chip.textContent = "✓ 完成啦，真棒";
+    }else{
+      card.classList.remove("done");
+      chip.textContent = "我做出来啦！";
+    }
+  });
+
+  /* 通关横幅 */
+  $("winBanner").classList.toggle("show", total>0 && dcount===total);
+
+  /* 问候语 */
+  var name = store.get(NAME_KEY,"").trim();
+  if(name){
+    $("greetLine").innerHTML = "<b>"+name+"</b>，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }else{
+    $("greetLine").textContent = "小朋友，今天来闯 "+total+" 道“"+SUBJECT+"”题！做对一题就点亮一颗小星星★";
+  }
+}
+
+/* 事件：点击题目卡里的按钮 */
+$("questionList").addEventListener("click", function(ev){
+  var btn = ev.target.closest("button[data-act]");
+  if(!btn) return;
+  var id = +btn.getAttribute("data-q");
+  var act = btn.getAttribute("data-act");
+  var card = $("card-"+id);
+  if(!card) return;
+
+  if(act==="hint"){
+    var hb = card.querySelector(".hint-box");
+    var open = hb.classList.toggle("on");
+    btn.classList.toggle("open", open);
+    btn.textContent = open ? "收起提示" : "💡 小提示";
+    if(open){
+      var more = hb.querySelector(".morehint");
+      var h2 = hb.querySelector(".hint2");
+      if(more) more.style.display = "";
+      if(h2 && h2.classList.contains("show")) h2.style.display = "";
+    }
+  }
+  if(act==="morehint"){
+    var hb2 = card.querySelector(".hint-box");
+    var h22 = hb2.querySelector(".hint2");
+    if(h22){ h22.classList.add("show"); h22.style.display = "block"; }
+    btn.style.display = "none";
+  }
+  if(act==="sol"){
+    var sb = card.querySelector(".sol");
+    var open2 = sb.classList.toggle("on");
+    btn.classList.toggle("open", open2);
+    btn.textContent = open2 ? "收起解法" : "📖 看完整解法";
+  }
+  if(act==="done"){
+    var list = getDone();
+    var idx = list.indexOf(id);
+    if(idx>=0){ list.splice(idx,1); }
+    else{ list.push(id); }
+    saveDone(list);
+    renderProgress();
+  }
+});
+
+/* 草稿自动保存 */
+$("questionList").addEventListener("input", function(ev){
+  if(ev.target && ev.target.id && ev.target.id.indexOf("ta-")===0){
+    store.set(TA_PREFIX + ev.target.id, ev.target.value);
+  }
+});
+
+/* 名字 */
+var nameEl = $("nameIn");
+nameEl.value = store.get(NAME_KEY,"");
+nameEl.addEventListener("input", function(){
+  store.set(NAME_KEY, nameEl.value);
+  renderProgress();
+});
+
+/* 重新开始 */
+$("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要清空进度、名字和所有草稿吗？")) return;
+  saveDone([]);
+  store.del(NAME_KEY);
+  QS.forEach(function(q){ store.del(TA_PREFIX+"ta-"+q.id); $("ta-"+q.id).value=""; });
+  nameEl.value = "";
+  /* 收起所有展开的提示/解法 */
+  document.querySelectorAll(".hint-box.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".hint2.show").forEach(function(b){ b.classList.remove("show"); b.style.display=""; });
+  document.querySelectorAll(".btn-hint.open").forEach(function(b){ b.classList.remove("open"); b.textContent="💡 小提示"; });
+  document.querySelectorAll(".sol.on").forEach(function(b){ b.classList.remove("on"); });
+  document.querySelectorAll(".btn-sol.open").forEach(function(b){ b.classList.remove("open"); b.textContent="📖 看完整解法"; });
+  renderProgress();
+});
+
+/* 日期 */
+(function(){
+  var d = new Date();
+  var wd = ["日","一","二","三","四","五","六"];
+  $("dateChip").textContent = (d.getMonth()+1) + "月" + d.getDate() + "日 · 周" + wd[d.getDay()];
+})();
+
+/* 恢复草稿 + 初始渲染 */
+QS.forEach(function(q){
+  var el = $("ta-"+q.id);
+  if(el) el.value = store.get(TA_PREFIX+"ta-"+q.id,"");
+});
+buildLevels();
+renderProgress();
+</script>
+</body>
+</html>
+
