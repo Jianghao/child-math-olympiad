@@ -1,0 +1,24 @@
+# ===== 发布规则：只上传网页需要的内容 =====
+# 保留：*.html、README.md、index.html
+# 以下文档/脚本/临时文件一律只留在本地，不上传 GitHub
+
+# 文档（教辅原题、说明等素材仅本地使用）
+*.doc
+*.docx
+*.pdf
+*.xlsx
+*.xls
+*.ppt
+*.pptx
+
+# 脚本与代码
+*.py
+*.ipynb
+*.sh
+
+# 临时与系统文件
+*.tmp
+*.bak
+*.log
+.DS_Store
+Thumbs.db
